@@ -6,8 +6,8 @@ function onInstall(){
 
 function onOpen(){
   SpreadsheetApp.getUi().createAddonMenu()
-      .addItem(caption='Use in this spreadsheet', functionName='use')
-      .addToUi();
+  .addItem(caption='Use in this spreadsheet', functionName='use')
+  .addToUi();
 }
 
 function use(){
@@ -15,7 +15,7 @@ function use(){
   var message='The functions DATEADD and DATESUBTRACT are now available in' +
     'this spreadsheet. More information is available in the function help'+
     'box that appears when you start using them in a fomula.';
-  var ui= Spreadsheet.getUi();
+  var ui= SpreadsheetApp.getUi();
   ui.alert(title, message, ui.ButtonSet.OK);
 }
 
@@ -52,4 +52,44 @@ function validateParameters(date,unit, amount){
     throw Utilities.formatString('Parameter 3 expects a number value, but ' +
         '"%s" cannot be coerced to a number.', amount);
   }
+}
+
+
+function multimap(){
+  var lengths = args.map(function(arg){
+    if (arg instanceof Array){
+      return arg.length;
+    }else{
+     return 0;
+    }
+  });
+  var max= Math.max.apply(null, lengths);
+
+  if (max ==0){
+    return func.apply(null, args);
+  }
+
+  lengths.forEach(function(length){
+    if (length != max && length>1){
+      throw 'All input ranges must be the same size:'+max;
+    }
+  });
+
+    var result = []
+  for (var i = 0; i < max; i++) {
+    var params = args.map(function(arg) {
+      if (arg instanceof Array) {
+        return arg.length == 1 ? arg[0] : arg[i];
+      } else {
+        return arg;
+      }
+    });
+    result.push(multimap(params, func));
+  }
+  return result;
+}
+
+
+function toArray(args) {
+  return Array.prototype.slice.call(args);
 }
