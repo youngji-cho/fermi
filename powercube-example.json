@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8">
+<evlines>
+  <evlines>
+    <eln>1223329237</eln>
+    <idx>233019</idx> //id값
+    <terid>1223329237</terid>
+    <fwver>0001</fwver>
+    <makeid>0002625</makeid>
+    <userid>007532</userid>
+    <cosem>OMS 160801A 21</cosem>
+    <progid>101RRS00</progid>
+    <meterno>1000</meterno>
+    <feep>216526</feep>
+    <eprdp>0</eprdp>
+    <acurrent>0</acurrent> // 3상중 A형 전류
+    <avoltage>213.073242</avoltage>
+    <bcurrent>0</bcurrent> // 3상중 B형 전류
+    <bvoltage>0</bvoltage>
+    <ccurrent>0</ccurrent> // 3상중 C형 전류
+    <cvoltage>0</cvoltage>
+  </evlines>
+<evlines>

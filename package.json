@@ -1,0 +1,24 @@
+{
+  "name": "grapeing",
+  "version": "1.0.0",
+  "description": "Server side javascript tutorials",
+  "main": "node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youngji-cho/grapeing.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/youngji-cho/grapeing/issues"
+  },
+  "homepage": "https://github.com/youngji-cho/grapeing#readme",
+  "dependencies": {
+    "jade": "^1.11.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {}
+}
