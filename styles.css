@@ -19,7 +19,17 @@ html, body {
   margin: 0;
   padding: 0;
 }
-.mdl-demo .mdl-layout__header-row {
+
+.mdl-layout__header-row .mdl-layout__header--scroll .mdl-color--primary{
+  position: fixed;
+}
+
+
+.mdl-layout__header-row{
+  padding-left: 30px;
+}
+
+.mdl-demo {
   padding-left: : 50px;
 }
 .mdl-demo .mdl-layout.is-small-screen .mdl-layout__header-row h3 {
