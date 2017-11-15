@@ -14,7 +14,6 @@
     <!-- Google Chart-->
     <script type= "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type= "text/javascript" src="./charts.js" >
-
     </script>
     <!-- Home screen for Desktop-->
     <meta charset="utf-8">
@@ -61,7 +60,7 @@
           <h4> 페르미 프로젝트 </h4>
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-          <a href="./index.html" class="mdl-layout__tab is-active">소개</a>
+          <a href="" class="mdl-layout__tab is-active">소개</a>
           <a href="./price.html" class="mdl-layout__tab">가격정보</a>
           <a href="./power_plant.html" class="mdl-layout__tab">발전소현황</a>
           <a href="./blog.html" class="mdl-layout__tab">블로그</a>
@@ -83,17 +82,13 @@
             <div class="mdl-card mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text">
                 <h4>가격(Price)</h4>
-                페르미 프로젝트에서는 재생에너지 관련해서 2가지 가격정보를 제공합니다.
-                <ul>
-                  <li> SMP가격: System Marignal Price의 약자로, 매월 전력거래소에서 거래되는 전력가격의 평균을 의미합니다. </li>
-                  <li> REC가격: Renewable Energy Price의 약자로, 신재생에너지 생산에 대한 댓가로 지급되는 인증서입니다. </li>
-                </ul>
+                재생에너지의 주요수입원인 계통한계가격(SMP, Sytem Marginal Price)과 신재생에너지 공급인증서(REC, Renewable Energy Certificate)에 대한 정보를 보여줍니다.
               </div>
-              <div class="mdl-card__actions">
-                <a href="#chart_div" class="mdl-button"> 가격정보 보기 </a>
-              </div>
+                  <div id='priceChart_div' style='width: 1000px; height: 300px;'></div>
             </div>
-            <div id='priceChart_div' style='width: 3000px; height: 500px;'></div>
+            <div class="mdl-card__actions">
+              <a href="./price.html" class="mdl-button">가격정보 자세히 보기</a>
+            </div>
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn3">
               <i class="material-icons">more_vert</i>
             </button>
@@ -105,10 +100,10 @@
             <div class="mdl-card mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text">
                 <h4>발전소 현황 </h4>
-                전력거래소 EPSIS에 등록된 발전소의 현황에 대한 정보를 보여줍니다.
+                전력거래소 통계정보시스템에 등록된 발전소 정보에 대해서 보여줍니다.
               </div>
               <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">발전소 현황 보기</a>
+                <a href="./power_plant.html" class="mdl-button">발전소 현황 자세히 보기</a>
               </div>
             </div>
             <div id='plantMap_div'></div>
@@ -140,7 +135,7 @@
                 </div>
               </div>
               <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">더 많은 포스팅보기</a>
+                <a href="/blog.html" class="mdl-button">더 많은 포스팅보기</a>
               </div>
             </div>
           </section>
