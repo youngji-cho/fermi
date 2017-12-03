@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/youngji-cho/grapeing#readme",
   "dependencies": {
+    "@google-cloud/storage": "^1.5.0",
     "jade": "^1.11.0",
     "underscore": "^1.8.3"
   },
