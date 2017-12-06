@@ -1,0 +1,3 @@
+dispatch:
+  - url: 'fermi.me/'
+    service: default

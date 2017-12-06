@@ -1,0 +1,42 @@
+doctype html
+html(lang="ko")
+  head
+    script(type= "text/javascript" src="https://www.gstatic.com/charts/loader.js")
+    script(type= "text/javascript" src="./charts.js")
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0")
+    title 페르미프로젝트
+    meta(name= "description" content="페르미 프로젝트는 한국의 재생에너지(태양광/풍력) 가격정보와 발전소 현황을 보여줍니다.")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css")
+    link(rel="stylesheet", href="./styles.css")
+    style.
+      #view-source({
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 100px;
+        margin-bottom: 300px;
+        z-index: 900;
+        }
+
+  body(class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base")
+    div(class="mdl-layout mdl-js-layout mdl-layout--fixed-header")
+      header(class= "mdl-layout mdl-js-layout mdl-layout--fixed-header")
+        div(class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary")
+          div(class = "mdl-layout--large-screen-only mdl-layout__header-row")
+            h4 페르미 프로젝트
+          div(class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark")
+            a(href="" class="mdl-layout__tab is-active") 소개
+            a(href="./price" class="mdl-layout__tab") 가격정보
+            a(href="./regulation" class="mdl-layout__tab") 규제정보
+            a(href="./power_plant" class="mdl-layout__tab") 발전소현황
+            a(href="./blog" class="mdl-layout__tab") 블로그
+      block main_div
+      footer(class="mdl-mega-footer")
+        div(class="mdl-mega-footer--bottom-section")
+          div(class="mdl-logo").
+            개발자 정보: admin@fermi.me
