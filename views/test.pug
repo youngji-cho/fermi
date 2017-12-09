@@ -15,18 +15,15 @@ block main_div
             h4 가격(Price)
             div 재생에너지의 주요수입원인 계통한계가격(SMP, Sytem Marginal Price)과 신재생에너지 공급인증서(REC, Renewable Energy Certificate)에 대한 정보를 보여줍니다.
           div
-            div(id='smp_chart_div')
+            div(class=".mdl-demo .mdl-card",id='priceChart_div')
           div(class="mdl-card__actions")
             a(href="./price" class="mdl-button") 가격정보 자세히 보기
-
 
       section(class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp")
         div(class="mdl-card mdl-cell mdl-cell--12-col")
           div(class="mdl-card__supporting-text")
             h4 규제정보(plant)
             div 재생에너지 관련된 각종 규제정보를 제공합니다.
-          div
-            div(id='rec_chart_div')
           div(class="mdl-card__actions")
             a(href="./regulation" class="mdl-button") 규제정보 자세히 보기
 

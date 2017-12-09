@@ -32,22 +32,6 @@ app.get('/price', (req, res) => {
   res.status(200).render('price');
 });
 
-app.get('/regulation', (req, res) => {
-  res.status(200).render('regulation');
-});
-
-app.get('/power-plant', (req, res) => {
-  res.status(200).render('power-plant');
-});
-
-app.get('/test', (req, res) => {
-  res.status(200).render('test');
-});
-
-app.get('/blog', (req, res) => {
-  res.status(200).render('blog');
-});
-
 // [END hello_world]
 
 if (module === require.main) {

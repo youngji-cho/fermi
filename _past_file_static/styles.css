@@ -14,10 +14,30 @@
  * limitations under the License.
  */
 
-html, body {
+html {
   font-family: 'Roboto', 'Helvetica', sans-serif;
   margin: 0;
   padding: 0;
+}
+
+body {
+    width:50%;
+    margin:10% auto;
+    background:#e6e6e6;
+}
+#chart_wrap {
+    border:1px solid gray;
+    position: relative;
+    padding-bottom: 100%;
+    height: 0;
+    overflow:hidden;
+}
+#chart {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
 }
 
 .mdl-layout__header-row .mdl-layout__header--scroll .mdl-color--primary{
