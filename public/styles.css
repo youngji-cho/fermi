@@ -17,6 +17,23 @@
 html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
 }
+.filter {
+  width:100px;
+  height:10px;
+  padding-left: 20px;
+  padding-bottom: 8px;
+}
+.dashboard {
+  width: 100%;
+  min-height: 300px;
+}
+.chart {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  min-height: 300px;
+}
 .demo-avatar {
   width: 48px;
   height: 48px;
@@ -59,7 +76,7 @@ html, body {
       -ms-flex-pack: end;
           justify-content: flex-end;
   padding: 16px;
-  height: 151px;
+  height: 100px;
 }
 .demo-avatar-dropdown {
   display: -webkit-flex;

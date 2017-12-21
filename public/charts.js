@@ -55,3 +55,8 @@ function rec_chartboard(res){
   dashboard.bind(time_slider,chart);
   dashboard.draw(data)
 }
+
+$(window).resize(function(){
+  smp_chart();
+  rec_chart();
+});
