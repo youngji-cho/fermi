@@ -1,58 +1,20 @@
 extends layout.pug
 
 block main_div
-  main(class="mdl-layout__content")
-    div(class="mdl-layout__tab-panel is-active" id="overview")
-      section(class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp")
-        div(class="mdl-card mdl-cell mdl-cell--12-col")
-          div(class="mdl-card__supporting-text")
-            h4 소개
-            div 페르미 프로젝트는 재생에너지 사업자에 필요한 정보를 제공합니다.재생에너지 수입에 필요한 가격정보(SMP/REC), 규제정보, 발전소 현황에 대한 정보를 제공합니다.
-
-      section(class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp")
-        div(class="mdl-card mdl-cell mdl-cell--12-col")
-          div(class="mdl-card__supporting-text")
-            h4 가격(Price)
-            div 재생에너지의 주요수입원인 계통한계가격(SMP, Sytem Marginal Price)과 신재생에너지 공급인증서(REC, Renewable Energy Certificate)에 대한 정보를 보여줍니다.
-          div
-            div(id='smp_chart_div')
-          div(class="mdl-card__actions")
-            a(href="./price" class="mdl-button") 가격정보 자세히 보기
-
-
-      section(class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp")
-        div(class="mdl-card mdl-cell mdl-cell--12-col")
-          div(class="mdl-card__supporting-text")
-            h4 규제정보(plant)
-            div 재생에너지 관련된 각종 규제정보를 제공합니다.
-          div
-            div(id='rec_chart_div')
-          div(class="mdl-card__actions")
-            a(href="./regulation" class="mdl-button") 규제정보 자세히 보기
-
-      section(class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp")
-        div(class="mdl-card mdl-cell mdl-cell--12-col")
-          div(class="mdl-card__supporting-text")
-            h4 발전소(power-plant)정보
-            div 전력거래소 통계정보시스템에 등록된 발전소 정보에 대해서 보여줍니다.
-          div(class="mdl-card__actions")
-            a(href="./power-plant" class="mdl-button") 발전소정보 자세히 보기
-
-      section(class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="blog")
-        div(class="mdl-card mdl-cell mdl-cell--12-col")
-          div(class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing")
-            h4(class="mdl-cell mdl-cell--12-col") 블로그
-            div(class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone")
-              div(class="section__circle-container__circle mdl-color--primary")
-            div(class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone")
-              h5 포스팅1
-            div(class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone")
-              div(class="section__circle-container__circle mdl-color--primary")
-            div(class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone")
-              h5 포스팅2
-            div(class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone")
-              div(class="section__circle-container__circle mdl-color--primary")
-            div(class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone")
-              h5 포스팅3
-          div(class="mdl-card__actions")
-            a(href="/blog" class="mdl-button") 더 많은 포스팅보기
+  main.mdl-layout__content.mdl-color--grey-100
+    .mdl-grid.demo-content
+      .demo-charts.mdl-color--white.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col.mdl-grid
+        h4 소개
+        p 페르미 프로젝트는 재생에너지 사업자에 필요한 정보를 제공합니다.재생에너지 수입에 필요한 가격정보(SMP/REC), 규제정보, 발전소 현황에 대한 정보를 제공합니다.
+      .demo-charts.mdl-color--white.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col.mdl-grid
+        h4 SMP 가격
+        p SMP가격은 시간단위로 결정되지만, 아래의 그래프는 다수의 재생에너지 사업자의 지표인 월간가중평균 SMP 가격입니다.
+        #smp_dashboard_div
+          #smp_filter_div
+          #smp_chart_div
+      .demo-charts.mdl-color--white.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col.mdl-grid
+        h4 REC 가격
+        p 월 2회 도매시장에서 거래되는 REC가격입니다. 양방향 거래를 하기 때문에 다양한 가격분포가 있지만, 아래의 그래프는 '종가'를 기준으로 작성되었습니다.
+        #rec_dashboard_div
+          #rec_filter_div
+          #rec_chart_div
