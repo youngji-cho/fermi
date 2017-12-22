@@ -28,8 +28,12 @@ app.get('/', (req, res) => {
   res.status(200).render('index');
 });
 
-app.get('/price', (req, res) => {
-  res.status(200).render('price');
+app.get('/smp_price', (req, res) => {
+  res.status(200).render('smp_price');
+});
+
+app.get('/rec_price', (req, res) => {
+  res.status(200).render('rec_price');
 });
 
 app.get('/regulation', (req, res) => {
@@ -44,8 +48,8 @@ app.get('/test', (req, res) => {
   res.status(200).render('test');
 });
 
-app.get('/blog', (req, res) => {
-  res.status(200).render('blog');
+app.get('/media', (req, res) => {
+  res.status(200).render('media');
 });
 
 // [END hello_world]

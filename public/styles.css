@@ -17,10 +17,16 @@
 html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
 }
+
+img {
+    width: 100%;
+    height: auto;
+}
+
 .filter {
-  width:100px;
-  height:10px;
-  padding-left: 20px;
+  width:100%;
+  min-height:10px;
+  padding-left: 10px;
   padding-bottom: 8px;
 }
 .dashboard {

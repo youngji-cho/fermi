@@ -1,0 +1,19 @@
+extends layout.pug
+
+block main_div
+  main.mdl-layout__content.mdl-color--grey-100
+    .mdl-grid.demo-content
+      .demo-charts.mdl-color--white.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col.mdl-grid
+        h4 신재생에너지 공급인증서</br></br>
+          p 관련근거</br> <a href='http://www.law.go.kr/lsLawLinkInfo.do?lsJoLnkSeq=15528831&chrClsCd=010202'>1.신에너지 및 재생에너지 개발·이용·보급 촉진법</a></br><a href='http://www.law.go.kr/admRulLsInfoP.do?admRulSeq=2100000059349'>2.신재생에너지 공급의무화제도 및 연료혼합의무화제도 관리·운영지침</a></br><a href='http://www.knrec.or.kr/knrec/14/KNREC140110.asp?idx=533'>3.공급인증서 발급 및 거래시장 운영에 관한 규칙</a></br>
+          p 설명: 한국에서는 정책보조수단으로 "재생에너지 공급의무화 제도(RPS, Renewable Portfolio Standard)"를 시행하고 있습니다.</br></br> 석탄/화력/원자력발전소는 매년 일정비율이상의 전력을 재생에너지로 생산해야합니다. 발전사들은 자체적으로 발전소를 지을수도 있지만, 대부분의 경우 재생에너지 사업자에게서 구입을 합니다. 매년 신재생에너지 공급의무화 비율은 <a href =”http://www.knrec.or.kr/knrec/12/KNREC120700_02.asp”>에너지 관리공단</a>에서 확인이 가능합니다. </br></br> 재생에너지 발전소는 발전량에 대해서 인증서를 발급받는데, 이를 신재생에너지 공급인증서(Renewable Energy Certificate, 이하 REC)라고 합니다. REC를 매년 공급이행에 미달한 발전소들에게 매매할수 있습니다. </br></br>
+
+      .demo-charts.mdl-color--white.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col.mdl-grid
+        h4 REC 도매시장 가격 </br>
+         p  REC는 SMP 와 다르게 Mwh당 거래가 기본입니다. 또한 REC는 생산될 때마다 도매시장에서 거래를 할수 있고, 장기계약을 맺어서 거래를 할 수도 있습니다. 도매시장에서 거래할 경우 보다 비싼 가격에 거래할 수 있지만 향후 가격하락에 대한 위험도 감수해야 합니다. 한달에 4회 정도 거래를 할수 있습니다. 전력거래소 주관 REC시장에서 거래가 가능합니다. 언론에 흔히 이야기하는 REC가격은 도매시장에서의 REC가격입니다
+        #rec_dashboard_div.dashboard
+          #rec_filter_div.filter
+          #rec_chart_div.chart
+      .demo-charts.mdl-color--white.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col.mdl-grid
+        h4 REC 장기계약시장
+          p REC장기계약의 경우 에너지 관리공단 주관하에 실시됩니다. 17년 부터는 REC가격과 SMP가격을 통합해서 20년 장기계약이 가능합니다. 장기계약을 할 경우에는 일정부분의 수익하락이 있을 수 있지만, 가격변동성을 피할수 있습니다. 또한 외부 금융기관에서 대출을 할경우 위험회피 차원에서 REC 장기계약이 필수적으로 요구되기도 합니다.
