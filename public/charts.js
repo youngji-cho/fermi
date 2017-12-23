@@ -26,6 +26,12 @@ function smp_chartboard(res){
   let chart  = new google.visualization.ChartWrapper({
     'chartType': 'LineChart',
     'containerId': 'smp_chart_div',
+    'options': {
+      'title':'월간 가중평균 계통한계가격 그래프',
+       'legend':{
+         'position':'bottom'
+       }
+    }
   });
   let dashboard = new google.visualization.Dashboard(document.getElementById('smp_dashboard_div'));
   dashboard.bind(time_slider,chart);
@@ -43,13 +49,19 @@ function rec_chartboard(res){
     'controlType': 'DateRangeFilter',
     'containerId': 'rec_filter_div',
     'options': {
-        'filterColumnLabel': 'date'
-    }
+        'filterColumnLabel': 'ate'
+    },
   });
 
   let chart  = new google.visualization.ChartWrapper({
     'chartType': 'LineChart',
     'containerId': 'rec_chart_div',
+    'options':{
+       'title':'REC 도매시장 가격 그래프',
+       'legend':{
+         'position':'bottom'
+       }
+    }
   });
   let dashboard = new google.visualization.Dashboard(document.getElementById('rec_dashboard_div'));
   dashboard.bind(time_slider,chart);
