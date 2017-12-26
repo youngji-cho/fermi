@@ -13,29 +13,15 @@ function smp_chart(){
 
 function smp_chartboard(res){
   let data = res.getDataTable();
-  let time_slider = new google.visualization.ControlWrapper({
-    'controlType': 'DateRangeFilter',
-    'containerId': 'smp_filter_div',
-    'options': {
-        'filterColumnLabel': 'date',
-        'hAxis': {format: 'yy/MM'},
-        'vAxis': {format: 'long'}
-    }
-  });
+  let chart  = new google.visualization.LineChart(document.getElementById('smp_chart_div'));
 
-  let chart  = new google.visualization.ChartWrapper({
-    'chartType': 'LineChart',
-    'containerId': 'smp_chart_div',
-    'options': {
-      'title':'월간 가중평균 계통한계가격 그래프',
-       'legend':{
-         'position':'bottom'
-       }
-    }
-  });
-  let dashboard = new google.visualization.Dashboard(document.getElementById('smp_dashboard_div'));
-  dashboard.bind(time_slider,chart);
-  dashboard.draw(data)
+  let options ={
+    'title':'월간 가중평균 계통한계가격 그래프',
+     'legend':{
+       'position':'bottom'
+     }
+  };
+  chart.draw(data,options);
 }
 
 function rec_chart(){
@@ -45,30 +31,21 @@ function rec_chart(){
 
 function rec_chartboard(res){
   let data = res.getDataTable();
-  let time_slider = new google.visualization.ControlWrapper({
-    'controlType': 'DateRangeFilter',
-    'containerId': 'rec_filter_div',
-    'options': {
-        'filterColumnLabel': 'ate'
-    },
-  });
+  let chart  = new google.visualization.LineChart(document.getElementById('rec_chart_div'));
 
-  let chart  = new google.visualization.ChartWrapper({
-    'chartType': 'LineChart',
-    'containerId': 'rec_chart_div',
-    'options':{
-       'title':'REC 도매시장 가격 그래프',
-       'legend':{
-         'position':'bottom'
-       }
-    }
-  });
-  let dashboard = new google.visualization.Dashboard(document.getElementById('rec_dashboard_div'));
-  dashboard.bind(time_slider,chart);
-  dashboard.draw(data)
+  let options ={
+    'title':'REC 도매시장 가격 그래프',
+    'legend':{
+       'position':'bottom'
+     }
+  };
+  chart.draw(data,options);
 }
 
 $(window).resize(function(){
   smp_chart();
   rec_chart();
 });
+
+
+document.getElementById("smp_filter_div").innerHTML= "Hello World!"

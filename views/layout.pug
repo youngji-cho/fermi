@@ -28,6 +28,12 @@ html(lang='kor')
     script(type= "text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
     script(type= "text/javascript" src="https://www.gstatic.com/charts/loader.js")
     script(type= "text/javascript" src="./charts.js")
+    script(async src="https://www.googletagmanager.com/gtag/js?id=UA-108979091-1")
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-108979091-1');
     style.
       #view-source {
       position: fixed;
@@ -78,3 +84,4 @@ html(lang='kor')
       block main_div
     svg(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewbox='0 0 500 250', style='position: fixed; left: -1000px; height: -1000px;')
     script(src='https://code.getmdl.io/1.3.0/material.min.js')
+    script(type= "text/javascript" src="./charts_filter.js")
