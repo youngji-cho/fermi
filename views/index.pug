@@ -9,10 +9,29 @@ block main_div
       .demo-charts.mdl-color--white.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col.mdl-grid
         h4 SMP 가격
           p SMP가격은 시간단위로 결정되지만, 아래의 그래프는 다수의 재생에너지 사업자의 지표인 월간가중평균 SMP 가격입니다.
-          #smp_filter
-        #smp_chart_div.chart
+          table
+          #smp_dashboard_div
+            table
+              tr
+                td
+                  button(onclick="smp_1yrs();") 최근 1년
+                td
+                  button(onclick="smp_3yrs();") 최근 3년
+                td
+                  button(onclick="smp_all();") 전체
+            #smp_chart_div.chart
+            #smp_filter_div
       .demo-charts.mdl-color--white.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col.mdl-grid
         h4 REC 가격
-         p 월 2회 도매시장에서 거래되는 REC가격입니다. 양방향 거래를 하기 때문에 다양한 가격분포가 있지만, 아래의 그래프는 '종가'를 기준으로 작성되었습니다.
-           #rec_filter
-        #rec_chart_div.chart
+          p 월 2회 도매시장에서 거래되는 REC가격입니다. 양방향 거래를 하기 때문에 다양한 가격분포가 있지만, 아래의 그래프는 '종가'를 기준으로 작성되었습니다.
+          #rec_dashboard_div
+            table
+              tr
+                td
+                  button(onclick="rec_after();") 통합시장 이후
+                td
+                  button(onclick="rec_before();") 통합시장 이전
+                td
+                  button(onclick="rec_all();") 전체
+            #rec_chart_div.chart
+            #rec_filter_div
