@@ -1,93 +1,28 @@
 <html>
   <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart', 'controls']});
-      google.charts.setOnLoadCallback(drawStuff);
-
-      function drawStuff() {
-
-        var dashboard = new google.visualization.Dashboard(
-          document.getElementById('programmatic_dashboard_div'));
-
-        // We omit "var" so that programmaticSlider is visible to changeRange.
-        var programmaticSlider = new google.visualization.ControlWrapper({
-          'controlType': 'NumberRangeFilter',
-          'containerId': 'programmatic_control_div',
-          'options': {
-            'filterColumnLabel': 'Donuts eaten',
-            'ui': {'labelStacking': 'vertical'}
-          }
-        });
-
-        var programmaticChart  = new google.visualization.ChartWrapper({
-          'chartType': 'PieChart',
-          'containerId': 'programmatic_chart_div',
-          'options': {
-            'width': 300,
-            'height': 300,
-            'legend': 'none',
-            'chartArea': {'left': 15, 'top': 15, 'right': 0, 'bottom': 0},
-            'pieSliceText': 'value'
-          }
-        });
-
-        var data = google.visualization.arrayToDataTable([
-          ['Name', 'Donuts eaten'],
-          ['Michael' , 5],
-          ['Elisa', 7],
-          ['Robert', 3],
-          ['John', 2],
-          ['Jessica', 6],
-          ['Aaron', 1],
-          ['Margareth', 8]
-        ]);
-
-        dashboard.bind(programmaticSlider, programmaticChart);
-        dashboard.draw(data);
-
-        changeRange = () =>{
-          programmaticSlider.setState({'lowValue': 2, 'highValue': 5});
-          programmaticSlider.draw();
-        };
-
-        changeOptions = ()=> {
-          programmaticChart.setOption('is3D', true);
-          programmaticChart.draw();
-        };
-      }
-
-    </script>
+    <meta charset="utf-8">
+    <link href="./test.css" type="text/css" rel="stylesheet">
   </head>
   <body>
-    <div id="programmatic_dashboard_div" style="border: 1px solid #ccc">
-      <button style="margin: 1em 1em 1em 2em" onclick="changeRange();">
-        Select range [2, 5]
-      </button>
-      <button style="margin: 1em 1em 1em 2em" onclick="changeOptions();">
-        Make the pie chart 3D
-      </button>
-      <table class="columns">
-        <tr>
-          <td>
-            <div id="programmatic_control_div" style="padding-left: 2em; min-width: 250px"></div>
-            <script type="text/javascript">
-              function changeRange() {
-                programmaticSlider.setState({'lowValue': 2, 'highValue': 5});
-                programmaticSlider.draw();
-              }
-
-              function changeOptions() {
-                programmaticChart.setOption('is3D', true);
-                programmaticChart.draw();
-              }
-            </script>
-          </td>
-          <td>
-            <div id="programmatic_chart_div"></div>
-          </td>
-        </tr>
-      </table>
+    <div class="flex-container">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
     </div>
+
+
+  <!--
+    <div id ="main">I like it</div>
+    <div class="simple">저는 더 작습니다.</div>
+    <div class="fancy">저는 더 커요.</div>
+    <div class="container">
+      <nav>네비게이션이 도대체 무엇일까요?</nav>
+      <section> 섹션과 네이게이션의 관계?</section>
+      <section> 섹션과 네이게이션의 관계?</section>
+      <section> 섹션과 네이게이션의 관계?</section>
+      <section> 섹션과 네이게이션의 관계?</section>
+    </div>
+  -->
   </body>
 </html>

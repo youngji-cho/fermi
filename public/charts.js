@@ -28,9 +28,12 @@ function smp_chartboard(res){
     'containerId': 'smp_chart_div',
     'options': {
       'title':'월간 가중평균 계통한계가격 그래프',
-       'legend':{
-         'position':'bottom'
-       }
+      'legend':{
+        'position':'right'
+      },
+      'ui':{
+        'label':''
+      }
     }
   });
   let dashboard = new google.visualization.Dashboard(document.getElementById('smp_dashboard_div'));
@@ -72,7 +75,10 @@ function rec_chartboard(res){
     'options':{
        'title':'REC 도매시장 가격 그래프',
        'legend':{
-         'position':'bottom'
+         'position':'right'
+       },
+       'ui':{
+         'label':''
        }
     }
   });
