@@ -30,11 +30,14 @@ img {
 .filter {
   width:100%;
   min-height:10px;
-  padding-bottom: 8px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .dashboard {
   width: 100%;
   min-height: 300px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .chart {
   display: -webkit-flex;

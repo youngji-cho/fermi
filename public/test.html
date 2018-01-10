@@ -5,24 +5,39 @@
     <link href="./test.css" type="text/css" rel="stylesheet">
   </head>
   <body>
-    <div class="flex-container">
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-    </div>
+    <script>
+    google.charts.load('current', {'packages':['corechart', 'controls']});
 
+    //"and order by";//
 
-  <!--
-    <div id ="main">I like it</div>
-    <div class="simple">저는 더 작습니다.</div>
-    <div class="fancy">저는 더 커요.</div>
-    <div class="container">
-      <nav>네비게이션이 도대체 무엇일까요?</nav>
-      <section> 섹션과 네이게이션의 관계?</section>
-      <section> 섹션과 네이게이션의 관계?</section>
-      <section> 섹션과 네이게이션의 관계?</section>
-      <section> 섹션과 네이게이션의 관계?</section>
-    </div>
-  -->
+    google.charts.setOnLoadCallback(handle_query);
+
+    var primary_url = "https://docs.google.com/spreadsheets/d/1_WuRPqGhuuj7lGJn286_oU35kgUaMZ-fwpEzKART9L8/gviz/tq?gid=1663949858&header=1&range=A1:P500&tq="
+
+    var query_url1= "select A,C where B ='total' order by A desc";
+
+    var query_url2="select A,C where B='total' pivot M";
+
+    var query_url3="select max(A) group by B"
+
+    var query_url4="select A,C,D,E where max(A)<A";
+
+    var query_url5="select A,C,D,E where A < date '\"&TEXT(TODAY(),\"yyyy-mm-dd\")&\"'";
+
+    var query_url6="select avg(A),sum(C),min(D),max(E) group by B"
+
+    var query_url_total_transaction= "select A,H where (B ='total') AND (H is NOT NULL) order by A desc"
+    var url=primary_url+encodeURIComponent(query_url6);
+
+    function handle_query(){
+      var query =new google.visualization.Query(url);
+      query.send(make_chart);
+    }
+    function make_chart(res){
+      data = res.getDataTable();
+      console.log(data);
+    }
+
+    </script>
   </body>
 </html>
