@@ -6,15 +6,6 @@
   "directories": {
     "test": "test"
   },
-  "scripts": {
-    "test": "npm run system-test",
-    "deploy": "gcloud app deploy",
-    "start": "node app.js",
-    "lint": "samples lint",
-    "pretest": "npm run lint",
-    "system-test": "samples test app",
-    "e2e-test": "samples test deploy"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/youngji-cho/fermi.git"
@@ -29,10 +20,14 @@
   },
   "homepage": "https://github.com/youngji-cho/fermi#readme",
   "dependencies": {
+    "aws-sdk": "^2.185.0",
     "express": "^4.16.2",
     "pug": "^2.0.0-rc.4"
   },
   "engines": {
     "node": ">=4.3.2"
+  },
+  "devDependencies": {
+    "google-charts": "^1.0.0"
   }
 }

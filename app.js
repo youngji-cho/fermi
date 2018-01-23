@@ -1,21 +1,11 @@
-// Copyright 2017, Google, Inc.
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 'use strict';
 
 const express = require('express');
 const app= express();
 const bodyParser= require('body-parser');
+const request = require('request');
+const naver_client_id = 'Pj4B0L4re6R4hCANOPLV';
+const naver_client_secret = 'WowPFMQTaJ';
 
 app.set('view engine','pug');
 app.set('views','./views');
@@ -50,6 +40,21 @@ app.get('/test', (req, res) => {
 
 app.get('/media', (req, res) => {
   res.status(200).render('media');
+  let api_url = 'https://openapi.naver.com/v1/search/blog?query=' + encodeURI(req.query.query);
+  let request = require('request');
+  let options = {
+      url: api_url,
+      headers: {'X-Naver-Client-Id':naver_client_id, 'X-Naver-Client-Secret': naver_client_secret}
+   };
+   request.get(options, function (error, response, body) {
+     if (!error && response.statusCode == 200) {
+       res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
+       res.end(body);
+     } else {
+       res.status(response.statusCode).end();
+       console.log('error = ' + response.statusCode);
+     }
+   });
 });
 
 // [END hello_world]
@@ -57,7 +62,7 @@ app.get('/media', (req, res) => {
 if (module === require.main) {
   // [START server]
   // Start the server
-  const server = app.listen(process.env.PORT || 8081, () => {
+  const server = app.listen(process.env.PORT || 3000, () => {
     const port = server.address().port;
     console.log(`App listening on port ${port}`);
   });
