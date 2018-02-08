@@ -21,7 +21,9 @@
   "homepage": "https://github.com/youngji-cho/fermi#readme",
   "dependencies": {
     "aws-sdk": "^2.185.0",
+    "d3": "^4.13.0",
     "express": "^4.16.2",
+    "mysql": "^2.15.0",
     "pug": "^2.0.0-rc.4"
   },
   "engines": {

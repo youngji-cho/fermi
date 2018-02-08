@@ -1,11 +1,12 @@
 'use strict';
 
+const d3= require('d3');
 const express = require('express');
 const app= express();
 const bodyParser= require('body-parser');
 const request = require('request');
-const naver_client_id = 'Pj4B0L4re6R4hCANOPLV';
-const naver_client_secret = 'WowPFMQTaJ';
+const mysql = require('mysql');
+
 
 app.set('view engine','pug');
 app.set('views','./views');
@@ -13,6 +14,17 @@ app.set('views','./views');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static('public'));
 app.locals.pretty =true;
+
+const conn =mysql.createConnection({
+  host: "aa1fir4gj2lkhs2.c4kp2nxu0eer.ap-northeast-2.rds.amazonaws.com",
+  user: "youngji",
+  password: "whdudwl4143",
+});
+
+conn.connect((err)=>{
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 app.get('/', (req, res) => {
   res.status(200).render('index');
@@ -22,20 +34,11 @@ app.get('/smp_price', (req, res) => {
   res.status(200).render('smp_price');
 });
 
-app.get('/rec_price', (req, res) => {
-  res.status(200).render('rec_price');
-});
-
 app.get('/regulation', (req, res) => {
-  res.status(200).render('regulation');
 });
 
 app.get('/power-plant', (req, res) => {
   res.status(200).render('power-plant');
-});
-
-app.get('/test', (req, res) => {
-  res.status(200).render('test');
 });
 
 app.get('/media', (req, res) => {
@@ -56,6 +59,20 @@ app.get('/media', (req, res) => {
      }
    });
 });
+
+app.get('/rec_data/:price/:start_date/:end_date/:land', (req, res) => {
+let sql = `select date,${req.params.price} from energy.rec_price where land_or_jeju ='${req.params.land}' and date >='${req.params.start_date}' and date <='${req.params.end_date}'` ;
+  conn.query(sql,(err,rows,fields)=>{
+    if(err){
+      console.log('error');
+      res.status(500).send('Internal Sever Error')
+    } else {
+      console.log(rows);
+      res.json(rows);
+    }
+  })
+});
+
 
 // [END hello_world]
 
