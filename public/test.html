@@ -3,41 +3,21 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <meta charset="utf-8">
     <link href="./test.css" type="text/css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   </head>
   <body>
     <script>
-    google.charts.load('current', {'packages':['corechart', 'controls']});
-
-    //"and order by";//
-
-    google.charts.setOnLoadCallback(handle_query);
-
-    var primary_url = "https://docs.google.com/spreadsheets/d/1_WuRPqGhuuj7lGJn286_oU35kgUaMZ-fwpEzKART9L8/gviz/tq?gid=1663949858&header=1&range=A1:P500&tq="
-
-    var query_url1= "select A,C where B ='total' order by A desc";
-
-    var query_url2="select A,C where B='total' pivot M";
-
-    var query_url3="select max(A) group by B"
-
-    var query_url4="select A,C,D,E where max(A)<A";
-
-    var query_url5="select A,C,D,E where A < date '\"&TEXT(TODAY(),\"yyyy-mm-dd\")&\"'";
-
-    var query_url6="select avg(A),sum(C),min(D),max(E) group by B"
-
-    var query_url_total_transaction= "select A,H where (B ='total') AND (H is NOT NULL) order by A desc"
-    var url=primary_url+encodeURIComponent(query_url6);
-
-    function handle_query(){
-      var query =new google.visualization.Query(url);
-      query.send(make_chart);
-    }
-    function make_chart(res){
-      data = res.getDataTable();
-      console.log(data);
-    }
-
+    $.ajax({
+      url:'http://www.fermi.me/rec_data/average_price/2017-03-01/2017-11-11/total',
+      type:'GET',
+      dataType:'json',
+      success(response){
+        consoel.log(response);
+      },
+      error(jqXHR,status,errorThrown){
+        console.log(jqXHR);
+      }
+    });
     </script>
   </body>
 </html>

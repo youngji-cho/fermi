@@ -6,6 +6,7 @@ const app= express();
 const bodyParser= require('body-parser');
 const request = require('request');
 const mysql = require('mysql');
+const fs=require('fs');
 
 
 app.set('view engine','pug');
@@ -72,6 +73,10 @@ let sql = `select date,${req.params.price} from energy.rec_price where land_or_j
     }
   })
 });
+
+app.get('/test',(req,res)=>{
+  fs.readFileSync('test.html');
+})
 
 
 // [END hello_world]
