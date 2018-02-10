@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -11,8 +12,11 @@
       url:'http://www.fermi.me/rec_data/average_price/2017-03-01/2017-11-11/total',
       type:'GET',
       dataType:'json',
+      headers: {
+        'Content-Type': 'text/html',
+      },
       success(response){
-        consoel.log(response);
+        console.log(response);
       },
       error(jqXHR,status,errorThrown){
         console.log(jqXHR);

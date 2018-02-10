@@ -7,13 +7,14 @@ const bodyParser= require('body-parser');
 const request = require('request');
 const mysql = require('mysql');
 const fs=require('fs');
-
+const cors= require('cors');
 
 app.set('view engine','pug');
 app.set('views','./views');
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static('public'));
+app.use(cors());
 app.locals.pretty =true;
 
 const conn =mysql.createConnection({
