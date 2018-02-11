@@ -4,24 +4,14 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <meta charset="utf-8">
     <link href="./test.css" type="text/css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   </head>
   <body>
-    <script>
-    $.ajax({
-      url:'http://www.fermi.me/rec_data/average_price/2017-03-01/2017-11-11/total',
-      type:'GET',
-      dataType:'json',
-      headers: {
-        'Content-Type': 'text/html',
-      },
-      success(response){
-        console.log(response);
-      },
-      error(jqXHR,status,errorThrown){
-        console.log(jqXHR);
-      }
-    });
-    </script>
+      <input type="submit" id="3months" value ="3개월 전">
+      <input type="submit" id="6months" value="최근 6개월 ">
+      <input type="submit" id="1year" value="최근 1년">
+      <input type="submit" id="total" value="전체">
+    <script src="ajax.js"></script>
   </body>
 </html>
