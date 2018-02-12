@@ -20,7 +20,8 @@ app.locals.pretty =true;
 const conn =mysql.createConnection({
   host: "aa1fir4gj2lkhs2.c4kp2nxu0eer.ap-northeast-2.rds.amazonaws.com",
   user: "youngji",
-  password: "whdudwl4143"
+  password: "whdudwl4143",
+  dateStrings: true
 });
 
 conn.connect((err)=>{
