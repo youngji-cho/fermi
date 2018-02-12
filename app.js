@@ -64,7 +64,7 @@ app.get('/media', (req, res) => {
 });
 
 app.get('/rec_data/:price/:start_date/:end_date/:land', (req, res) => {
-let sql = `select date,${req.params.price} from energy.rec_price where land_or_jeju ='${req.params.land}' and date >='${req.params.start_date}' and date <='${req.params.end_date}'` ;
+let sql = `select date,${req.params.price} from energy.rec_price where land_or_jeju ='${req.params.land}' and date >='${req.params.start_date}' and date <='${req.params.end_date}' order by date` ;
   conn.query(sql,(err,rows,fields)=>{
     if(err){
       console.log('error');
