@@ -2,7 +2,7 @@
   "name": "fermi-project",
   "version": "1.0.0",
   "description": "Energy Portal for renewable energy",
-  "main": "app.js",
+  "main": "./server/app.js",
   "directories": {
     "test": "test"
   },
