@@ -11,7 +11,8 @@
     "url": "git+https://github.com/youngji-cho/fermi.git"
   },
   "scripts": {
-    "start": "node ./server/app.js"
+    "test": "webpack-dev-server --hot --host 0.0.0.0",
+    "start": "supervisor ./server/app.js"
   },
   "keywords": [
     "fermi"
@@ -30,7 +31,9 @@
     "mysql": "^2.15.0",
     "pug": "^2.0.0-rc.4",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
   },
   "engines": {
     "node": ">=4.3.2"

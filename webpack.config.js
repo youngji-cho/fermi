@@ -1,16 +1,17 @@
 module.exports = {
-    entry: './src/index.js',
+    entry: './client/render.js',
 
     output: {
         path: __dirname + '/public/',
         filename: 'bundle.js'
     },
-    // bundle.js에서 최종적으로 실행된다. 
+    // bundle.js에서 최종적으로 실행된다.
 
     devServer: {
         inline: true,
-        port: 3000,
-        contentBase: __dirname + '/public/'
+        port: 8081,
+        contentBase: __dirname + '/public/',
+        historyApiFallback: true
     },
 
     module: {

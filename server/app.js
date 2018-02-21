@@ -3,8 +3,8 @@ const app = express();
 
 app.use('/',express.static(__dirname + '/../public'));
 
-app.get('/hello',(req,res)=>{
-  return res.send('Can you hear me')
+app.get('*/',  (req, res)=>{
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
 })
 
 if (module === require.main) {
