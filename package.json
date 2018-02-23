@@ -2,7 +2,7 @@
   "name": "fermi-project",
   "version": "1.0.0",
   "description": "Energy Portal for renewable energy",
-  "main": "./server/app.js",
+  "main": "./Fermi-Server/app.js",
   "directories": {
     "test": "test"
   },
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "webpack-dev-server --hot --host 0.0.0.0",
-    "start": "supervisor ./server/app.js"
+    "start": "supervisor ./Fermi-Server/app.js"
   },
   "keywords": [
     "fermi"
@@ -26,6 +26,8 @@
   "dependencies": {
     "aws-sdk": "^2.185.0",
     "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
     "d3": "^4.13.0",
     "express": "^4.16.2",
     "mysql": "^2.15.0",
