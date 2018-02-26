@@ -2,11 +2,7 @@
   "name": "fermi-project",
   "version": "1.0.0",
   "description": "Energy Portal for renewable energy",
-<<<<<<< HEAD
-  "main": "./app.js",
-=======
   "main": "./Fermi-Server/app.js",
->>>>>>> test
   "directories": {
     "test": "test"
   },
@@ -18,11 +14,6 @@
     "test": "webpack-dev-server --hot --host 0.0.0.0",
     "start": "webpack && supervisor ./Fermi-Server/app.js"
   },
-<<<<<<< HEAD
-  "proxy":"http://localhost:3000",
-=======
-  "proxy": "http://localhost:3000/",
->>>>>>> test
   "keywords": [
     "fermi"
   ],
