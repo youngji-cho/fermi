@@ -2,7 +2,7 @@ module.exports = {
     entry: __dirname + '/Fermi-Client/render.js',
 
     output: {
-        path: __dirname + '/Fermi-Client/',
+        path: __dirname + '/Fermi-Client',
         filename: 'bundle.js'
     },
     // bundle.js에서 최종적으로 실행된다.
@@ -10,7 +10,7 @@ module.exports = {
     devServer: {
         inline: true,
         port: 8081,
-        contentBase: __dirname + '/Fermi-Client/',
+        contentBase: __dirname + '/Fermi-Client',
         historyApiFallback: true
     },
 

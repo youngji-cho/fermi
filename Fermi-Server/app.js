@@ -1,11 +1,30 @@
 const express =require('express');
+const path =require('path');
 const app = express();
 
-app.use('/',express.static(__dirname + '/../public'));
+//app.use(express.static(__dirname+'/../Fermi-Client/'));
 
-app.get('*/',  (req, res)=>{
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
-})
+app.get('*', (req, res, next) => {
+  const bundleUrl = /bundle.js/;
+  const cssUrl =/styles.css/;
+  if(bundleUrl.test(req.url)){
+    console.log(`bundle url is ${req.url}`);
+    res.sendFile(path.resolve(__dirname, './../Fermi-Client/bundle.js'));
+  } else if(cssUrl.test(req.url)) {
+    res.sendFile(path.resolve(__dirname, './../Fermi-Client/styles.css'));
+  } else {
+    console.log(`other url is ${req.url}`);
+    res.sendFile(path.resolve(__dirname, './../Fermi-Client/index.html'));
+  }
+});
+/*
+app.get('/a', (req, res, next) => {
+  res.sendFile(path.resolve(__dirname, './../Fermi-Client/a.html'));
+});
+app.get('/data',  (req, res)=>{
+  res.json({'express':'this is hard'});
+});
+*/
 
 if (module === require.main) {
   // [START server]

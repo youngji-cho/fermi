@@ -12,8 +12,9 @@
   },
   "scripts": {
     "test": "webpack-dev-server --hot --host 0.0.0.0",
-    "start": "supervisor ./Fermi-Server/app.js"
+    "start": "webpack && supervisor ./Fermi-Server/app.js"
   },
+  "proxy": "http://localhost:3000/",
   "keywords": [
     "fermi"
   ],
@@ -28,9 +29,11 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
+    "concurrently": "^3.5.1",
     "d3": "^4.13.0",
     "express": "^4.16.2",
     "mysql": "^2.15.0",
+    "path": "^0.12.7",
     "pug": "^2.0.0-rc.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -47,6 +50,7 @@
     "babel-preset-react": "^6.24.1",
     "google-charts": "^1.0.0",
     "node-sass": "^4.7.2",
+    "nodemon": "^1.15.1",
     "sass-loader": "^6.0.6",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
