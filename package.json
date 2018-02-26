@@ -10,6 +10,10 @@
     "type": "git",
     "url": "git+https://github.com/youngji-cho/fermi.git"
   },
+  "scripts": {
+    "test": "webpack-dev-server --hot --host 0.0.0.0",
+    "start": "webpack && supervisor ./Fermi-Server/app.js"
+  },
   "keywords": [
     "fermi"
   ],
