@@ -5,6 +5,8 @@ const mysql = require('mysql');
 const bodyParser= require('body-parser');
 const cors= require('cors');
 
+app.use(cors());
+
 const conn =mysql.createConnection({
   host: "aa1fir4gj2lkhs2.c4kp2nxu0eer.ap-northeast-2.rds.amazonaws.com",
   user: "youngji",
