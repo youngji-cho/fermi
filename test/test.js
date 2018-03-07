@@ -1,9 +1,12 @@
 const http= require('http');
+const express= require('express');
+const app=express();
 const port= 3000;
 
-http.createServer((req,res)=>{
-  res.writeHead(200,{'Content-Type':'text/plain'});
-  res.end('Hellow World!');
-}).listen(port)
+app.get('/',(req,res)=>{
+  res.send(`${req.protocol}`);
+});
 
-console.log(`Server is in ${port}!`);
+app.listen(port,()=>{
+  console.log(`Server is in ${port}!`);
+})
