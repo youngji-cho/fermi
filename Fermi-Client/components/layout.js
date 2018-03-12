@@ -111,6 +111,7 @@ export class Table extends React.Component{
         <div>
           <h4>{this.props.name}</h4>
           <p>{this.props.content}</p>
+          {this.props.children}
         </div>
       </div>
     )

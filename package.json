@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "webpack-dev-server --hot --host 0.0.0.0",
-    "start": "node ./Fermi-Server/app.js"
+    "start": "webpack && supervisor ./Fermi-Server/app.js"
   },
   "keywords": [
     "fermi"
@@ -50,10 +50,12 @@
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.10",
     "google-charts": "^1.0.0",
     "node-sass": "^4.7.2",
     "nodemon": "^1.15.1",
     "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.2",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
   }

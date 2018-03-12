@@ -4,6 +4,7 @@ import {Router,BrowserRouter, Route, Switch} from 'react-router-dom'
 import {MainPage} from './pages/mainPage';
 import {SmpPage} from './pages/smpPage';
 import {RecPage} from './pages/recPage';
+require('./styles.css');
 
 ReactDOM.render(
   <BrowserRouter>

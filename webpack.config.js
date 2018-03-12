@@ -15,7 +15,7 @@ module.exports = {
     },
 
     module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.js$/,
                     loader: 'babel-loader',
@@ -24,6 +24,10 @@ module.exports = {
                         cacheDirectory: true,
                         presets: ['es2015', 'react']
                     }
+                },
+                {
+                  test:/\.css$/,
+                  use:['style-loader','css-loader']
                 }
             ]
         }
