@@ -38895,7 +38895,11 @@ var MainPage = exports.MainPage = function (_React$Component) {
         _layout.Layout,
         null,
         _react2.default.createElement(_layout.Table, { name: 'fermi', content: 'fermi\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uD3EC\uD138\uC785\uB2C8\uB2E4.' }),
-        _react2.default.createElement(_layout.Table, { name: 'SMP \uAC00\uACA9', content: '\uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC785\uB2C8\uB2E4. ' }),
+        _react2.default.createElement(
+          _layout.Table,
+          { name: 'SMP \uAC00\uACA9', content: '\uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC785\uB2C8\uB2E4. ' },
+          _react2.default.createElement(_charts.SmpChartA, null)
+        ),
         _react2.default.createElement(
           _layout.Table,
           { name: 'REC \uAC00\uACA9', content: '\uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uACF5\uAE09\uC778\uC99D\uC11C\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4.' },
@@ -38938,7 +38942,7 @@ export class MainPage extends React.Component{
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TimeButton = exports.RecChartA = undefined;
+exports.TimeButton = exports.RecChartA = exports.SmpChartA = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -38956,13 +38960,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var d3 = __webpack_require__(383);
 
-var RecChartA = exports.RecChartA = function (_React$Component) {
-  _inherits(RecChartA, _React$Component);
+var SmpChartA = exports.SmpChartA = function (_React$Component) {
+  _inherits(SmpChartA, _React$Component);
 
-  function RecChartA(props) {
-    _classCallCheck(this, RecChartA);
+  function SmpChartA(props) {
+    _classCallCheck(this, SmpChartA);
 
-    var _this = _possibleConstructorReturn(this, (RecChartA.__proto__ || Object.getPrototypeOf(RecChartA)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (SmpChartA.__proto__ || Object.getPrototypeOf(SmpChartA)).call(this, props));
 
     _this.state = {
       startDate: new Date("1990-05-05"),
@@ -38973,7 +38977,7 @@ var RecChartA = exports.RecChartA = function (_React$Component) {
     return _this;
   }
 
-  _createClass(RecChartA, [{
+  _createClass(SmpChartA, [{
     key: "chartdraw",
     value: function chartdraw(data) {
       var parseTime = d3.timeParse("%Y-%m-%d");
@@ -38986,11 +38990,10 @@ var RecChartA = exports.RecChartA = function (_React$Component) {
       var line = d3.line().x(function (d) {
         return xScale(d.date);
       }).y(function (d) {
-        return yScale(d.average_price);
+        return yScale(d.total);
       });
 
-      d3.selectAll("svg > *").remove();
-      var recSvg = d3.select("#RecChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom);
+      var recSvg = d3.select("#SmpChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
 
       data.forEach(function (d) {
         d.date = parseTime(d.date);
@@ -38999,21 +39002,20 @@ var RecChartA = exports.RecChartA = function (_React$Component) {
         return d.date;
       }));
       yScale.domain(d3.extent(data, function (d) {
-        return d.average_price;
+        return d.total;
       }));
 
       recSvg.append("path").data([data]).attr("class", "line").attr("d", line);
 
       recSvg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
       recSvg.append("g").call(d3.axisRight(yScale));
-      recSvg.attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
-      console.log(data);
     }
   }, {
     key: "handleClick",
     value: function handleClick(e) {
       var _this2 = this;
 
+      d3.selectAll("#SmpChartA > *").remove();
       var dayMinus = parseInt(e.target.value);
       var today = new Date();
       today.setDate(today.getDate() - dayMinus);
@@ -39025,7 +39027,7 @@ var RecChartA = exports.RecChartA = function (_React$Component) {
       var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
       console.log(startQuery, endQuery);
 
-      fetch("http://www.fermi.me/rec_data/average_price/" + startQuery + "/" + endQuery + "/total").then(function (response) {
+      fetch("/smp_data/total/" + startQuery + "/" + endQuery).then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39044,7 +39046,7 @@ var RecChartA = exports.RecChartA = function (_React$Component) {
       var startQuery = this.state.startDate.getFullYear() + "-" + (this.state.startDate.getMonth() + 1) + "-" + this.state.startDate.getDay();
       var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
       console.log(startQuery, endQuery);
-      fetch("http://www.fermi.me/rec_data/average_price/" + startQuery + "/" + endQuery + "/total").then(function (response) {
+      fetch("/smp_data/total/" + startQuery + "/" + endQuery).then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39053,6 +39055,119 @@ var RecChartA = exports.RecChartA = function (_React$Component) {
         console.log(networkError.message);
       }).then(function (jsonResponse) {
         return _this3.chartdraw(jsonResponse);
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(TimeButton, { buttonName: "\uC804\uCCB4", buttonValue: "10000", onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: "\uCD5C\uADFC 3\uB144", buttonValue: "1095", onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: "\uCD5C\uADFC 1\uB144", buttonValue: "365", onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: "\uCD5C\uADFC 6\uAC1C\uC6D4", buttonValue: "180", onClick: this.handleClick }),
+        _react2.default.createElement("svg", { id: "SmpChartA" })
+      );
+    }
+  }]);
+
+  return SmpChartA;
+}(_react2.default.Component);
+
+var RecChartA = exports.RecChartA = function (_React$Component2) {
+  _inherits(RecChartA, _React$Component2);
+
+  function RecChartA(props) {
+    _classCallCheck(this, RecChartA);
+
+    var _this4 = _possibleConstructorReturn(this, (RecChartA.__proto__ || Object.getPrototypeOf(RecChartA)).call(this, props));
+
+    _this4.state = {
+      startDate: new Date("1990-05-05"),
+      endDate: new Date()
+    };
+    _this4.handleClick = _this4.handleClick.bind(_this4);
+    _this4.chartdraw = _this4.chartdraw.bind(_this4);
+    return _this4;
+  }
+
+  _createClass(RecChartA, [{
+    key: "chartdraw",
+    value: function chartdraw(data) {
+      var parseTime = d3.timeParse("%Y-%m-%d");
+      var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+          width = 1000,
+          height = 500;
+
+      var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
+      var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
+      var line = d3.line().x(function (d) {
+        return xScale(d.date);
+      }).y(function (d) {
+        return yScale(d.average_price);
+      });
+
+      var recSvg = d3.select("#RecChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+      data.forEach(function (d) {
+        d.date = parseTime(d.date);
+      });
+      xScale.domain(d3.extent(data, function (d) {
+        return d.date;
+      }));
+      yScale.domain(d3.extent(data, function (d) {
+        return d.average_price;
+      }));
+
+      recSvg.append("path").data([data]).attr("class", "line").attr("d", line);
+
+      recSvg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
+      recSvg.append("g").call(d3.axisRight(yScale));
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick(e) {
+      var _this5 = this;
+
+      d3.selectAll("#RecChartA > *").remove();
+      var dayMinus = parseInt(e.target.value);
+      var today = new Date();
+      today.setDate(today.getDate() - dayMinus);
+      this.setState({
+        startDate: today
+      });
+
+      var startQuery = this.state.startDate.getFullYear() + "-" + (this.state.startDate.getMonth() + 1) + "-" + this.state.startDate.getDay();
+      var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
+
+      fetch("/rec_data/average_price/" + startQuery + "/" + endQuery + "/total").then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        return _this5.chartdraw(jsonResponse);
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this6 = this;
+
+      var startQuery = this.state.startDate.getFullYear() + "-" + (this.state.startDate.getMonth() + 1) + "-" + this.state.startDate.getDay();
+      var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
+      fetch("/rec_data/average_price/" + startQuery + "/" + endQuery + "/total").then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        return _this6.chartdraw(jsonResponse);
       });
     }
   }, {
@@ -39073,8 +39188,8 @@ var RecChartA = exports.RecChartA = function (_React$Component) {
   return RecChartA;
 }(_react2.default.Component);
 
-var TimeButton = exports.TimeButton = function (_React$Component2) {
-  _inherits(TimeButton, _React$Component2);
+var TimeButton = exports.TimeButton = function (_React$Component3) {
+  _inherits(TimeButton, _React$Component3);
 
   function TimeButton() {
     _classCallCheck(this, TimeButton);

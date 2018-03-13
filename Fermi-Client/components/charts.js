@@ -22,19 +22,20 @@ export class SmpChartA extends React.Component{
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
     let line=d3.line()
       .x(function(d){return xScale(d.date)})
-      .y(function(d){return yScale(d.average_price)});
-
-    d3.selectAll("svg > *").remove();
+      .y(function(d){return yScale(d.total)});
+      
     let recSvg=d3.select("#SmpChartA")
       .attr("width",width + margin.left + margin.right)
       .attr("height",height + margin.top + margin.bottom)
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
 
     data.forEach(function(d){d.date=parseTime(d.date)});
     xScale.domain(d3.extent(data,function(d){
       return d.date;
     }));
     yScale.domain(d3.extent(data,function(d){
-      return d.average_price;
+      return d.total;
     }));
 
     recSvg.append("path")
@@ -48,12 +49,10 @@ export class SmpChartA extends React.Component{
       .tickFormat(d3.timeFormat("%Y-%m-%d")));
     recSvg.append("g")
       .call(d3.axisRight(yScale));
-    recSvg.attr('preserveAspectRatio', 'xMinYMin meet')
-      .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
-      console.log(data);
   }
 
   handleClick(e){
+     d3.selectAll("#SmpChartA > *").remove();
      let dayMinus=parseInt(e.target.value);
      let today=new Date()
      today.setDate(today.getDate()-dayMinus)
@@ -65,7 +64,7 @@ export class SmpChartA extends React.Component{
      let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
      console.log(startQuery,endQuery)
 
-     fetch(`http://www.fermi.me/smp_data/total/${startQuery}/${endQuery}`).then(
+     fetch(`/smp_data/total/${startQuery}/${endQuery}`).then(
        response => {
        	if (response.ok) {
           return response.json();
@@ -79,7 +78,7 @@ export class SmpChartA extends React.Component{
     let startQuery= `${this.state.startDate.getFullYear()}-${this.state.startDate.getMonth()+1}-${this.state.startDate.getDay()}`;
     let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
     console.log(startQuery,endQuery)
-    fetch(`http://www.fermi.me/smp_data/total/${startQuery}/${endQuery}`).then(
+    fetch(`/smp_data/total/${startQuery}/${endQuery}`).then(
       response => {
        if (response.ok) {
          return response.json();
@@ -93,9 +92,9 @@ export class SmpChartA extends React.Component{
     return(
       <div>
           <TimeButton buttonName="전체" buttonValue="10000" onClick={this.handleClick} />
-          <TimeButton buttonName="6개월전" buttonValue="180" onClick={this.handleClick} />
-          <TimeButton buttonName="3개월전" buttonValue="90" onClick={this.handleClick} />
-          <TimeButton buttonName="1개월전" buttonValue="30" onClick={this.handleClick} />
+          <TimeButton buttonName="최근 3년" buttonValue="1095" onClick={this.handleClick} />
+          <TimeButton buttonName="최근 1년" buttonValue="365" onClick={this.handleClick} />
+          <TimeButton buttonName="최근 6개월" buttonValue="180" onClick={this.handleClick} />
         <svg id="SmpChartA"></svg>
       </div>
     )
@@ -125,10 +124,12 @@ export class RecChartA extends React.Component{
       .x(function(d){return xScale(d.date)})
       .y(function(d){return yScale(d.average_price)});
 
-    d3.selectAll("svg > *").remove();
+
     let recSvg=d3.select("#RecChartA")
       .attr("width",width + margin.left + margin.right)
       .attr("height",height + margin.top + margin.bottom)
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
 
     data.forEach(function(d){d.date=parseTime(d.date)});
     xScale.domain(d3.extent(data,function(d){
@@ -149,12 +150,10 @@ export class RecChartA extends React.Component{
       .tickFormat(d3.timeFormat("%Y-%m-%d")));
     recSvg.append("g")
       .call(d3.axisRight(yScale));
-    recSvg.attr('preserveAspectRatio', 'xMinYMin meet')
-      .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
-      console.log(data);
   }
 
   handleClick(e){
+     d3.selectAll("#RecChartA > *").remove();
      let dayMinus=parseInt(e.target.value);
      let today=new Date()
      today.setDate(today.getDate()-dayMinus)
@@ -164,9 +163,8 @@ export class RecChartA extends React.Component{
 
      let startQuery= `${this.state.startDate.getFullYear()}-${this.state.startDate.getMonth()+1}-${this.state.startDate.getDay()}`;
      let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
-     console.log(startQuery,endQuery)
 
-     fetch(`http://www.fermi.me/rec_data/average_price/${startQuery}/${endQuery}/total`).then(
+     fetch(`/rec_data/average_price/${startQuery}/${endQuery}/total`).then(
        response => {
        	if (response.ok) {
           return response.json();
@@ -179,8 +177,7 @@ export class RecChartA extends React.Component{
   componentDidMount() {
     let startQuery= `${this.state.startDate.getFullYear()}-${this.state.startDate.getMonth()+1}-${this.state.startDate.getDay()}`;
     let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
-    console.log(startQuery,endQuery)
-    fetch(`http://www.fermi.me/rec_data/average_price/${startQuery}/${endQuery}/total`).then(
+    fetch(`/rec_data/average_price/${startQuery}/${endQuery}/total`).then(
       response => {
        if (response.ok) {
          return response.json();

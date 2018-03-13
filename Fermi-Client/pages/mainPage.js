@@ -7,8 +7,9 @@ export class MainPage extends React.Component{
     return(
       <Layout>
         <Table name="fermi" content="fermi는 재생에너지 포털입니다."/>
-        <Table name="SMP 가격" content="계통한계가격입니다. " />
+        <Table name="SMP 가격" content="계통한계가격입니다. ">
           <SmpChartA />
+        </Table>
         <Table name="REC 가격" content="신재생에너지 공급인증서의 가격입니다.">
           <RecChartA />
         </Table>
