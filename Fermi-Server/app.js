@@ -18,9 +18,19 @@ conn.connect((err)=>{
   if (err) throw err;
   console.log("Connected!");
 });
-app.get('/data',  (req, res)=>{
-  res.json({'express':'this is hard'});
-});
+
+app.get('/smp_data/:price/:start_date/:end_date/', (req, res) => {
+  let sql = `select date,${req.params.price} from energy.smp_price where date >='${req.params.start_date}' and date <='${req.params.end_date}' order by date` ;
+  conn.query(sql,(err,rows,fields)=>{
+     if(err){
+       console.log('error');
+       res.status(500).send('Internal Sever Error')
+     } else {
+       console.log(rows);
+       res.json(rows);
+     }
+   })
+ });
 
 app.get('/rec_data/:price/:start_date/:end_date/:land', (req, res) => {
   let sql = `select date,${req.params.price} from energy.rec_price where land_or_jeju ='${req.params.land}' and date >='${req.params.start_date}' and date <='${req.params.end_date}' order by date` ;
