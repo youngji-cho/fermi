@@ -1,0 +1,701 @@
+[2018-03-15T13:31:04.200Z] DEBUG [2819]  : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2018-03-15T13:31:04.201Z] DEBUG [2819]  : Checking if the command processor should execute...
+[2018-03-15T13:31:04.208Z] DEBUG [2819]  : Checking whether the command is applicable to instance (i-04a279ea62e08e957)..
+[2018-03-15T13:31:04.208Z] INFO  [2819]  : Command is applicable to this instance (i-04a279ea62e08e957)..
+[2018-03-15T13:31:04.208Z] DEBUG [2819]  : Checking if the received command stage is valid..
+[2018-03-15T13:31:04.208Z] INFO  [2819]  : No stage_num in command. Valid stage..
+[2018-03-15T13:31:04.208Z] INFO  [2819]  : Received command CMD-PreInit: 
+{
+  "api_version" : "1.0",
+  "request_id": "0",
+  "command_name": "CMD-PreInit"
+}
+
+[2018-03-15T13:31:04.208Z] INFO  [2819]  : Command processor should execute command.
+[2018-03-15T13:31:04.208Z] DEBUG [2819]  : Storing current stage..
+[2018-03-15T13:31:04.208Z] DEBUG [2819]  : Stage_num does not exist. Not saving null stage. Returning..
+[2018-03-15T13:31:04.208Z] DEBUG [2819]  : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2018-03-15T13:31:04.208Z] DEBUG [2819]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2018-03-15T13:31:04.209Z] DEBUG [2819]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2018-03-15T13:31:04.209Z] INFO  [2819]  : Found enabled addons: ["logstreaming", "logpublish"].
+[2018-03-15T13:31:04.211Z] INFO  [2819]  : Updating Command definition of addon logstreaming.
+[2018-03-15T13:31:04.211Z] INFO  [2819]  : Updating Command definition of addon logpublish.
+[2018-03-15T13:31:04.211Z] DEBUG [2819]  : Refreshing metadata...
+[2018-03-15T13:31:04.211Z] DEBUG [2819]  : Using cached environment metadata.
+[2018-03-15T13:31:04.211Z] INFO  [2819]  : Recreated directory /opt/elasticbeanstalk/deploy/configuration/.
+[2018-03-15T13:31:04.211Z] DEBUG [2819]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_AppSourceUrlFileContent||url..
+[2018-03-15T13:31:04.212Z] INFO  [2819]  : Created appsource url file at /opt/elasticbeanstalk/deploy/configuration/appsourceurl.
+[2018-03-15T13:31:04.212Z] DEBUG [2819]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent..
+[2018-03-15T13:31:04.213Z] INFO  [2819]  : Created container config file at /opt/elasticbeanstalk/deploy/configuration/containerconfiguration.
+[2018-03-15T13:31:04.213Z] DEBUG [2819]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2018-03-15T13:31:04.214Z] DEBUG [2819]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2018-03-15T13:31:04.219Z] INFO  [2819]  : Found enabled addons: ["logstreaming", "logpublish"].
+[2018-03-15T13:31:04.219Z] INFO  [2819]  : Updating Command definition of addon logstreaming.
+[2018-03-15T13:31:04.219Z] INFO  [2819]  : Updating Command definition of addon logpublish.
+[2018-03-15T13:31:04.219Z] DEBUG [2819]  : Retrieving metadata for key: AWS::CloudFormation::Init||Infra-WriteApplication2||files..
+[2018-03-15T13:31:04.220Z] DEBUG [2819]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||ManifestFileS3Key..
+[2018-03-15T13:31:04.463Z] INFO  [2819]  : Loading manifest from bucket 'elasticbeanstalk-ap-northeast-2-454188672631' using specified S3 key 'resources/environments/e-2kmtmje3sm/_runtime/immutable_deployment_versions/manifest_1521120620681'.
+[2018-03-15T13:31:04.519Z] INFO  [2819]  : Updated manifest cache: deployment ID 16 and serial 28.
+[2018-03-15T13:31:04.519Z] DEBUG [2819]  : Loaded definition of Command CMD-PreInit.
+[2018-03-15T13:31:04.519Z] INFO  [2819]  : Executing Initialization
+[2018-03-15T13:31:04.520Z] INFO  [2819]  : Executing command: CMD-PreInit...
+[2018-03-15T13:31:04.520Z] INFO  [2819]  : Executing command CMD-PreInit activities...
+[2018-03-15T13:31:04.520Z] DEBUG [2819]  : Setting environment variables..
+[2018-03-15T13:31:04.520Z] INFO  [2819]  : Running AddonsBefore for command CMD-PreInit...
+[2018-03-15T13:31:06.447Z] DEBUG [2819]  : Running stages of Command CMD-PreInit from stage 0 to stage 0...
+[2018-03-15T13:31:06.447Z] INFO  [2819]  : Running stage 0 of command CMD-PreInit...
+[2018-03-15T13:31:06.447Z] DEBUG [2819]  : Loaded 2 actions for stage 0.
+[2018-03-15T13:31:06.447Z] INFO  [2819]  : Running 1 of 2 actions: DownloadSourceBundle...
+[2018-03-15T13:31:07.375Z] INFO  [2819]  : Running 2 of 2 actions: PreInitHook...
+[2018-03-15T13:31:09.833Z] INFO  [2819]  : Running AddonsAfter for command CMD-PreInit...
+[2018-03-15T13:31:09.833Z] INFO  [2819]  : Command CMD-PreInit succeeded!
+[2018-03-15T13:31:09.834Z] INFO  [2819]  : Command processor returning results: 
+{"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"","returncode":0,"events":[]}]}
+[2018-03-15T13:31:39.530Z] DEBUG [3141]  : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2018-03-15T13:31:39.530Z] DEBUG [3141]  : Checking if the command processor should execute...
+[2018-03-15T13:31:39.533Z] DEBUG [3141]  : Checking whether the command is applicable to instance (i-04a279ea62e08e957)..
+[2018-03-15T13:31:39.533Z] INFO  [3141]  : Command is applicable to this instance (i-04a279ea62e08e957)..
+[2018-03-15T13:31:39.533Z] DEBUG [3141]  : Checking if the received command stage is valid..
+[2018-03-15T13:31:39.533Z] INFO  [3141]  : No stage_num in command. Valid stage..
+[2018-03-15T13:31:39.533Z] INFO  [3141]  : Received command CMD-Startup: {"execution_data":"{\"leader_election\":\"true\"}","instance_ids":["i-04a279ea62e08e957"],"command_name":"CMD-Startup","api_version":"1.0","resource_name":"AWSEBAutoScalingGroup","request_id":"fcafbef0-2854-11e8-9aab-6beb3939b476"}
+[2018-03-15T13:31:39.533Z] INFO  [3141]  : Command processor should execute command.
+[2018-03-15T13:31:39.533Z] DEBUG [3141]  : Storing current stage..
+[2018-03-15T13:31:39.533Z] DEBUG [3141]  : Stage_num does not exist. Not saving null stage. Returning..
+[2018-03-15T13:31:39.533Z] DEBUG [3141]  : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2018-03-15T13:31:39.533Z] DEBUG [3141]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2018-03-15T13:31:39.534Z] DEBUG [3141]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2018-03-15T13:31:39.534Z] INFO  [3141]  : Found enabled addons: ["logstreaming", "logpublish"].
+[2018-03-15T13:31:39.535Z] INFO  [3141]  : Updating Command definition of addon logstreaming.
+[2018-03-15T13:31:39.535Z] INFO  [3141]  : Updating Command definition of addon logpublish.
+[2018-03-15T13:31:39.535Z] DEBUG [3141]  : Refreshing metadata...
+[2018-03-15T13:31:39.920Z] DEBUG [3141]  : Refreshed environment metadata.
+[2018-03-15T13:31:39.921Z] INFO  [3141]  : Recreated directory /opt/elasticbeanstalk/deploy/configuration/.
+[2018-03-15T13:31:39.921Z] DEBUG [3141]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_AppSourceUrlFileContent||url..
+[2018-03-15T13:31:39.921Z] INFO  [3141]  : Created appsource url file at /opt/elasticbeanstalk/deploy/configuration/appsourceurl.
+[2018-03-15T13:31:39.921Z] DEBUG [3141]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent..
+[2018-03-15T13:31:39.923Z] INFO  [3141]  : Created container config file at /opt/elasticbeanstalk/deploy/configuration/containerconfiguration.
+[2018-03-15T13:31:39.923Z] DEBUG [3141]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2018-03-15T13:31:39.923Z] DEBUG [3141]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2018-03-15T13:31:39.924Z] INFO  [3141]  : Found enabled addons: ["logstreaming", "logpublish"].
+[2018-03-15T13:31:39.925Z] INFO  [3141]  : Updating Command definition of addon logstreaming.
+[2018-03-15T13:31:39.925Z] INFO  [3141]  : Updating Command definition of addon logpublish.
+[2018-03-15T13:31:39.925Z] DEBUG [3141]  : Loaded definition of Command CMD-Startup.
+[2018-03-15T13:31:39.925Z] INFO  [3141]  : Executing Application deployment
+[2018-03-15T13:31:39.926Z] INFO  [3141]  : Executing command: CMD-Startup...
+[2018-03-15T13:31:39.926Z] INFO  [3141]  : Executing command CMD-Startup activities...
+[2018-03-15T13:31:39.926Z] DEBUG [3141]  : Setting environment variables..
+[2018-03-15T13:31:39.926Z] INFO  [3141]  : Running AddonsBefore for command CMD-Startup...
+[2018-03-15T13:31:40.048Z] DEBUG [3141]  : Running stages of Command CMD-Startup from stage 0 to stage 1...
+[2018-03-15T13:31:40.048Z] INFO  [3141]  : Running stage 0 of command CMD-Startup...
+[2018-03-15T13:31:40.049Z] INFO  [3141]  : Running leader election...
+[2018-03-15T13:31:40.429Z] INFO  [3141]  : Instance is Leader.
+[2018-03-15T13:31:40.429Z] DEBUG [3141]  : Loaded 7 actions for stage 0.
+[2018-03-15T13:31:40.429Z] INFO  [3141]  : Running 1 of 7 actions: HealthdLogRotation...
+[2018-03-15T13:31:40.435Z] INFO  [3141]  : Running 2 of 7 actions: HealthdHTTPDLogging...
+[2018-03-15T13:31:40.435Z] INFO  [3141]  : Running 3 of 7 actions: HealthdNginxLogging...
+[2018-03-15T13:31:40.435Z] INFO  [3141]  : Running 4 of 7 actions: EbExtensionPreBuild...
+[2018-03-15T13:31:40.895Z] INFO  [3141]  : Running 5 of 7 actions: AppDeployPreHook...
+[2018-03-15T13:32:07.506Z] ERROR [3141]  : Command execution failed: Activity failed. (ElasticBeanstalk::ActivityFatalError)
+caused by: + /opt/elasticbeanstalk/containerfiles/ebnode.py --action npm-install
+  npm WARN react-d3-basic@1.6.11 requires a peer of react@^0.14.7 but none was installed.
+  npm WARN react-d3-basic@1.6.11 requires a peer of react-dom@^0.14.7 but none was installed.
+  npm WARN react-d3-core@1.3.9 requires a peer of react@^0.14.7 but none was installed.
+  npm WARN react-d3-core@1.3.9 requires a peer of react-dom@^0.14.7 but none was installed.
+  npm WARN react-d3-shape@0.2.24 requires a peer of react@^0.14.7 but none was installed.
+  npm WARN react-d3-shape@0.2.24 requires a peer of react-dom@^0.14.7 but none was installed.
+  
+  > fsevents@1.1.3 install /tmp/deployment/application/node_modules/fsevents
+  > node install
+  
+  
+  > uglifyjs-webpack-plugin@0.4.6 postinstall /tmp/deployment/application/node_modules/uglifyjs-webpack-plugin
+  > node lib/post_install.js
+  
+  
+  > nodemon@1.17.2 postinstall /tmp/deployment/application/node_modules/nodemon
+  > node -e "console.log('\u001b[32mLove nodemon? You can now support the project via the open collective:\u001b[22m\u001b[39m\n > \u001b[96m\u001b[1mhttps://opencollective.com/nodemon/donate\u001b[0m\n')" || exit 0
+  
+  [32mLove nodemon? You can now support the project via the open collective:[22m[39m
+   > [96m[1mhttps://opencollective.com/nodemon/donate[0m
+  
+  npm WARN prefer global node-gyp@3.6.2 should be installed with -g
+  
+  > node-sass@4.8.2 install /tmp/deployment/application/node_modules/node-sass
+  > node scripts/install.js
+  
+  Unable to save binary /tmp/deployment/application/node_modules/node-sass/vendor/linux-x64-48 : { Error: EACCES: permission denied, mkdir '/tmp/deployment/application/node_modules/node-sass/vendor/linux-x64-48'
+      at Error (native)
+      at Object.fs.mkdirSync (fs.js:924:18)
+      at Function.sync (/tmp/deployment/application/node_modules/mkdirp/index.js:71:13)
+      at checkAndDownloadBinary (/tmp/deployment/application/node_modules/node-sass/scripts/install.js:114:11)
+      at Object.<anonymous> (/tmp/deployment/application/node_modules/node-sass/scripts/install.js:157:1)
+      at Module._compile (module.js:570:32)
+      at Object.Module._extensions..js (module.js:579:10)
+      at Module.load (module.js:487:32)
+      at tryModuleLoad (module.js:446:12)
+      at Function.Module._load (module.js:438:3)
+    errno: -13,
+    code: 'EACCES',
+    syscall: 'mkdir',
+    path: '/tmp/deployment/application/node_modules/node-sass/vendor/linux-x64-48' }
+  
+  > node-sass@4.8.2 postinstall /tmp/deployment/application/node_modules/node-sass
+  > node scripts/build.js
+  
+  Building: /opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/node /tmp/deployment/application/node_modules/node-gyp/bin/node-gyp.js rebuild --verbose --libsass_ext= --libsass_cflags= --libsass_ldflags= --libsass_library=
+  gyp info it worked if it ends with ok
+  gyp verb cli [ '/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/node',
+  gyp verb cli   '/tmp/deployment/application/node_modules/node-gyp/bin/node-gyp.js',
+  gyp verb cli   'rebuild',
+  gyp verb cli   '--verbose',
+  gyp verb cli   '--libsass_ext=',
+  gyp verb cli   '--libsass_cflags=',
+  gyp verb cli   '--libsass_ldflags=',
+  gyp verb cli   '--libsass_library=' ]
+  gyp info using node-gyp@3.6.2
+  gyp info using node@6.11.5 | linux | x64
+  gyp verb command rebuild []
+  gyp verb command clean []
+  gyp verb clean removing "build" directory
+  gyp verb command configure []
+  gyp verb check python checking for Python executable "python2" in the PATH
+  gyp verb `which` failed Error: not found: python2
+  gyp verb `which` failed     at getNotFoundError (/tmp/deployment/application/node_modules/which/which.js:13:12)
+  gyp verb `which` failed     at F (/tmp/deployment/application/node_modules/which/which.js:68:19)
+  gyp verb `which` failed     at E (/tmp/deployment/application/node_modules/which/which.js:80:29)
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/which/which.js:89:16
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/isexe/index.js:42:5
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/isexe/mode.js:8:5
+  gyp verb `which` failed     at FSReqWrap.oncomplete (fs.js:123:15)
+  gyp verb `which` failed  python2 { Error: not found: python2
+  gyp verb `which` failed     at getNotFoundError (/tmp/deployment/application/node_modules/which/which.js:13:12)
+  gyp verb `which` failed     at F (/tmp/deployment/application/node_modules/which/which.js:68:19)
+  gyp verb `which` failed     at E (/tmp/deployment/application/node_modules/which/which.js:80:29)
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/which/which.js:89:16
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/isexe/index.js:42:5
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/isexe/mode.js:8:5
+  gyp verb `which` failed     at FSReqWrap.oncomplete (fs.js:123:15)
+  gyp verb `which` failed   stack: 'Error: not found: python2\n    at getNotFoundError (/tmp/deployment/application/node_modules/which/which.js:13:12)\n    at F (/tmp/deployment/application/node_modules/which/which.js:68:19)\n    at E (/tmp/deployment/application/node_modules/which/which.js:80:29)\n    at /tmp/deployment/application/node_modules/which/which.js:89:16\n    at /tmp/deployment/application/node_modules/isexe/index.js:42:5\n    at /tmp/deployment/application/node_modules/isexe/mode.js:8:5\n    at FSReqWrap.oncomplete (fs.js:123:15)',
+  gyp verb `which` failed   code: 'ENOENT' }
+  gyp verb check python checking for Python executable "python" in the PATH
+  gyp verb `which` succeeded python /usr/bin/python
+  gyp verb check python version `/usr/bin/python -c "import platform; print(platform.python_version());"` returned: "2.7.13\n"
+  gyp verb get node dir no --target version specified, falling back to host node version: 6.11.5
+  gyp verb command install [ '6.11.5' ]
+  gyp verb install input version string "6.11.5"
+  gyp verb install installing version: 6.11.5
+  gyp verb install --ensure was passed, so won't reinstall if already installed
+  gyp verb install version not already installed, continuing with install 6.11.5
+  gyp verb ensuring nodedir is created /tmp/.node-gyp/6.11.5
+  gyp verb created nodedir /tmp/.node-gyp
+  gyp http GET https://nodejs.org/download/release/v6.11.5/node-v6.11.5-headers.tar.gz
+  gyp http 200 https://nodejs.org/download/release/v6.11.5/node-v6.11.5-headers.tar.gz
+  gyp verb extracted file from tarball include/node/android-ifaddrs.h
+  gyp verb extracted file from tarball include/node/ares.h
+  gyp verb extracted file from tarball include/node/ares_build.h
+  gyp verb extracted file from tarball include/node/ares_rules.h
+  gyp verb extracted file from tarball include/node/ares_version.h
+  gyp verb extracted file from tarball include/node/common.gypi
+  gyp verb extracted file from tarball include/node/config.gypi
+  gyp verb extracted file from tarball include/node/nameser.h
+  gyp verb extracted file from tarball include/node/node.h
+  gyp verb extracted file from tarball include/node/node_buffer.h
+  gyp verb extracted file from tarball include/node/node_object_wrap.h
+  gyp verb extracted file from tarball include/node/node_version.h
+  gyp verb extracted file from tarball include/node/pthread-barrier.h
+  gyp verb extracted file from tarball include/node/stdint-msvc2008.h
+  gyp verb extracted file from tarball include/node/tree.h
+  gyp verb extracted file from tarball include/node/uv-aix.h
+  gyp verb extracted file from tarball include/node/uv-bsd.h
+  gyp verb extracted file from tarball include/node/uv-darwin.h
+  gyp verb extracted file from tarball include/node/uv-errno.h
+  gyp verb extracted file from tarball include/node/uv-linux.h
+  gyp verb extracted file from tarball include/node/uv-os390.h
+  gyp verb extracted file from tarball include/node/uv-sunos.h
+  gyp verb extracted file from tarball include/node/uv-threadpool.h
+  gyp verb extracted file from tarball include/node/uv-unix.h
+  gyp verb extracted file from tarball include/node/uv-version.h
+  gyp verb extracted file from tarball include/node/uv-win.h
+  gyp verb extracted file from tarball include/node/uv.h
+  gyp verb extracted file from tarball include/node/v8-debug.h
+  gyp verb extracted file from tarball include/node/v8-experimental.h
+  gyp verb extracted file from tarball include/node/v8-platform.h
+  gyp verb extracted file from tarball include/node/v8-profiler.h
+  gyp verb extracted file from tarball include/node/v8-testing.h
+  gyp verb extracted file from tarball include/node/v8-util.h
+  gyp verb extracted file from tarball include/node/v8-version.h
+  gyp verb extracted file from tarball include/node/v8.h
+  gyp verb extracted file from tarball include/node/v8config.h
+  gyp verb extracted file from tarball include/node/zconf.h
+  gyp verb extracted file from tarball include/node/zlib.h
+  gyp verb extracted file from tarball include/node/openssl/aes.h
+  gyp verb extracted file from tarball include/node/openssl/asn1.h
+  gyp verb extracted file from tarball include/node/openssl/asn1_mac.h
+  gyp verb extracted file from tarball include/node/openssl/asn1t.h
+  gyp verb extracted file from tarball include/node/openssl/bio.h
+  gyp verb extracted file from tarball include/node/openssl/blowfish.h
+  gyp verb extracted file from tarball include/node/openssl/bn.h
+  gyp verb extracted file from tarball include/node/openssl/buffer.h
+  gyp verb extracted file from tarball include/node/openssl/camellia.h
+  gyp verb extracted file from tarball include/node/openssl/cast.h
+  gyp verb extracted file from tarball include/node/openssl/cmac.h
+  gyp verb extracted file from tarball include/node/openssl/cms.h
+  gyp verb extracted file from tarball include/node/openssl/comp.h
+  gyp verb extracted file from tarball include/node/openssl/conf.h
+  gyp verb extracted file from tarball include/node/openssl/conf_api.h
+  gyp verb extracted file from tarball include/node/openssl/crypto.h
+  gyp verb extracted file from tarball include/node/openssl/des.h
+  gyp verb extracted file from tarball include/node/openssl/des_old.h
+  gyp verb extracted file from tarball include/node/openssl/dh.h
+  gyp verb extracted file from tarball include/node/openssl/dsa.h
+  gyp verb extracted file from tarball include/node/openssl/dso.h
+  gyp verb extracted file from tarball include/node/openssl/dtls1.h
+  gyp verb extracted file from tarball include/node/openssl/e_os2.h
+  gyp verb extracted file from tarball include/node/openssl/ebcdic.h
+  gyp verb extracted file from tarball include/node/openssl/ec.h
+  gyp verb extracted file from tarball include/node/openssl/ecdh.h
+  gyp verb extracted file from tarball include/node/openssl/ecdsa.h
+  gyp verb extracted file from tarball include/node/openssl/engine.h
+  gyp verb extracted file from tarball include/node/openssl/err.h
+  gyp verb extracted file from tarball include/node/openssl/evp.h
+  gyp verb extracted file from tarball include/node/openssl/hmac.h
+  gyp verb extracted file from tarball include/node/openssl/idea.h
+  gyp verb extracted file from tarball include/node/openssl/krb5_asn.h
+  gyp verb extracted file from tarball include/node/openssl/kssl.h
+  gyp verb extracted file from tarball include/node/openssl/lhash.h
+  gyp verb extracted file from tarball include/node/openssl/md4.h
+  gyp verb extracted file from tarball include/node/openssl/md5.h
+  gyp verb extracted file from tarball include/node/openssl/mdc2.h
+  gyp verb extracted file from tarball include/node/openssl/modes.h
+  gyp verb extracted file from tarball include/node/openssl/obj_mac.h
+  gyp verb extracted file from tarball include/node/openssl/objects.h
+  gyp verb extracted file from tarball include/node/openssl/ocsp.h
+  gyp verb extracted file from tarball include/node/openssl/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/opensslv.h
+  gyp verb extracted file from tarball include/node/openssl/ossl_typ.h
+  gyp verb extracted file from tarball include/node/openssl/pem.h
+  gyp verb extracted file from tarball include/node/openssl/pem2.h
+  gyp verb extracted file from tarball include/node/openssl/pkcs12.h
+  gyp verb extracted file from tarball include/node/openssl/pkcs7.h
+  gyp verb extracted file from tarball include/node/openssl/pqueue.h
+  gyp verb extracted file from tarball include/node/openssl/rand.h
+  gyp verb extracted file from tarball include/node/openssl/rc2.h
+  gyp verb extracted file from tarball include/node/openssl/rc4.h
+  gyp verb extracted file from tarball include/node/openssl/ripemd.h
+  gyp verb extracted file from tarball include/node/openssl/rsa.h
+  gyp verb extracted file from tarball include/node/openssl/safestack.h
+  gyp verb extracted file from tarball include/node/openssl/seed.h
+  gyp verb extracted file from tarball include/node/openssl/sha.h
+  gyp verb extracted file from tarball include/node/openssl/srp.h
+  gyp verb extracted file from tarball include/node/openssl/srtp.h
+  gyp verb extracted file from tarball include/node/openssl/ssl.h
+  gyp verb extracted file from tarball include/node/openssl/ssl2.h
+  gyp verb extracted file from tarball include/node/openssl/ssl23.h
+  gyp verb extracted file from tarball include/node/openssl/ssl3.h
+  gyp verb extracted file from tarball include/node/openssl/stack.h
+  gyp verb extracted file from tarball include/node/openssl/symhacks.h
+  gyp verb extracted file from tarball include/node/openssl/tls1.h
+  gyp verb extracted file from tarball include/node/openssl/ts.h
+  gyp verb extracted file from tarball include/node/openssl/txt_db.h
+  gyp verb extracted file from tarball include/node/openssl/ui.h
+  gyp verb content checksum node-v6.11.5-headers.tar.gz 9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83
+  gyp verb extracted file from tarball include/node/openssl/ui_compat.h
+  gyp verb extracted file from tarball include/node/openssl/whrlpool.h
+  gyp verb extracted file from tarball include/node/openssl/x509.h
+  gyp verb extracted file from tarball include/node/openssl/x509_vfy.h
+  gyp verb extracted file from tarball include/node/openssl/x509v3.h
+  gyp verb extracted file from tarball include/node/openssl/archs/VC-WIN64A/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/VC-WIN32/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/solaris64-x86_64-gcc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/solaris-x86-gcc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux64-s390x/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux32-s390x/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-x86_64/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-x32/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-ppc64/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-ppc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-elf/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-armv4/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-aarch64/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/darwin64-x86_64-cc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/darwin-i386-cc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/BSD-x86_64/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/BSD-x86/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/aix64-gcc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/aix-gcc/opensslconf.h
+  gyp verb extracted file from tarball include/node/libplatform/libplatform.h
+  gyp verb tarball done parsing tarball
+  gyp verb check download content checksum, need to download `SHASUMS256.txt`... 
+  gyp verb checksum url https://nodejs.org/download/release/v6.11.5/SHASUMS256.txt
+  gyp http GET https://nodejs.org/download/release/v6.11.5/SHASUMS256.txt
+  gyp http 200 https://nodejs.org/download/release/v6.11.5/SHASUMS256.txt
+  gyp verb checksum data {"node-v6.11.5-aix-ppc64.tar.gz":"907cc72126bfcfed2040ded546649ee1023d8839fc898447bf8435f8b204b654","node-v6.11.5-darwin-x64.tar.gz":"fc0a3ba17e0be7ffe86f9941212dd00905524d6d48dd8cafb63da6adca20a4fc","node-v6.11.5-darwin-x64.tar.xz":"daedeac624d5a1c177254fa080de7f0ee5426fce57e7bcad554b354c81a69cbc","node-v6.11.5-headers.tar.gz":"9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83","node-v6.11.5-headers.tar.xz":"90c65a66f2538bade1b470d0bf9deaeef1652f39aadb0d5b2e1d2e218828462d","node-v6.11.5-linux-arm64.tar.gz":"b879b852c3588f3ce7d748273ede959306268e5b2ca199d76b4592c2fb4a0d43","node-v6.11.5-linux-arm64.tar.xz":"7f073097e0016aaa1abac8a4e554dd1e534339540be12fbd582670c45436ddca","node-v6.11.5-linux-armv6l.tar.gz":"d25348044b63bc1546951a2b05f7c4f48d74bc3519fd911f9006e979c4511b0f","node-v6.11.5-linux-armv6l.tar.xz":"043049e3bd4782a435abfef73696d6bc8f0c75938592503352d47755e807f0f7","node-v6.11.5-linux-armv7l.tar.gz":"17529148085a8d9e6d8c37f29b12aea0f0c3ef1585bb45290b7a16c76ecd392d","node-v6.11.5-linux-armv7l.tar.xz":"c2cf97f23c8d55e0d919fb4e3649fd69ccc8acc6668891fc13a052a8679d801e","node-v6.11.5-linux-ppc64le.tar.gz":"12237a2616212f29ce1957e1ec3514eff1abfe433f5cd5aec47fceb79ecb0f86","node-v6.11.5-linux-ppc64le.tar.xz":"867003e1fc47a1e41b4f35a2f7874e54c3d85ae3568d460a05891500abeabf29","node-v6.11.5-linux-ppc64.tar.gz":"7aa9f48abdeb3f38cf025966a3b821c56fc6f91aea977906513db6f28b283bd0","node-v6.11.5-linux-ppc64.tar.xz":"c6102cf999afc833afb16068f841318fb31fd4168ca0bf6e9c9649ce929df4e7","node-v6.11.5-linux-s390x.tar.gz":"796e1dd5d4585066b0c4c492162b1962d8d02efec31d40296a15b9cdf8d7fe52","node-v6.11.5-linux-s390x.tar.xz":"a2d4e4dc8c02fee8e491b411653e0892005831b8caff9d3de220ad1cefb9bcb2","node-v6.11.5-linux-x64.tar.gz":"fffd25c9e9b6d2235e97ba8be1dd6ea5f31e32ea445c5cc704ca84ef44db66c1","node-v6.11.5-linux-x64.tar.xz":"8f8ddac70a5213032bbfdcb3cac6e0723374428ad4fa4af2d9b4444177f2b1a9","node-v6.11.5-linux-x86.tar.gz":"8594a9087f66efbccc1ef4a6eee1484ab14edac2b379b87affeee29fcbbd6d36","node-v6.11.5-linux-x86.tar.xz":"6d8f3e0fd49f44d75c10b21c0bcb92a524faf7cbab8b740e0b9a2f8b3efe4a63","node-v6.11.5.pkg":"4455eb8a57f9d72300b019212b229c0aa4eb5294391cb3f6df351f928b1a44c9","node-v6.11.5-sunos-x64.tar.gz":"577f9e938613c4be6137b95bcde51050b4213577457ba9c2ee57ca343df62bd2","node-v6.11.5-sunos-x64.tar.xz":"11b1d072f42ac2bf6812afb5d098781f5c384096586126fa22047d02f50d405d","node-v6.11.5-sunos-x86.tar.gz":"708888589d29d8ad8c5190b90e2eb5a0a33ce82d37e8693bd798630ecbc7bc6a","node-v6.11.5-sunos-x86.tar.xz":"7375dbabf0470ec5cc4522339605fe0fc84e539a17c1fd3aa782fdf3f230cea4","node-v6.11.5.tar.gz":"c4aed94e82dbf246a1c9e0705c3054f0c0f3d9c4d8d025d877e0ef1f7b6cde4c","node-v6.11.5.tar.xz":"1c6de415216799fbaeca82304b3fef87accc7101ebf2ead7d5c545e0779e8aaf","node-v6.11.5-win-x64.7z":"5ac17f02726b23fe88ed1653d6082f59da42fe17c92570d021c0d8cf594a58d9","node-v6.11.5-win-x64.zip":"cedd481dfd9b28ce95828fd6b218b286893a308280e499e225fa193d26d580c9","node-v6.11.5-win-x86.7z":"405db7d106865f074f9cb99790ed0f3946678cdd09ce8b193f6c691be56af9be","node-v6.11.5-win-x86.zip":"f1089e4b3cfa8d3b1bbddafbc4e501633dc96f4293c08d3f008cdebf6b26786d","node-v6.11.5-x64.msi":"33360c037c792457a2e4b37fd107b26c353f70e779f9236b351bd64d7d0c0240","node-v6.11.5-x86.msi":"ff85c2c9e8f5748a62dc90bd1aca3087f45f2e202f35f87de45fdf84e9c74ae3","win-x64/node.exe":"2b345a44438b5242f6b6a6f6eee6c1b297b026e5d46e34626dadbd6498eeff77","win-x64/node.lib":"d13f3c134ea716d1781e1e1c205bb173fefad3cf9378d44825aa52aef0dff473","win-x64/node_pdb.7z":"9e75b7e9fc443749d6b422f2fab524f5cd45321b6965d9896ff7e1388fb6d370","win-x64/node_pdb.zip":"6bbecdad2ab888660273d557651d781039985c7cbeb625424ffdc797aa5d6319","win-x86/node.exe":"b46e1ec5f6b4df812ae8e32e95cbed19e3132d522603d0fde1f4ab0b2a936d09","win-x86/node.lib":"45dd98664f0bed3159264f22faaa577d34722abfb53166c36de0be55d2d78fbc","win-x86/node_pdb.7z":"909f875ad6508a9486e74addb739e2e525b7a54cf43cc66809d5a46bc2838045","win-x86/node_pdb.zip":"9b7eefa65919db30f145d16aafc769853209e2c233ed6132566a2da96f4383dd"}
+  gyp verb download contents checksum {"node-v6.11.5-headers.tar.gz":"9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83"}
+  gyp verb validating download checksum for node-v6.11.5-headers.tar.gz (9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83 == 9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83)
+  gyp verb get node dir target node version installed: 6.11.5
+  gyp verb build dir attempting to create "build" dir: /tmp/deployment/application/node_modules/node-sass/build
+  gyp ERR! configure error 
+  gyp ERR! stack Error: EACCES: permission denied, mkdir '/tmp/deployment/application/node_modules/node-sass/build'
+  gyp ERR! stack     at Error (native)
+  gyp ERR! System Linux 4.9.77-31.58.amzn1.x86_64
+  gyp ERR! command "/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/node" "/tmp/deployment/application/node_modules/node-gyp/bin/node-gyp.js" "rebuild" "--verbose" "--libsass_ext=" "--libsass_cflags=" "--libsass_ldflags=" "--libsass_library="
+  gyp ERR! cwd /tmp/deployment/application/node_modules/node-sass
+  gyp ERR! node -v v6.11.5
+  gyp ERR! node-gyp -v v3.6.2
+  gyp ERR! not ok 
+  Build failed with error code: 1
+  
+  npm ERR! Linux 4.9.77-31.58.amzn1.x86_64
+  npm ERR! argv "/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/node" "/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/npm" "--production" "rebuild"
+  npm ERR! node v6.11.5
+  npm ERR! npm  v3.10.10
+  npm ERR! code ELIFECYCLE
+  npm ERR! node-sass@4.8.2 postinstall: `node scripts/build.js`
+  npm ERR! Exit status 1
+  npm ERR! 
+  npm ERR! Failed at the node-sass@4.8.2 postinstall script 'node scripts/build.js'.
+  npm ERR! Make sure you have the latest version of node.js and npm installed.
+  npm ERR! If you do, this is most likely a problem with the node-sass package,
+  npm ERR! not with npm itself.
+  npm ERR! Tell the author that this fails on your system:
+  npm ERR!     node scripts/build.js
+  npm ERR! You can get information on how to open an issue for this project with:
+  npm ERR!     npm bugs node-sass
+  npm ERR! Or if that isn't available, you can get their info via:
+  npm ERR!     npm owner ls node-sass
+  npm ERR! There is likely additional logging output above.
+  
+  npm ERR! Please include the following file with any support request:
+  npm ERR!     /tmp/deployment/application/npm-debug.log
+  Running npm install:  /opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/npm
+  Setting npm config jobs to 1
+  npm config jobs set to 1
+  Running npm with --production flag
+  Failed to run npm install. Snapshot logs for more details.
+  Traceback (most recent call last):
+    File "/opt/elasticbeanstalk/containerfiles/ebnode.py", line 695, in <module>
+      main()
+    File "/opt/elasticbeanstalk/containerfiles/ebnode.py", line 677, in main
+      node_version_manager.run_npm_install(options.app_path)
+    File "/opt/elasticbeanstalk/containerfiles/ebnode.py", line 136, in run_npm_install
+      self.npm_install(bin_path, self.config_manager.get_container_config('app_staging_dir'))
+    File "/opt/elasticbeanstalk/containerfiles/ebnode.py", line 180, in npm_install
+      raise e
+  subprocess.CalledProcessError: Command '['/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/npm', '--production', 'rebuild']' returned non-zero exit status 1 (ElasticBeanstalk::ExternalInvocationError)
+caused by: + /opt/elasticbeanstalk/containerfiles/ebnode.py --action npm-install
+  npm WARN react-d3-basic@1.6.11 requires a peer of react@^0.14.7 but none was installed.
+  npm WARN react-d3-basic@1.6.11 requires a peer of react-dom@^0.14.7 but none was installed.
+  npm WARN react-d3-core@1.3.9 requires a peer of react@^0.14.7 but none was installed.
+  npm WARN react-d3-core@1.3.9 requires a peer of react-dom@^0.14.7 but none was installed.
+  npm WARN react-d3-shape@0.2.24 requires a peer of react@^0.14.7 but none was installed.
+  npm WARN react-d3-shape@0.2.24 requires a peer of react-dom@^0.14.7 but none was installed.
+  
+  > fsevents@1.1.3 install /tmp/deployment/application/node_modules/fsevents
+  > node install
+  
+  
+  > uglifyjs-webpack-plugin@0.4.6 postinstall /tmp/deployment/application/node_modules/uglifyjs-webpack-plugin
+  > node lib/post_install.js
+  
+  
+  > nodemon@1.17.2 postinstall /tmp/deployment/application/node_modules/nodemon
+  > node -e "console.log('\u001b[32mLove nodemon? You can now support the project via the open collective:\u001b[22m\u001b[39m\n > \u001b[96m\u001b[1mhttps://opencollective.com/nodemon/donate\u001b[0m\n')" || exit 0
+  
+  [32mLove nodemon? You can now support the project via the open collective:[22m[39m
+   > [96m[1mhttps://opencollective.com/nodemon/donate[0m
+  
+  npm WARN prefer global node-gyp@3.6.2 should be installed with -g
+  
+  > node-sass@4.8.2 install /tmp/deployment/application/node_modules/node-sass
+  > node scripts/install.js
+  
+  Unable to save binary /tmp/deployment/application/node_modules/node-sass/vendor/linux-x64-48 : { Error: EACCES: permission denied, mkdir '/tmp/deployment/application/node_modules/node-sass/vendor/linux-x64-48'
+      at Error (native)
+      at Object.fs.mkdirSync (fs.js:924:18)
+      at Function.sync (/tmp/deployment/application/node_modules/mkdirp/index.js:71:13)
+      at checkAndDownloadBinary (/tmp/deployment/application/node_modules/node-sass/scripts/install.js:114:11)
+      at Object.<anonymous> (/tmp/deployment/application/node_modules/node-sass/scripts/install.js:157:1)
+      at Module._compile (module.js:570:32)
+      at Object.Module._extensions..js (module.js:579:10)
+      at Module.load (module.js:487:32)
+      at tryModuleLoad (module.js:446:12)
+      at Function.Module._load (module.js:438:3)
+    errno: -13,
+    code: 'EACCES',
+    syscall: 'mkdir',
+    path: '/tmp/deployment/application/node_modules/node-sass/vendor/linux-x64-48' }
+  
+  > node-sass@4.8.2 postinstall /tmp/deployment/application/node_modules/node-sass
+  > node scripts/build.js
+  
+  Building: /opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/node /tmp/deployment/application/node_modules/node-gyp/bin/node-gyp.js rebuild --verbose --libsass_ext= --libsass_cflags= --libsass_ldflags= --libsass_library=
+  gyp info it worked if it ends with ok
+  gyp verb cli [ '/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/node',
+  gyp verb cli   '/tmp/deployment/application/node_modules/node-gyp/bin/node-gyp.js',
+  gyp verb cli   'rebuild',
+  gyp verb cli   '--verbose',
+  gyp verb cli   '--libsass_ext=',
+  gyp verb cli   '--libsass_cflags=',
+  gyp verb cli   '--libsass_ldflags=',
+  gyp verb cli   '--libsass_library=' ]
+  gyp info using node-gyp@3.6.2
+  gyp info using node@6.11.5 | linux | x64
+  gyp verb command rebuild []
+  gyp verb command clean []
+  gyp verb clean removing "build" directory
+  gyp verb command configure []
+  gyp verb check python checking for Python executable "python2" in the PATH
+  gyp verb `which` failed Error: not found: python2
+  gyp verb `which` failed     at getNotFoundError (/tmp/deployment/application/node_modules/which/which.js:13:12)
+  gyp verb `which` failed     at F (/tmp/deployment/application/node_modules/which/which.js:68:19)
+  gyp verb `which` failed     at E (/tmp/deployment/application/node_modules/which/which.js:80:29)
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/which/which.js:89:16
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/isexe/index.js:42:5
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/isexe/mode.js:8:5
+  gyp verb `which` failed     at FSReqWrap.oncomplete (fs.js:123:15)
+  gyp verb `which` failed  python2 { Error: not found: python2
+  gyp verb `which` failed     at getNotFoundError (/tmp/deployment/application/node_modules/which/which.js:13:12)
+  gyp verb `which` failed     at F (/tmp/deployment/application/node_modules/which/which.js:68:19)
+  gyp verb `which` failed     at E (/tmp/deployment/application/node_modules/which/which.js:80:29)
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/which/which.js:89:16
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/isexe/index.js:42:5
+  gyp verb `which` failed     at /tmp/deployment/application/node_modules/isexe/mode.js:8:5
+  gyp verb `which` failed     at FSReqWrap.oncomplete (fs.js:123:15)
+  gyp verb `which` failed   stack: 'Error: not found: python2\n    at getNotFoundError (/tmp/deployment/application/node_modules/which/which.js:13:12)\n    at F (/tmp/deployment/application/node_modules/which/which.js:68:19)\n    at E (/tmp/deployment/application/node_modules/which/which.js:80:29)\n    at /tmp/deployment/application/node_modules/which/which.js:89:16\n    at /tmp/deployment/application/node_modules/isexe/index.js:42:5\n    at /tmp/deployment/application/node_modules/isexe/mode.js:8:5\n    at FSReqWrap.oncomplete (fs.js:123:15)',
+  gyp verb `which` failed   code: 'ENOENT' }
+  gyp verb check python checking for Python executable "python" in the PATH
+  gyp verb `which` succeeded python /usr/bin/python
+  gyp verb check python version `/usr/bin/python -c "import platform; print(platform.python_version());"` returned: "2.7.13\n"
+  gyp verb get node dir no --target version specified, falling back to host node version: 6.11.5
+  gyp verb command install [ '6.11.5' ]
+  gyp verb install input version string "6.11.5"
+  gyp verb install installing version: 6.11.5
+  gyp verb install --ensure was passed, so won't reinstall if already installed
+  gyp verb install version not already installed, continuing with install 6.11.5
+  gyp verb ensuring nodedir is created /tmp/.node-gyp/6.11.5
+  gyp verb created nodedir /tmp/.node-gyp
+  gyp http GET https://nodejs.org/download/release/v6.11.5/node-v6.11.5-headers.tar.gz
+  gyp http 200 https://nodejs.org/download/release/v6.11.5/node-v6.11.5-headers.tar.gz
+  gyp verb extracted file from tarball include/node/android-ifaddrs.h
+  gyp verb extracted file from tarball include/node/ares.h
+  gyp verb extracted file from tarball include/node/ares_build.h
+  gyp verb extracted file from tarball include/node/ares_rules.h
+  gyp verb extracted file from tarball include/node/ares_version.h
+  gyp verb extracted file from tarball include/node/common.gypi
+  gyp verb extracted file from tarball include/node/config.gypi
+  gyp verb extracted file from tarball include/node/nameser.h
+  gyp verb extracted file from tarball include/node/node.h
+  gyp verb extracted file from tarball include/node/node_buffer.h
+  gyp verb extracted file from tarball include/node/node_object_wrap.h
+  gyp verb extracted file from tarball include/node/node_version.h
+  gyp verb extracted file from tarball include/node/pthread-barrier.h
+  gyp verb extracted file from tarball include/node/stdint-msvc2008.h
+  gyp verb extracted file from tarball include/node/tree.h
+  gyp verb extracted file from tarball include/node/uv-aix.h
+  gyp verb extracted file from tarball include/node/uv-bsd.h
+  gyp verb extracted file from tarball include/node/uv-darwin.h
+  gyp verb extracted file from tarball include/node/uv-errno.h
+  gyp verb extracted file from tarball include/node/uv-linux.h
+  gyp verb extracted file from tarball include/node/uv-os390.h
+  gyp verb extracted file from tarball include/node/uv-sunos.h
+  gyp verb extracted file from tarball include/node/uv-threadpool.h
+  gyp verb extracted file from tarball include/node/uv-unix.h
+  gyp verb extracted file from tarball include/node/uv-version.h
+  gyp verb extracted file from tarball include/node/uv-win.h
+  gyp verb extracted file from tarball include/node/uv.h
+  gyp verb extracted file from tarball include/node/v8-debug.h
+  gyp verb extracted file from tarball include/node/v8-experimental.h
+  gyp verb extracted file from tarball include/node/v8-platform.h
+  gyp verb extracted file from tarball include/node/v8-profiler.h
+  gyp verb extracted file from tarball include/node/v8-testing.h
+  gyp verb extracted file from tarball include/node/v8-util.h
+  gyp verb extracted file from tarball include/node/v8-version.h
+  gyp verb extracted file from tarball include/node/v8.h
+  gyp verb extracted file from tarball include/node/v8config.h
+  gyp verb extracted file from tarball include/node/zconf.h
+  gyp verb extracted file from tarball include/node/zlib.h
+  gyp verb extracted file from tarball include/node/openssl/aes.h
+  gyp verb extracted file from tarball include/node/openssl/asn1.h
+  gyp verb extracted file from tarball include/node/openssl/asn1_mac.h
+  gyp verb extracted file from tarball include/node/openssl/asn1t.h
+  gyp verb extracted file from tarball include/node/openssl/bio.h
+  gyp verb extracted file from tarball include/node/openssl/blowfish.h
+  gyp verb extracted file from tarball include/node/openssl/bn.h
+  gyp verb extracted file from tarball include/node/openssl/buffer.h
+  gyp verb extracted file from tarball include/node/openssl/camellia.h
+  gyp verb extracted file from tarball include/node/openssl/cast.h
+  gyp verb extracted file from tarball include/node/openssl/cmac.h
+  gyp verb extracted file from tarball include/node/openssl/cms.h
+  gyp verb extracted file from tarball include/node/openssl/comp.h
+  gyp verb extracted file from tarball include/node/openssl/conf.h
+  gyp verb extracted file from tarball include/node/openssl/conf_api.h
+  gyp verb extracted file from tarball include/node/openssl/crypto.h
+  gyp verb extracted file from tarball include/node/openssl/des.h
+  gyp verb extracted file from tarball include/node/openssl/des_old.h
+  gyp verb extracted file from tarball include/node/openssl/dh.h
+  gyp verb extracted file from tarball include/node/openssl/dsa.h
+  gyp verb extracted file from tarball include/node/openssl/dso.h
+  gyp verb extracted file from tarball include/node/openssl/dtls1.h
+  gyp verb extracted file from tarball include/node/openssl/e_os2.h
+  gyp verb extracted file from tarball include/node/openssl/ebcdic.h
+  gyp verb extracted file from tarball include/node/openssl/ec.h
+  gyp verb extracted file from tarball include/node/openssl/ecdh.h
+  gyp verb extracted file from tarball include/node/openssl/ecdsa.h
+  gyp verb extracted file from tarball include/node/openssl/engine.h
+  gyp verb extracted file from tarball include/node/openssl/err.h
+  gyp verb extracted file from tarball include/node/openssl/evp.h
+  gyp verb extracted file from tarball include/node/openssl/hmac.h
+  gyp verb extracted file from tarball include/node/openssl/idea.h
+  gyp verb extracted file from tarball include/node/openssl/krb5_asn.h
+  gyp verb extracted file from tarball include/node/openssl/kssl.h
+  gyp verb extracted file from tarball include/node/openssl/lhash.h
+  gyp verb extracted file from tarball include/node/openssl/md4.h
+  gyp verb extracted file from tarball include/node/openssl/md5.h
+  gyp verb extracted file from tarball include/node/openssl/mdc2.h
+  gyp verb extracted file from tarball include/node/openssl/modes.h
+  gyp verb extracted file from tarball include/node/openssl/obj_mac.h
+  gyp verb extracted file from tarball include/node/openssl/objects.h
+  gyp verb extracted file from tarball include/node/openssl/ocsp.h
+  gyp verb extracted file from tarball include/node/openssl/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/opensslv.h
+  gyp verb extracted file from tarball include/node/openssl/ossl_typ.h
+  gyp verb extracted file from tarball include/node/openssl/pem.h
+  gyp verb extracted file from tarball include/node/openssl/pem2.h
+  gyp verb extracted file from tarball include/node/openssl/pkcs12.h
+  gyp verb extracted file from tarball include/node/openssl/pkcs7.h
+  gyp verb extracted file from tarball include/node/openssl/pqueue.h
+  gyp verb extracted file from tarball include/node/openssl/rand.h
+  gyp verb extracted file from tarball include/node/openssl/rc2.h
+  gyp verb extracted file from tarball include/node/openssl/rc4.h
+  gyp verb extracted file from tarball include/node/openssl/ripemd.h
+  gyp verb extracted file from tarball include/node/openssl/rsa.h
+  gyp verb extracted file from tarball include/node/openssl/safestack.h
+  gyp verb extracted file from tarball include/node/openssl/seed.h
+  gyp verb extracted file from tarball include/node/openssl/sha.h
+  gyp verb extracted file from tarball include/node/openssl/srp.h
+  gyp verb extracted file from tarball include/node/openssl/srtp.h
+  gyp verb extracted file from tarball include/node/openssl/ssl.h
+  gyp verb extracted file from tarball include/node/openssl/ssl2.h
+  gyp verb extracted file from tarball include/node/openssl/ssl23.h
+  gyp verb extracted file from tarball include/node/openssl/ssl3.h
+  gyp verb extracted file from tarball include/node/openssl/stack.h
+  gyp verb extracted file from tarball include/node/openssl/symhacks.h
+  gyp verb extracted file from tarball include/node/openssl/tls1.h
+  gyp verb extracted file from tarball include/node/openssl/ts.h
+  gyp verb extracted file from tarball include/node/openssl/txt_db.h
+  gyp verb extracted file from tarball include/node/openssl/ui.h
+  gyp verb content checksum node-v6.11.5-headers.tar.gz 9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83
+  gyp verb extracted file from tarball include/node/openssl/ui_compat.h
+  gyp verb extracted file from tarball include/node/openssl/whrlpool.h
+  gyp verb extracted file from tarball include/node/openssl/x509.h
+  gyp verb extracted file from tarball include/node/openssl/x509_vfy.h
+  gyp verb extracted file from tarball include/node/openssl/x509v3.h
+  gyp verb extracted file from tarball include/node/openssl/archs/VC-WIN64A/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/VC-WIN32/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/solaris64-x86_64-gcc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/solaris-x86-gcc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux64-s390x/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux32-s390x/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-x86_64/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-x32/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-ppc64/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-ppc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-elf/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-armv4/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/linux-aarch64/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/darwin64-x86_64-cc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/darwin-i386-cc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/BSD-x86_64/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/BSD-x86/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/aix64-gcc/opensslconf.h
+  gyp verb extracted file from tarball include/node/openssl/archs/aix-gcc/opensslconf.h
+  gyp verb extracted file from tarball include/node/libplatform/libplatform.h
+  gyp verb tarball done parsing tarball
+  gyp verb check download content checksum, need to download `SHASUMS256.txt`... 
+  gyp verb checksum url https://nodejs.org/download/release/v6.11.5/SHASUMS256.txt
+  gyp http GET https://nodejs.org/download/release/v6.11.5/SHASUMS256.txt
+  gyp http 200 https://nodejs.org/download/release/v6.11.5/SHASUMS256.txt
+  gyp verb checksum data {"node-v6.11.5-aix-ppc64.tar.gz":"907cc72126bfcfed2040ded546649ee1023d8839fc898447bf8435f8b204b654","node-v6.11.5-darwin-x64.tar.gz":"fc0a3ba17e0be7ffe86f9941212dd00905524d6d48dd8cafb63da6adca20a4fc","node-v6.11.5-darwin-x64.tar.xz":"daedeac624d5a1c177254fa080de7f0ee5426fce57e7bcad554b354c81a69cbc","node-v6.11.5-headers.tar.gz":"9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83","node-v6.11.5-headers.tar.xz":"90c65a66f2538bade1b470d0bf9deaeef1652f39aadb0d5b2e1d2e218828462d","node-v6.11.5-linux-arm64.tar.gz":"b879b852c3588f3ce7d748273ede959306268e5b2ca199d76b4592c2fb4a0d43","node-v6.11.5-linux-arm64.tar.xz":"7f073097e0016aaa1abac8a4e554dd1e534339540be12fbd582670c45436ddca","node-v6.11.5-linux-armv6l.tar.gz":"d25348044b63bc1546951a2b05f7c4f48d74bc3519fd911f9006e979c4511b0f","node-v6.11.5-linux-armv6l.tar.xz":"043049e3bd4782a435abfef73696d6bc8f0c75938592503352d47755e807f0f7","node-v6.11.5-linux-armv7l.tar.gz":"17529148085a8d9e6d8c37f29b12aea0f0c3ef1585bb45290b7a16c76ecd392d","node-v6.11.5-linux-armv7l.tar.xz":"c2cf97f23c8d55e0d919fb4e3649fd69ccc8acc6668891fc13a052a8679d801e","node-v6.11.5-linux-ppc64le.tar.gz":"12237a2616212f29ce1957e1ec3514eff1abfe433f5cd5aec47fceb79ecb0f86","node-v6.11.5-linux-ppc64le.tar.xz":"867003e1fc47a1e41b4f35a2f7874e54c3d85ae3568d460a05891500abeabf29","node-v6.11.5-linux-ppc64.tar.gz":"7aa9f48abdeb3f38cf025966a3b821c56fc6f91aea977906513db6f28b283bd0","node-v6.11.5-linux-ppc64.tar.xz":"c6102cf999afc833afb16068f841318fb31fd4168ca0bf6e9c9649ce929df4e7","node-v6.11.5-linux-s390x.tar.gz":"796e1dd5d4585066b0c4c492162b1962d8d02efec31d40296a15b9cdf8d7fe52","node-v6.11.5-linux-s390x.tar.xz":"a2d4e4dc8c02fee8e491b411653e0892005831b8caff9d3de220ad1cefb9bcb2","node-v6.11.5-linux-x64.tar.gz":"fffd25c9e9b6d2235e97ba8be1dd6ea5f31e32ea445c5cc704ca84ef44db66c1","node-v6.11.5-linux-x64.tar.xz":"8f8ddac70a5213032bbfdcb3cac6e0723374428ad4fa4af2d9b4444177f2b1a9","node-v6.11.5-linux-x86.tar.gz":"8594a9087f66efbccc1ef4a6eee1484ab14edac2b379b87affeee29fcbbd6d36","node-v6.11.5-linux-x86.tar.xz":"6d8f3e0fd49f44d75c10b21c0bcb92a524faf7cbab8b740e0b9a2f8b3efe4a63","node-v6.11.5.pkg":"4455eb8a57f9d72300b019212b229c0aa4eb5294391cb3f6df351f928b1a44c9","node-v6.11.5-sunos-x64.tar.gz":"577f9e938613c4be6137b95bcde51050b4213577457ba9c2ee57ca343df62bd2","node-v6.11.5-sunos-x64.tar.xz":"11b1d072f42ac2bf6812afb5d098781f5c384096586126fa22047d02f50d405d","node-v6.11.5-sunos-x86.tar.gz":"708888589d29d8ad8c5190b90e2eb5a0a33ce82d37e8693bd798630ecbc7bc6a","node-v6.11.5-sunos-x86.tar.xz":"7375dbabf0470ec5cc4522339605fe0fc84e539a17c1fd3aa782fdf3f230cea4","node-v6.11.5.tar.gz":"c4aed94e82dbf246a1c9e0705c3054f0c0f3d9c4d8d025d877e0ef1f7b6cde4c","node-v6.11.5.tar.xz":"1c6de415216799fbaeca82304b3fef87accc7101ebf2ead7d5c545e0779e8aaf","node-v6.11.5-win-x64.7z":"5ac17f02726b23fe88ed1653d6082f59da42fe17c92570d021c0d8cf594a58d9","node-v6.11.5-win-x64.zip":"cedd481dfd9b28ce95828fd6b218b286893a308280e499e225fa193d26d580c9","node-v6.11.5-win-x86.7z":"405db7d106865f074f9cb99790ed0f3946678cdd09ce8b193f6c691be56af9be","node-v6.11.5-win-x86.zip":"f1089e4b3cfa8d3b1bbddafbc4e501633dc96f4293c08d3f008cdebf6b26786d","node-v6.11.5-x64.msi":"33360c037c792457a2e4b37fd107b26c353f70e779f9236b351bd64d7d0c0240","node-v6.11.5-x86.msi":"ff85c2c9e8f5748a62dc90bd1aca3087f45f2e202f35f87de45fdf84e9c74ae3","win-x64/node.exe":"2b345a44438b5242f6b6a6f6eee6c1b297b026e5d46e34626dadbd6498eeff77","win-x64/node.lib":"d13f3c134ea716d1781e1e1c205bb173fefad3cf9378d44825aa52aef0dff473","win-x64/node_pdb.7z":"9e75b7e9fc443749d6b422f2fab524f5cd45321b6965d9896ff7e1388fb6d370","win-x64/node_pdb.zip":"6bbecdad2ab888660273d557651d781039985c7cbeb625424ffdc797aa5d6319","win-x86/node.exe":"b46e1ec5f6b4df812ae8e32e95cbed19e3132d522603d0fde1f4ab0b2a936d09","win-x86/node.lib":"45dd98664f0bed3159264f22faaa577d34722abfb53166c36de0be55d2d78fbc","win-x86/node_pdb.7z":"909f875ad6508a9486e74addb739e2e525b7a54cf43cc66809d5a46bc2838045","win-x86/node_pdb.zip":"9b7eefa65919db30f145d16aafc769853209e2c233ed6132566a2da96f4383dd"}
+  gyp verb download contents checksum {"node-v6.11.5-headers.tar.gz":"9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83"}
+  gyp verb validating download checksum for node-v6.11.5-headers.tar.gz (9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83 == 9e5ab2412d1f2d0a0dc30592e2b2f707e20203ef3d2f7472f0b3ad5d5c8d5e83)
+  gyp verb get node dir target node version installed: 6.11.5
+  gyp verb build dir attempting to create "build" dir: /tmp/deployment/application/node_modules/node-sass/build
+  gyp ERR! configure error 
+  gyp ERR! stack Error: EACCES: permission denied, mkdir '/tmp/deployment/application/node_modules/node-sass/build'
+  gyp ERR! stack     at Error (native)
+  gyp ERR! System Linux 4.9.77-31.58.amzn1.x86_64
+  gyp ERR! command "/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/node" "/tmp/deployment/application/node_modules/node-gyp/bin/node-gyp.js" "rebuild" "--verbose" "--libsass_ext=" "--libsass_cflags=" "--libsass_ldflags=" "--libsass_library="
+  gyp ERR! cwd /tmp/deployment/application/node_modules/node-sass
+  gyp ERR! node -v v6.11.5
+  gyp ERR! node-gyp -v v3.6.2
+  gyp ERR! not ok 
+  Build failed with error code: 1
+  
+  npm ERR! Linux 4.9.77-31.58.amzn1.x86_64
+  npm ERR! argv "/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/node" "/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/npm" "--production" "rebuild"
+  npm ERR! node v6.11.5
+  npm ERR! npm  v3.10.10
+  npm ERR! code ELIFECYCLE
+  npm ERR! node-sass@4.8.2 postinstall: `node scripts/build.js`
+  npm ERR! Exit status 1
+  npm ERR! 
+  npm ERR! Failed at the node-sass@4.8.2 postinstall script 'node scripts/build.js'.
+  npm ERR! Make sure you have the latest version of node.js and npm installed.
+  npm ERR! If you do, this is most likely a problem with the node-sass package,
+  npm ERR! not with npm itself.
+  npm ERR! Tell the author that this fails on your system:
+  npm ERR!     node scripts/build.js
+  npm ERR! You can get information on how to open an issue for this project with:
+  npm ERR!     npm bugs node-sass
+  npm ERR! Or if that isn't available, you can get their info via:
+  npm ERR!     npm owner ls node-sass
+  npm ERR! There is likely additional logging output above.
+  
+  npm ERR! Please include the following file with any support request:
+  npm ERR!     /tmp/deployment/application/npm-debug.log
+  Running npm install:  /opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/npm
+  Setting npm config jobs to 1
+  npm config jobs set to 1
+  Running npm with --production flag
+  Failed to run npm install. Snapshot logs for more details.
+  Traceback (most recent call last):
+    File "/opt/elasticbeanstalk/containerfiles/ebnode.py", line 695, in <module>
+      main()
+    File "/opt/elasticbeanstalk/containerfiles/ebnode.py", line 677, in main
+      node_version_manager.run_npm_install(options.app_path)
+    File "/opt/elasticbeanstalk/containerfiles/ebnode.py", line 136, in run_npm_install
+      self.npm_install(bin_path, self.config_manager.get_container_config('app_staging_dir'))
+    File "/opt/elasticbeanstalk/containerfiles/ebnode.py", line 180, in npm_install
+      raise e
+  subprocess.CalledProcessError: Command '['/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/npm', '--production', 'rebuild']' returned non-zero exit status 1 (Executor::NonZeroExitStatus)
+
+
+[2018-03-15T13:32:07.506Z] ERROR [3141]  : Command CMD-Startup failed!
+[2018-03-15T13:32:07.507Z] INFO  [3141]  : Command processor returning results: 
+{"status":"FAILURE","api_version":"1.0","results":[{"status":"FAILURE","msg":"(TRUNCATED).../opt/elasticbeanstalk/containerfiles/ebnode.py\", line 180, in npm_install\n    raise e\nsubprocess.CalledProcessError: Command '['/opt/elasticbeanstalk/node-install/node-v6.11.5-linux-x64/bin/npm', '--production', 'rebuild']' returned non-zero exit status 1. \nHook /opt/elasticbeanstalk/hooks/appdeploy/pre/50npm.sh failed. For more detail, check /var/log/eb-activity.log using console or EB CLI","returncode":1,"events":[{"msg":"Failed to run npm install. Snapshot logs for more details.","severity":"ERROR","timestamp":1521120727506}]}],"truncated":"true"}
+[2018-03-15T13:32:11.951Z] DEBUG [3419]  : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2018-03-15T13:32:11.951Z] DEBUG [3419]  : Checking if the command processor should execute...
+[2018-03-15T13:32:11.955Z] DEBUG [3419]  : Checking whether the command is applicable to instance (i-04a279ea62e08e957)..
+[2018-03-15T13:32:11.955Z] INFO  [3419]  : Command is applicable to this instance (i-04a279ea62e08e957)..
+[2018-03-15T13:32:11.955Z] DEBUG [3419]  : Checking if the received command stage is valid..
+[2018-03-15T13:32:11.955Z] INFO  [3419]  : No stage_num in command. Valid stage..
+[2018-03-15T13:32:11.955Z] INFO  [3419]  : Received command CMD-BundleLogs: {"execution_data":"{\"aws_access_key_id\":\"ASIAIGZFHJNWZL6V7NMQ\",\"security_token\":\"FQoDYXdzEF8aDNLw3oaCTelR\\\/FWGziKGBLDw8lJ3ukLOpT52M3xEMJJTbm2zPfTZRATS2Qph+r7ERnoBuwggLZYJQ\\\/hBZ7ojfVVYKfKcgQcuQt2NZ+IIlhWzxaWXb2hEBtBnhPody3xmLNggjIPO6edcdRTNIiL3dMWakbVF6i9cQLBTcr8\\\/ckmalpdkVtO480QJQ1TlOoSdQI1L2POSFhX\\\/57+NulzFgwUZS0fKTYO4yt8qLzwlf\\\/TCPPOceuWAAnNg02kk3vVm7EwjXvoFdwvgHxF\\\/7zeMYg+Z3713917O5X9YUrMv0XQOHTta2X40y8V3oLLy3TuRUpl03m195+dZyDXce0YKXan8bP2qeA12rW7c9Py39WHA4\\\/5vfQWH0pJn8JlkN8w3PbuhcMqvb71fRTiu8pMgXLTRtvTb3cadkRnGNXmobmqlmQes40Q10BgDUXL0Lju0jHYgc7Nm88yoXS8hiv4r0eReriSmC6bS9RvD9X\\\/MsvOkShogP9jDBWTXk7U\\\/Ox3anjlbv6vixvjSSW75iab22kJCb7NbUW8WRB8FFXomObf2RwDhV+fGn5eZksOp3vErxCc3uvlhDPhdkXRHuaG3cIDpU0RMAnYiC+j49+96iw5PQ3yWN3NqRsFAVw7pLzKqLiasnBEF2q7togCYA7k9Aog1oNGJNY+ucncwoxvDFWRfIgwbTF8y3zLON20Q8yMyM5IjlaszKMPAqdUF|NTQuMjM5LjExNi4xMDI=\",\"signature\":\"0suI32VUDMZ6NCEBKAH3azr5+RY=\",\"policy\":\"eyJleHBpcmF0aW9uIjoiMjAxOC0wMy0xNVQxNDowMjoxMS44M1oiLCJjb25kaXRpb25zIjpbWyJzdGFydHMtd2l0aCIsIiR4LWFtei1tZXRhLXRpbWVfc3RhbXAiLCIiXSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtcHVibGlzaF9tZWNoYW5pc20iLCIiXSxbInN0YXJ0cy13aXRoIiwiJGtleSIsInJlc291cmNlc1wvZW52aXJvbm1lbnRzXC9sb2dzXC8iXSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtYmF0Y2hfaWQiLCIiXSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtZmlsZV9uYW1lIiwiIl0sWyJzdGFydHMtd2l0aCIsIiR4LWFtei1zZWN1cml0eS10b2tlbiIsIiJdLFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwiIl0sWyJlcSIsIiRidWNrZXQiLCJlbGFzdGljYmVhbnN0YWxrLWFwLW5vcnRoZWFzdC0yLTQ1NDE4ODY3MjYzMSJdLFsiZXEiLCIkYWNsIiwicHJpdmF0ZSJdXX0=\"}","instance_ids":["i-04a279ea62e08e957"],"data":"fcafbef0-2854-11e8-9aab-6beb3939b476","command_name":"CMD-BundleLogs","api_version":"1.0","resource_name":"AWSEBAutoScalingGroup","request_id":"fcafbef0-2854-11e8-9aab-6beb3939b476"}
+[2018-03-15T13:32:11.955Z] INFO  [3419]  : Command processor should execute command.
+[2018-03-15T13:32:11.955Z] DEBUG [3419]  : Storing current stage..
+[2018-03-15T13:32:11.955Z] DEBUG [3419]  : Stage_num does not exist. Not saving null stage. Returning..
+[2018-03-15T13:32:11.955Z] DEBUG [3419]  : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2018-03-15T13:32:11.955Z] DEBUG [3419]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2018-03-15T13:32:11.956Z] DEBUG [3419]  : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2018-03-15T13:32:11.956Z] INFO  [3419]  : Found enabled addons: ["logstreaming", "logpublish"].
+[2018-03-15T13:32:11.958Z] INFO  [3419]  : Updating Command definition of addon logstreaming.
+[2018-03-15T13:32:11.958Z] INFO  [3419]  : Updating Command definition of addon logpublish.
+[2018-03-15T13:32:11.958Z] DEBUG [3419]  : Loaded definition of Command CMD-BundleLogs.
+[2018-03-15T13:32:11.958Z] INFO  [3419]  : Executing CMD-BundleLogs
+[2018-03-15T13:32:11.958Z] INFO  [3419]  : Executing command: CMD-BundleLogs...
+[2018-03-15T13:32:11.958Z] INFO  [3419]  : Executing command CMD-BundleLogs activities...
+[2018-03-15T13:32:11.958Z] DEBUG [3419]  : Setting environment variables..
+[2018-03-15T13:32:11.958Z] INFO  [3419]  : Running AddonsBefore for command CMD-BundleLogs...
+[2018-03-15T13:32:11.958Z] DEBUG [3419]  : Running stages of Command CMD-BundleLogs from stage 0 to stage 0...
+[2018-03-15T13:32:11.958Z] INFO  [3419]  : Running stage 0 of command CMD-BundleLogs...
+[2018-03-15T13:32:11.958Z] DEBUG [3419]  : Loaded 1 actions for stage 0.
+[2018-03-15T13:32:11.958Z] INFO  [3419]  : Running 1 of 1 actions: BundleLogs...

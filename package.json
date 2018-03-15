@@ -25,8 +25,6 @@
   "homepage": "https://github.com/youngji-cho/fermi#readme",
   "dependencies": {
     "aws-sdk": "^2.185.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.18.2",
     "concurrently": "^3.5.1",
@@ -36,8 +34,6 @@
     "mysql": "^2.15.0",
     "path": "^0.12.7",
     "react": "^16.2.0",
-    "react-d3-basic": "^1.6.11",
-    "react-d3-core": "^1.3.9",
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
@@ -47,7 +43,8 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.10",
     "google-charts": "^1.0.0",

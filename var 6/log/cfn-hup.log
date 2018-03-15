@@ -1,0 +1,6 @@
+2018-03-15 13:31:04,401 [DEBUG] CloudFormation client initialized with endpoint https://cloudformation.ap-northeast-2.amazonaws.com
+2018-03-15 13:31:04,401 [DEBUG] SQS client initialized with endpoint https://sqs.ap-northeast-2.amazonaws.com
+2018-03-15 13:31:04,401 [DEBUG] CloudFormation client initialized with endpoint https://cloudformation.ap-northeast-2.amazonaws.com
+2018-03-15 13:31:04,401 [DEBUG] Enabled single threading mode.
+2018-03-15 13:31:04,402 [DEBUG] Creating /var/lib/cfn-hup/data
+2018-03-15 13:31:04,402 [INFO] No umask value specified in config file. Using the default one: 022
