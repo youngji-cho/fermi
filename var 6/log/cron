@@ -1,4 +1,0 @@
-Mar 15 13:31:00 ip-172-31-6-231 crond[2587]: (CRON) STARTUP (1.4.4)
-Mar 15 13:31:00 ip-172-31-6-231 crond[2587]: (CRON) INFO (RANDOM_DELAY will be scaled with factor 95% if used.)
-Mar 15 13:31:00 ip-172-31-6-231 crond[2587]: (CRON) INFO (running with inotify support)
-Mar 15 13:32:02 ip-172-31-6-231 CROND[3358]: (root) CMD (/usr/sbin/awslogs-nanny > /dev/null 2>&1)
