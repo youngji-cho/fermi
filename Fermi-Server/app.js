@@ -8,9 +8,9 @@ const cors= require('cors');
 app.use(cors());
 
 const conn =mysql.createConnection({
-  host: "aa1fir4gj2lkhs2.c4kp2nxu0eer.ap-northeast-2.rds.amazonaws.com",
-  user: "youngji",
-  password: "whdudwl4143",
+  host: "aa1x1ljm1vi3p0a.c4kp2nxu0eer.ap-northeast-2.rds.amazonaws.com",
+  user: "admin",
+  password: "fermi1234",
   dateStrings: true
 });
 

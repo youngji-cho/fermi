@@ -22,8 +22,8 @@ export class SmpChartA extends React.Component{
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
     let line=d3.line()
       .x(function(d){return xScale(d.date)})
-      .y(function(d){return yScale(d.total)});
-      
+      .y(function(d){return yScale(d.total_price)});
+
     let recSvg=d3.select("#SmpChartA")
       .attr("width",width + margin.left + margin.right)
       .attr("height",height + margin.top + margin.bottom)
@@ -35,7 +35,7 @@ export class SmpChartA extends React.Component{
       return d.date;
     }));
     yScale.domain(d3.extent(data,function(d){
-      return d.total;
+      return d.total_price;
     }));
 
     recSvg.append("path")
@@ -64,7 +64,7 @@ export class SmpChartA extends React.Component{
      let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
      console.log(startQuery,endQuery)
 
-     fetch(`/smp_data/total/${startQuery}/${endQuery}`).then(
+     fetch(`/smp_data/total_price/${startQuery}/${endQuery}`).then(
        response => {
        	if (response.ok) {
           return response.json();
@@ -78,7 +78,7 @@ export class SmpChartA extends React.Component{
     let startQuery= `${this.state.startDate.getFullYear()}-${this.state.startDate.getMonth()+1}-${this.state.startDate.getDay()}`;
     let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
     console.log(startQuery,endQuery)
-    fetch(`/smp_data/total/${startQuery}/${endQuery}`).then(
+    fetch(`/smp_data/total_price/${startQuery}/${endQuery}`).then(
       response => {
        if (response.ok) {
          return response.json();

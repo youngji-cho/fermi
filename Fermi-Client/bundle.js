@@ -38990,7 +38990,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       var line = d3.line().x(function (d) {
         return xScale(d.date);
       }).y(function (d) {
-        return yScale(d.total);
+        return yScale(d.total_price);
       });
 
       var recSvg = d3.select("#SmpChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
@@ -39002,7 +39002,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
         return d.date;
       }));
       yScale.domain(d3.extent(data, function (d) {
-        return d.total;
+        return d.total_price;
       }));
 
       recSvg.append("path").data([data]).attr("class", "line").attr("d", line);
@@ -39027,7 +39027,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
       console.log(startQuery, endQuery);
 
-      fetch("/smp_data/total/" + startQuery + "/" + endQuery).then(function (response) {
+      fetch("/smp_data/total_price/" + startQuery + "/" + endQuery).then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39046,7 +39046,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       var startQuery = this.state.startDate.getFullYear() + "-" + (this.state.startDate.getMonth() + 1) + "-" + this.state.startDate.getDay();
       var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
       console.log(startQuery, endQuery);
-      fetch("/smp_data/total/" + startQuery + "/" + endQuery).then(function (response) {
+      fetch("/smp_data/total_price/" + startQuery + "/" + endQuery).then(function (response) {
         if (response.ok) {
           return response.json();
         }
