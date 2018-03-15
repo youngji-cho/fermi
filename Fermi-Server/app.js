@@ -66,7 +66,7 @@ app.get('*', (req, res, next) => {
 if (module === require.main) {
   // [START server]
   // Start the server
-  const server = app.listen(process.env.PORT || 3000, () => {
+  const server = app.listen(process.env.PORT || 8081, () => {
     const port = server.address().port;
     console.log(`App listening on port ${port}`);
   });
