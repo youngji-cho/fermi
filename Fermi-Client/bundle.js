@@ -38882,10 +38882,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var MainPage = exports.MainPage = function (_React$Component) {
   _inherits(MainPage, _React$Component);
 
-  function MainPage() {
+  function MainPage(props) {
     _classCallCheck(this, MainPage);
 
-    return _possibleConstructorReturn(this, (MainPage.__proto__ || Object.getPrototypeOf(MainPage)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (MainPage.__proto__ || Object.getPrototypeOf(MainPage)).call(this, props));
+
+    _this.state = {
+      exp1: "Fermi는 재생에너지 포털 프로젝트입니다. 재생에너지 사업검토에 필요한 정보를 제공합니다.",
+      exp2: "전력도매시장 가격인 계통한계가격(SMP, System Marginal Price)의 가격입니다. 아래의 그래프는 재생에너지 발전에서 많이 쓰는 월간가중평균 계통한계가격을 나타냅니다.",
+      exp3: "재생에너지 발전의 대가로 주어지는 재생에너지공급인증서(REC, Renewable Energy Certificate)의 가격입니다. 아래의 그래프는 도매시장에서 거래되는 REC가격 중 종가를 나타냅니다."
+    };
+    return _this;
   }
 
   _createClass(MainPage, [{
@@ -38894,16 +38901,34 @@ var MainPage = exports.MainPage = function (_React$Component) {
       return _react2.default.createElement(
         _layout.Layout,
         null,
-        _react2.default.createElement(_layout.Table, { name: 'fermi', content: 'fermi\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uD3EC\uD138\uC785\uB2C8\uB2E4.' }),
+        _react2.default.createElement(_layout.Table, { name: 'fermi', content: this.state.exp1 }),
         _react2.default.createElement(
           _layout.Table,
-          { name: 'SMP \uAC00\uACA9', content: '\uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC785\uB2C8\uB2E4. ' },
-          _react2.default.createElement(_charts.SmpChartA, null)
+          { name: 'SMP \uAC00\uACA9', content: this.state.exp2 },
+          _react2.default.createElement(_charts.SmpChartA, null),
+          _react2.default.createElement(
+            'div',
+            { className: 'mdl-card__actions mdl-card--border' },
+            _react2.default.createElement(
+              'a',
+              { className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect', href: '/smp_price' },
+              '\uC0C1\uC138\uBCF4\uAE30'
+            )
+          )
         ),
         _react2.default.createElement(
           _layout.Table,
-          { name: 'REC \uAC00\uACA9', content: '\uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uACF5\uAE09\uC778\uC99D\uC11C\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4.' },
-          _react2.default.createElement(_charts.RecChartA, null)
+          { name: 'REC \uAC00\uACA9', content: this.state.exp3 },
+          _react2.default.createElement(_charts.RecChartA, null),
+          _react2.default.createElement(
+            'div',
+            { className: 'mdl-card__actions mdl-card--border' },
+            _react2.default.createElement(
+              'a',
+              { className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect', href: '/rec_price' },
+              '\uC0C1\uC138\uBCF4\uAE30'
+            )
+          )
         )
       );
     }
@@ -61003,10 +61028,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var SmpPage = exports.SmpPage = function (_React$Component) {
   _inherits(SmpPage, _React$Component);
 
-  function SmpPage() {
+  function SmpPage(props) {
     _classCallCheck(this, SmpPage);
 
-    return _possibleConstructorReturn(this, (SmpPage.__proto__ || Object.getPrototypeOf(SmpPage)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (SmpPage.__proto__ || Object.getPrototypeOf(SmpPage)).call(this, props));
+
+    _this.state = {
+      exp1: "계통한계가격(SMP,Sytem Marginal Price)은 전력시장에서 거래되는 모든 발전소에 적용되는 기준가격입니다. 발전회사는 전력을 판매하고, 한국전력을 구매해야 합니다. 이때 중간에서 가격을 결정하고, 정산을 하는 기관이 한국전력거래소(KRX, Korea Power Exchange) 입니다.",
+      exp2: "계통한계가격은 한국전력거래소에서 거래되는 전력의 시간대별 기준단가라고 쉽게 정의할 수 있습니다. 한국전력거래소는 전력시장을 총괄적으로 운영합니다. 24시간 전에 항상 다음 24시간의 전력수요를 예측해서 각 발전소마다 얼만큼 생산할지 지시를 합니다. 이를 급전(Dispatch)지시라고 합니다. 급전지시는 가장 가격이 싼 기준으로 순차적으로 지시됩니다.",
+      exp3: "재생에너지 전력판매대금은 계통한계가격을 기준으로 정산 받습니다. 다만,규모에 따라 정산되는 방식이 조금 다릅니다. 1Mw 이상 대형 발전소는 전력거래소에 회원가입을 해서 생산된 전력에 대해서 시간당 계통한계가격으로 정산 받습니다. 1Mw이하의 소규모 발전소의 경우 전력거래소 회원가입이 불가능한 것은 아니지만, 대부분 한국전력과 직접 전력구매계약(Power Purchase Agreement)를 맺습니다. 이 경우 생산된 전력을 거래소를 거치지 않고, 한국전력으로 직접판매합니다. 이때 기준 가격은 월간 가중평균 계통한계가격으로 계산됩니다. 시간마다 가격이 변동되는 것이 아니라, 생산된 전력의 총액을 월간 가중평균 계통한계가격으로 곱해서 매월 대금을 정산 받습니다."
+    };
+    return _this;
   }
 
   _createClass(SmpPage, [{
@@ -61023,9 +61055,9 @@ var SmpPage = exports.SmpPage = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { className: 'mdl-grid demo-content' },
-            _react2.default.createElement(_layout.Table, { name: 'fermi', content: 'fermi\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uD3EC\uD138\uC785\uB2C8\uB2E4.' }),
-            _react2.default.createElement(_layout.Table, { name: 'SMP \uAC00\uACA9', content: '\uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC785\uB2C8\uB2E4. ' }),
-            _react2.default.createElement(_layout.Table, { name: 'REC \uAC00\uACA9', content: '\uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uACF5\uAE09\uC778\uC99D\uC11C\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4.' })
+            _react2.default.createElement(_layout.Table, { name: 'SMP \uAC00\uACA9', content: this.state.exp1 }),
+            _react2.default.createElement(_layout.Table, { name: 'SMP \uC2E4\uC2DC\uAC04\uAC00\uACA9', content: this.state.exp2 }),
+            _react2.default.createElement(_layout.Table, { name: 'SMP \uC6D4\uAC04\uAC00\uC911\uD3C9\uADE0\uAC00\uACA9', content: this.state.exp3 })
           )
         )
       );
@@ -61066,10 +61098,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var RecPage = exports.RecPage = function (_React$Component) {
   _inherits(RecPage, _React$Component);
 
-  function RecPage() {
+  function RecPage(props) {
     _classCallCheck(this, RecPage);
 
-    return _possibleConstructorReturn(this, (RecPage.__proto__ || Object.getPrototypeOf(RecPage)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (RecPage.__proto__ || Object.getPrototypeOf(RecPage)).call(this, props));
+
+    _this.state = {
+      exp1: "REC는 Mwh당 거래가 기본입니다. REC는 도매시장에서 거래를 할수 있고, 장기계약을 맺어서 거래를 할 수도 있습니다. 도매시장의 가격은 매주 2회 결정됩니다. REC장기계약의 경우 에너지 관리공단 주관하에 실시됩니다. 17년 부터는 REC가격과 SMP가격을 통합해서 20년 장기계약이 가능합니다. 연2회 시행됩니다.",
+      exp2: "도매시장에서 매주 2회 거래되는 가격입니다. 증권시장처럼 양방향 입찰로 운영되기 때문에 최저,최고,평균가가 존재합니다. 또한, 제주/육지/전체로 가격이 구분됩니다.",
+      exp3: "도매시장에서 매월 거래되는 REC거래량입니다. 제주/육지/전체로 구분되며, 매도희망,매수희망,체결량을 나타냅니다.",
+      exp4: "매년 2회열리는 장기계약시장의 거래량을 나타냅니다."
+    };
+    return _this;
   }
 
   _createClass(RecPage, [{
@@ -61086,9 +61126,10 @@ var RecPage = exports.RecPage = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { className: 'mdl-grid demo-content' },
-            _react2.default.createElement(_layout.Table, { name: 'fermi', content: 'fermi\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uD3EC\uD138\uC785\uB2C8\uB2E4.' }),
-            _react2.default.createElement(_layout.Table, { name: 'SMP \uAC00\uACA9', content: '\uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC785\uB2C8\uB2E4. ' }),
-            _react2.default.createElement(_layout.Table, { name: 'REC \uAC00\uACA9', content: '\uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uACF5\uAE09\uC778\uC99D\uC11C\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4.' })
+            _react2.default.createElement(_layout.Table, { name: 'REC \uAC00\uACA9', content: this.state.exp1 }),
+            _react2.default.createElement(_layout.Table, { name: '\uB3C4\uB9E4\uC2DC\uC7A5 \uAC00\uACA9', content: this.state.exp2 }),
+            _react2.default.createElement(_layout.Table, { name: '\uB3C4\uB9E4\uC2DC\uC7A5 \uAC70\uB798\uB7C9', content: this.state.exp3 }),
+            _react2.default.createElement(_layout.Table, { name: '\uC7A5\uAE30\uACC4\uC57D\uC2DC\uC7A5', content: this.state.exp4 })
           )
         )
       );
