@@ -38993,7 +38993,9 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (SmpChartA.__proto__ || Object.getPrototypeOf(SmpChartA)).call(this, props));
 
-    _this.state = {};
+    _this.state = {
+      color: "steelblue"
+    };
     _this.handleClick = _this.handleClick.bind(_this);
     _this.chartdraw = _this.chartdraw.bind(_this);
     return _this;
@@ -39015,7 +39017,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
         return yScale(d.total_price);
       });
 
-      var recSvg = d3.select("#SmpChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+      var svg = d3.select("#SmpChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
 
       data.forEach(function (d) {
         d.date = parseTime(d.date);
@@ -39027,10 +39029,12 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
         return d.total_price;
       }));
 
-      recSvg.append("path").data([data]).attr("class", "line").attr("d", line);
+      svg.append("path").data([data]).attr("class", "line").attr("d", line).style("stroke", this.state.color);
 
-      recSvg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
-      recSvg.append("g").call(d3.axisRight(yScale));
+      svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
+      svg.append("g").call(d3.axisRight(yScale));
+
+      svg.selectAll(".dot").data(data).enter().append("circle").attr("class", "dot").attr("cx", line.x()).attr("cy", line.y()).attr("r", 3.5).style("fill", this.state.color);
     }
   }, {
     key: "handleClick",
@@ -39100,7 +39104,9 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
 
     var _this4 = _possibleConstructorReturn(this, (RecChartA.__proto__ || Object.getPrototypeOf(RecChartA)).call(this, props));
 
-    _this4.state = {};
+    _this4.state = {
+      color: ["blue", "red", "yellow"]
+    };
     _this4.handleClick = _this4.handleClick.bind(_this4);
     _this4.chartdraw = _this4.chartdraw.bind(_this4);
     return _this4;
@@ -39117,19 +39123,25 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
       var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
 
-      var average_line = d3.line().x(function (d) {
+      var average_line = d3.line().defined(function (d) {
+        return d.average_price;
+      }).x(function (d) {
         return xScale(d.date);
       }).y(function (d) {
         return yScale(d.average_price);
       });
 
-      var lowest_line = d3.line().x(function (d) {
+      var lowest_line = d3.line().defined(function (d) {
+        return d.lowest_price;
+      }).x(function (d) {
         return xScale(d.date);
       }).y(function (d) {
         return yScale(d.lowest_price);
       });
 
-      var highest_line = d3.line().x(function (d) {
+      var highest_line = d3.line().defined(function (d) {
+        return d.highest_price;
+      }).x(function (d) {
         return xScale(d.date);
       }).y(function (d) {
         return yScale(d.highest_price);
@@ -39149,14 +39161,26 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
         return Math.max(d.lowest_price, d.average_price, d.highest_price);
       })]);
 
-      svg.append("path").data([data]).attr("class", "line").attr("stroke", "yellow").attr("d", highest_line);
+      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[0]).attr("d", highest_line);
 
-      svg.append("path").data([data]).attr("class", "line").style("stroke", "blue").attr("d", average_line);
+      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[1]).attr("d", average_line);
 
-      svg.append("path").data([data]).attr("class", "line").style("stroke", "red").attr("d", lowest_line);
+      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[2]).attr("d", lowest_line);
 
       svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
       svg.append("g").call(d3.axisRight(yScale));
+
+      svg.selectAll(".dot2").data(data.filter(function (d) {
+        return d.highest_price;
+      })).enter().append("circle").attr("class", "dot").attr("cx", highest_line.x()).attr("cy", highest_line.y()).attr("r", 3.5).style("fill", this.state.color[0]);
+
+      svg.selectAll(".dot1").data(data.filter(function (d) {
+        return d.average_price;
+      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", 3.5).style("fill", this.state.color[1]);
+
+      svg.selectAll(".dot3").data(data.filter(function (d) {
+        return d.lowest_price;
+      })).enter().append("circle").attr("class", "dot").attr("cx", lowest_line.x()).attr("cy", lowest_line.y()).attr("r", 3.5).style("fill", this.state.color[2]);
     }
   }, {
     key: "handleClick",
@@ -61194,7 +61218,7 @@ exports = module.exports = __webpack_require__(931)(false);
 
 
 // module
-exports.push([module.i, "/**\n * Copyright 2015 Google Inc. All Rights Reserved.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\nhtml, body {\n  font-family: 'Roboto', 'Helvetica', sans-serif;\n}\n\nsvg{\n  width:100%;\n  height:100%;\n}\n.line {\n  fill: none;\n  stroke: steelblue;\n  stroke-width: 2px;\n}\n\nimg {\n    width: 100%;\n    height: auto;\n}\n\n.text{\n  display: flex\n}\n\n.filter {\n  width:100%;\n  min-height:10px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.dashboard {\n  width: 100%;\n  min-height: 300px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.chart {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  width: 100%;\n  min-height: 300px;\n}\n.demo-avatar {\n  width: 48px;\n  height: 48px;\n  border-radius: 24px;\n}\n.demo-layout .mdl-layout__header .mdl-layout__drawer-button {\n  color: rgba(0, 0, 0, 0.54);\n}\n.mdl-layout__drawer .avatar {\n  margin-bottom: 16px;\n}\n.demo-drawer {\n  border: none;\n}\n/* iOS Safari specific workaround */\n.demo-drawer .mdl-menu__container {\n  z-index: 1;\n}\n.demo-drawer .demo-navigation {\n  z-index: 1;\n}\n/* END iOS Safari specific workaround */\n.demo-drawer .mdl-menu .mdl-menu__item {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.demo-drawer-header {\n  box-sizing: border-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-justify-content: flex-end;\n      -ms-flex-pack: end;\n          justify-content: flex-end;\n  padding: 16px;\n  height: 58px;\n}\n.demo-avatar-dropdown {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n}\n\n.demo-navigation {\n  -webkit-flex-grow: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n.demo-layout .demo-navigation .mdl-navigation__link {\n  display: -webkit-flex !important;\n  display: -ms-flexbox !important;\n  display: flex !important;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  color: rgba(255, 255, 255, 0.56);\n  font-weight: 500;\n}\n.demo-layout .demo-navigation .mdl-navigation__link:hover {\n  background-color: #00BCD4;\n  color: #37474F;\n}\n.demo-navigation .mdl-navigation__link .material-icons {\n  font-size: 24px;\n  color: rgba(255, 255, 255, 0.56);\n  margin-right: 32px;\n}\n\n.demo-content {\n  max-width: 1080px;\n}\n\n.demo-charts {\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.demo-chart:nth-child(1) {\n  color: #ACEC00;\n}\n.demo-chart:nth-child(2) {\n  color: #00BBD6;\n}\n.demo-chart:nth-child(3) {\n  color: #BA65C9;\n}\n.demo-chart:nth-child(4) {\n  color: #EF3C79;\n}\n.demo-graphs {\n  padding: 16px 32px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch;\n}\n/* TODO: Find a proper solution to have the graphs\n * not float around outside their container in IE10/11.\n * Using a browserhacks.com solution for now.\n */\n_:-ms-input-placeholder, :root .demo-graphs {\n  min-height: 664px;\n}\n_:-ms-input-placeholder, :root .demo-graph {\n  max-height: 300px;\n}\n/* TODO end */\n.demo-graph:nth-child(1) {\n  color: #00b9d8;\n}\n.demo-graph:nth-child(2) {\n  color: #d9006e;\n}\n\n.demo-cards {\n  -webkit-align-items: flex-start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  -webkit-align-content: flex-start;\n      -ms-flex-line-pack: start;\n          align-content: flex-start;\n}\n.demo-cards .demo-separator {\n  height: 32px;\n}\n.demo-cards .mdl-card__title.mdl-card__title {\n  color: white;\n  font-size: 24px;\n  font-weight: 400;\n}\n.demo-cards ul {\n  padding: 0;\n}\n.demo-cards h3 {\n  font-size: 1em;\n}\n/*\n.demo-updates .mdl-card__title {\n  min-height: 200px;\n  background-image: url('images/dog.png');\n  background-position: 90% 100%;\n  background-repeat: no-repeat;\n}\n*/\n.demo-cards .mdl-card__actions a {\n  color: #00BCD4;\n  text-decoration: none;\n}\n\n.demo-options h3 {\n  margin: 0;\n}\n.demo-options .mdl-checkbox__box-outline {\n  border-color: rgba(255, 255, 255, 0.89);\n}\n.demo-options ul {\n  margin: 0;\n  list-style-type: none;\n}\n.demo-options li {\n  margin: 4px 0;\n}\n.demo-options .material-icons {\n  color: rgba(255, 255, 255, 0.89);\n}\n.demo-options .mdl-card__actions {\n  height: 64px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  box-sizing: border-box;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n", ""]);
+exports.push([module.i, "/**\n * Copyright 2015 Google Inc. All Rights Reserved.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\nhtml, body {\n  font-family: 'Roboto', 'Helvetica', sans-serif;\n}\n\nsvg{\n  width:100%;\n  height:100%;\n}\n.line {\n  fill: none;\n  stroke: steelblue;\n  stroke-width: 3px;\n}\n\nimg {\n    width: 100%;\n    height: auto;\n}\n\n.text{\n  display: flex\n}\n\n.filter {\n  width:100%;\n  min-height:10px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.dashboard {\n  width: 100%;\n  min-height: 300px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.chart {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  width: 100%;\n  min-height: 300px;\n}\n.demo-avatar {\n  width: 48px;\n  height: 48px;\n  border-radius: 24px;\n}\n.demo-layout .mdl-layout__header .mdl-layout__drawer-button {\n  color: rgba(0, 0, 0, 0.54);\n}\n.mdl-layout__drawer .avatar {\n  margin-bottom: 16px;\n}\n.demo-drawer {\n  border: none;\n}\n/* iOS Safari specific workaround */\n.demo-drawer .mdl-menu__container {\n  z-index: 1;\n}\n.demo-drawer .demo-navigation {\n  z-index: 1;\n}\n/* END iOS Safari specific workaround */\n.demo-drawer .mdl-menu .mdl-menu__item {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.demo-drawer-header {\n  box-sizing: border-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-justify-content: flex-end;\n      -ms-flex-pack: end;\n          justify-content: flex-end;\n  padding: 16px;\n  height: 58px;\n}\n.demo-avatar-dropdown {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n}\n\n.demo-navigation {\n  -webkit-flex-grow: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n.demo-layout .demo-navigation .mdl-navigation__link {\n  display: -webkit-flex !important;\n  display: -ms-flexbox !important;\n  display: flex !important;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  color: rgba(255, 255, 255, 0.56);\n  font-weight: 500;\n}\n.demo-layout .demo-navigation .mdl-navigation__link:hover {\n  background-color: #00BCD4;\n  color: #37474F;\n}\n.demo-navigation .mdl-navigation__link .material-icons {\n  font-size: 24px;\n  color: rgba(255, 255, 255, 0.56);\n  margin-right: 32px;\n}\n\n.demo-content {\n  max-width: 1080px;\n}\n\n.demo-charts {\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.demo-chart:nth-child(1) {\n  color: #ACEC00;\n}\n.demo-chart:nth-child(2) {\n  color: #00BBD6;\n}\n.demo-chart:nth-child(3) {\n  color: #BA65C9;\n}\n.demo-chart:nth-child(4) {\n  color: #EF3C79;\n}\n.demo-graphs {\n  padding: 16px 32px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch;\n}\n/* TODO: Find a proper solution to have the graphs\n * not float around outside their container in IE10/11.\n * Using a browserhacks.com solution for now.\n */\n_:-ms-input-placeholder, :root .demo-graphs {\n  min-height: 664px;\n}\n_:-ms-input-placeholder, :root .demo-graph {\n  max-height: 300px;\n}\n/* TODO end */\n.demo-graph:nth-child(1) {\n  color: #00b9d8;\n}\n.demo-graph:nth-child(2) {\n  color: #d9006e;\n}\n\n.demo-cards {\n  -webkit-align-items: flex-start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  -webkit-align-content: flex-start;\n      -ms-flex-line-pack: start;\n          align-content: flex-start;\n}\n.demo-cards .demo-separator {\n  height: 32px;\n}\n.demo-cards .mdl-card__title.mdl-card__title {\n  color: white;\n  font-size: 24px;\n  font-weight: 400;\n}\n.demo-cards ul {\n  padding: 0;\n}\n.demo-cards h3 {\n  font-size: 1em;\n}\n/*\n.demo-updates .mdl-card__title {\n  min-height: 200px;\n  background-image: url('images/dog.png');\n  background-position: 90% 100%;\n  background-repeat: no-repeat;\n}\n*/\n.demo-cards .mdl-card__actions a {\n  color: #00BCD4;\n  text-decoration: none;\n}\n\n.demo-options h3 {\n  margin: 0;\n}\n.demo-options .mdl-checkbox__box-outline {\n  border-color: rgba(255, 255, 255, 0.89);\n}\n.demo-options ul {\n  margin: 0;\n  list-style-type: none;\n}\n.demo-options li {\n  margin: 4px 0;\n}\n.demo-options .material-icons {\n  color: rgba(255, 255, 255, 0.89);\n}\n.demo-options .mdl-card__actions {\n  height: 64px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  box-sizing: border-box;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n", ""]);
 
 // exports
 

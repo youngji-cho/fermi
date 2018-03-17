@@ -5,6 +5,7 @@ export class SmpChartA extends React.Component{
   constructor(props){
     super(props);
     this.state={
+      color:"steelblue"
     };
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
@@ -22,7 +23,7 @@ export class SmpChartA extends React.Component{
       .x(function(d){return xScale(d.date)})
       .y(function(d){return yScale(d.total_price)});
 
-    let recSvg=d3.select("#SmpChartA")
+    let svg=d3.select("#SmpChartA")
       .attr("width",width + margin.left + margin.right)
       .attr("height",height + margin.top + margin.bottom)
       .attr('preserveAspectRatio', 'xMinYMin meet')
@@ -36,17 +37,27 @@ export class SmpChartA extends React.Component{
       return d.total_price;
     }));
 
-    recSvg.append("path")
+    svg.append("path")
       .data([data])
       .attr("class", "line")
-      .attr("d", line);
+      .attr("d", line)
+      .style("stroke",this.state.color);
 
-    recSvg.append("g")
+    svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisTop(xScale)
       .tickFormat(d3.timeFormat("%Y-%m-%d")));
-    recSvg.append("g")
+    svg.append("g")
       .call(d3.axisRight(yScale));
+
+    svg.selectAll(".dot")
+      .data(data)
+      .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", line.x())
+        .attr("cy", line.y())
+        .attr("r", 3.5)
+        .style("fill",this.state.color);
   }
 
   handleClick(e){
@@ -98,6 +109,7 @@ export class RecChartA extends React.Component{
   constructor(props){
     super(props);
     this.state={
+      color:["blue","red","yellow"]
     };
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
@@ -113,14 +125,17 @@ export class RecChartA extends React.Component{
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
 
     let average_line=d3.line()
+      .defined(function(d) { return d.average_price; })
       .x(function(d){return xScale(d.date)})
       .y(function(d){return yScale(d.average_price)});
 
     let lowest_line=d3.line()
+      .defined(function(d) { return d.lowest_price; })
       .x(function(d){return xScale(d.date)})
       .y(function(d){return yScale(d.lowest_price)});
 
     let highest_line=d3.line()
+      .defined(function(d) { return d.highest_price; })
       .x(function(d){return xScale(d.date)})
       .y(function(d){return yScale(d.highest_price)});
 
@@ -143,19 +158,19 @@ export class RecChartA extends React.Component{
     svg.append("path")
       .data([data])
       .attr("class", "line")
-      .attr("stroke","yellow")
+      .style("stroke",this.state.color[0])
       .attr("d", highest_line);
 
     svg.append("path")
       .data([data])
       .attr("class", "line")
-      .style("stroke", "blue")
+      .style("stroke",this.state.color[1] )
       .attr("d", average_line);
 
     svg.append("path")
       .data([data])
       .attr("class", "line")
-      .style("stroke", "red")
+      .style("stroke", this.state.color[2])
       .attr("d", lowest_line);
 
     svg.append("g")
@@ -164,6 +179,33 @@ export class RecChartA extends React.Component{
       .tickFormat(d3.timeFormat("%Y-%m-%d")));
     svg.append("g")
       .call(d3.axisRight(yScale));
+
+    svg.selectAll(".dot2")
+      .data(data.filter(function(d){return d.highest_price}))
+      .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", highest_line.x())
+        .attr("cy", highest_line.y())
+        .attr("r", 3.5)
+        .style("fill",this.state.color[0]);
+
+    svg.selectAll(".dot1")
+      .data(data.filter(function(d){return d.average_price}))
+      .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", average_line.x())
+        .attr("cy", average_line.y())
+        .attr("r", 3.5)
+        .style("fill",this.state.color[1]);
+
+    svg.selectAll(".dot3")
+      .data(data.filter(function(d){return d.lowest_price}))
+      .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", lowest_line.x())
+        .attr("cy", lowest_line.y())
+        .attr("r", 3.5)
+        .style("fill",this.state.color[2]);
   }
 
   handleClick(e){

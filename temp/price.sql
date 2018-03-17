@@ -1,30 +1,32 @@
 create database energy;
 use energy;
 
-create table `rec_price`(
+create table energy.`rec_price`(
+    `id` int auto_increment,
 	`date` date not null,
-    `land_or_jeju` enum('land','jeju','total'),
-    `average_price` mediumint,
-    `lowest_price` mediumint,
-    `success_amount` mediumint,
+    `land_or_jeju` enum('total','land','jeju'),
+    `average_price` int,
+    `lowest_price` int,
+    `highest_price` int,
+    `success_amount` int,
     `sucess_deals` mediumint,
-    `transaction_money` mediumint,
-    `sell_amount` mediumint,
+    `transaction_money` bigint,
+    `sell_amount` int,
     `sell_deals` mediumint,
     `buy_amount` mediumint,
     `buy_deals` mediumint,
-    `solar_non_solar` enum('태양광','비태양광','통합'),
-    primary key(`date`)
+    `solar_non_solar` enum('solar','non-solar','total'),
+    primary key(`id`)
 )DEFAULT CHARSET=utf8;
 
-create table `smp_price`(
+create table energy.`smp_price`(
+    `id` int auto_increment,
 	`date` date not null,
     `land_price`mediumint,
     `jeju_price` mediumint,
     `total_price` mediumint,
-    primary key(`date`)
-)DEFAULT CHARSET=utf8;
-
+    primary key(`id`)
+);
 
 load data local infile '/Users/youngji/github/data/smp.csv' into table energy.smp_price charset 'utf8' fields terminated by ',' lines terminated by '/n' ignore 1 rows;
 show warnings;
