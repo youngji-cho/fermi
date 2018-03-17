@@ -5,8 +5,6 @@ export class SmpChartA extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      startDate: new Date("1990-05-05"),
-      endDate: new Date()
     };
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
@@ -54,14 +52,12 @@ export class SmpChartA extends React.Component{
   handleClick(e){
      d3.selectAll("#SmpChartA > *").remove();
      let dayMinus=parseInt(e.target.value);
-     let today=new Date()
-     today.setDate(today.getDate()-dayMinus)
-     this.setState({
-       startDate: today
-     })
+     let startDate=new Date();
+     let endDate=new Date();
+     startDate.setDate(startDate.getDate()-dayMinus)
 
-     let startQuery= `${this.state.startDate.getFullYear()}-${this.state.startDate.getMonth()+1}-${this.state.startDate.getDay()}`;
-     let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
+     let startQuery= `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDay()}`;
+     let endQuery= `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDay()}`;
      console.log(startQuery,endQuery)
 
      fetch(`/smp_data/total_price/${startQuery}/${endQuery}`).then(
@@ -75,10 +71,7 @@ export class SmpChartA extends React.Component{
        }).then(jsonResponse => this.chartdraw(jsonResponse));
   }
   componentDidMount() {
-    let startQuery= `${this.state.startDate.getFullYear()}-${this.state.startDate.getMonth()+1}-${this.state.startDate.getDay()}`;
-    let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
-    console.log(startQuery,endQuery)
-    fetch(`/smp_data/total_price/${startQuery}/${endQuery}`).then(
+    fetch(`/smp_data/total_price/2000-01-01/2100-12-31`).then(
       response => {
        if (response.ok) {
          return response.json();
@@ -105,8 +98,6 @@ export class RecChartA extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      startDate: new Date("1990-05-05"),
-      endDate: new Date()
     };
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
@@ -120,12 +111,20 @@ export class RecChartA extends React.Component{
 
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
-    let line=d3.line()
+
+    let average_line=d3.line()
       .x(function(d){return xScale(d.date)})
       .y(function(d){return yScale(d.average_price)});
 
+    let lowest_line=d3.line()
+      .x(function(d){return xScale(d.date)})
+      .y(function(d){return yScale(d.lowest_price)});
 
-    let recSvg=d3.select("#RecChartA")
+    let highest_line=d3.line()
+      .x(function(d){return xScale(d.date)})
+      .y(function(d){return yScale(d.highest_price)});
+
+    let svg=d3.select("#RecChartA")
       .attr("width",width + margin.left + margin.right)
       .attr("height",height + margin.top + margin.bottom)
       .attr('preserveAspectRatio', 'xMinYMin meet')
@@ -135,49 +134,54 @@ export class RecChartA extends React.Component{
     xScale.domain(d3.extent(data,function(d){
       return d.date;
     }));
-    yScale.domain(d3.extent(data,function(d){
-      return d.average_price;
-    }));
+    yScale.domain([d3.min(data,function(d){
+      return Math.min(d.lowest_price,d.average_price,d.highest_price);
+    }),d3.max(data,function(d){
+      return Math.max(d.lowest_price,d.average_price,d.highest_price);
+    })]);
 
-    recSvg.append("path")
+    svg.append("path")
       .data([data])
       .attr("class", "line")
-      .attr("d", line);
+      .attr("stroke","yellow")
+      .attr("d", highest_line);
 
-    recSvg.append("g")
+    svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", "blue")
+      .attr("d", average_line);
+
+    svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", "red")
+      .attr("d", lowest_line);
+
+    svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisTop(xScale)
       .tickFormat(d3.timeFormat("%Y-%m-%d")));
-    recSvg.append("g")
+    svg.append("g")
       .call(d3.axisRight(yScale));
   }
 
   handleClick(e){
-     d3.selectAll("#RecChartA > *").remove();
-     let dayMinus=parseInt(e.target.value);
-     let today=new Date()
-     today.setDate(today.getDate()-dayMinus)
-     this.setState({
-       startDate: today
-     })
-
-     let startQuery= `${this.state.startDate.getFullYear()}-${this.state.startDate.getMonth()+1}-${this.state.startDate.getDay()}`;
-     let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
-
-     fetch(`/rec_data/average_price/${startQuery}/${endQuery}/total`).then(
-       response => {
-       	if (response.ok) {
-          return response.json();
-         }
-         throw new Error('Request failed!');
-       }, networkError => {
+    d3.selectAll("#RecChartA > *").remove();
+    let land=e.target.value;
+    fetch(`/rec_data1/average_price/lowest_price/highest_price/${land}`).then(
+      response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Request failed!');
+      }, networkError => {
          console.log(networkError.message);
-       }).then(jsonResponse => this.chartdraw(jsonResponse));
+      }).then(jsonResponse => this.chartdraw(jsonResponse));
   }
+
   componentDidMount() {
-    let startQuery= `${this.state.startDate.getFullYear()}-${this.state.startDate.getMonth()+1}-${this.state.startDate.getDay()}`;
-    let endQuery= `${this.state.endDate.getFullYear()}-${this.state.endDate.getMonth()+1}-${this.state.endDate.getDay()}`;
-    fetch(`/rec_data/average_price/${startQuery}/${endQuery}/total`).then(
+    fetch(`/rec_data1/average_price/lowest_price/highest_price/total`).then(
       response => {
        if (response.ok) {
          return response.json();
@@ -190,10 +194,9 @@ export class RecChartA extends React.Component{
   render(){
     return(
       <div>
-          <TimeButton buttonName="전체" buttonValue="10000" onClick={this.handleClick} />
-          <TimeButton buttonName="6개월전" buttonValue="180" onClick={this.handleClick} />
-          <TimeButton buttonName="3개월전" buttonValue="90" onClick={this.handleClick} />
-          <TimeButton buttonName="1개월전" buttonValue="30" onClick={this.handleClick} />
+          <TimeButton buttonName="제주" buttonValue="jeju" onClick={this.handleClick} />
+          <TimeButton buttonName="육지" buttonValue="land" onClick={this.handleClick} />
+          <TimeButton buttonName="통합" buttonValue="total" onClick={this.handleClick} />
         <svg id="RecChartA"></svg>
       </div>
     )

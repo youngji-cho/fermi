@@ -32,8 +32,9 @@ app.get('/smp_data/:price/:start_date/:end_date/', (req, res) => {
    })
  });
 
-app.get('/rec_data/:price/:start_date/:end_date/:land', (req, res) => {
-  let sql = `select date,${req.params.price} from energy.rec_price where land_or_jeju ='${req.params.land}' and date >='${req.params.start_date}' and date <='${req.params.end_date}' order by date` ;
+app.get('/rec_data1/:price1/:price2/:price3/:land', (req, res) => {
+  let sql = `select date,${req.params.price1},${req.params.price2},${req.params.price3} from energy.rec_price where land_or_jeju ='${req.params.land}' order by date`;
+
   conn.query(sql,(err,rows,fields)=>{
      if(err){
        console.log('error');
@@ -48,7 +49,6 @@ app.get('/rec_data/:price/:start_date/:end_date/:land', (req, res) => {
 
 app.get('*', (req, res, next) => {
   const bundleUrl = /bundle.js/;
-  const cssUrl =/styles.css/;
   if(bundleUrl.test(req.url)){
     console.log(`bundle url is ${req.url}`);
     res.sendFile(path.resolve(__dirname, './../Fermi-Client/bundle.js'));

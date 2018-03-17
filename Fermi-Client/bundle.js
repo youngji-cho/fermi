@@ -38993,10 +38993,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (SmpChartA.__proto__ || Object.getPrototypeOf(SmpChartA)).call(this, props));
 
-    _this.state = {
-      startDate: new Date("1990-05-05"),
-      endDate: new Date()
-    };
+    _this.state = {};
     _this.handleClick = _this.handleClick.bind(_this);
     _this.chartdraw = _this.chartdraw.bind(_this);
     return _this;
@@ -39042,14 +39039,12 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
 
       d3.selectAll("#SmpChartA > *").remove();
       var dayMinus = parseInt(e.target.value);
-      var today = new Date();
-      today.setDate(today.getDate() - dayMinus);
-      this.setState({
-        startDate: today
-      });
+      var startDate = new Date();
+      var endDate = new Date();
+      startDate.setDate(startDate.getDate() - dayMinus);
 
-      var startQuery = this.state.startDate.getFullYear() + "-" + (this.state.startDate.getMonth() + 1) + "-" + this.state.startDate.getDay();
-      var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
+      var startQuery = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDay();
+      var endQuery = endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDay();
       console.log(startQuery, endQuery);
 
       fetch("/smp_data/total_price/" + startQuery + "/" + endQuery).then(function (response) {
@@ -39068,10 +39063,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
     value: function componentDidMount() {
       var _this3 = this;
 
-      var startQuery = this.state.startDate.getFullYear() + "-" + (this.state.startDate.getMonth() + 1) + "-" + this.state.startDate.getDay();
-      var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
-      console.log(startQuery, endQuery);
-      fetch("/smp_data/total_price/" + startQuery + "/" + endQuery).then(function (response) {
+      fetch("/smp_data/total_price/2000-01-01/2100-12-31").then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39108,10 +39100,7 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
 
     var _this4 = _possibleConstructorReturn(this, (RecChartA.__proto__ || Object.getPrototypeOf(RecChartA)).call(this, props));
 
-    _this4.state = {
-      startDate: new Date("1990-05-05"),
-      endDate: new Date()
-    };
+    _this4.state = {};
     _this4.handleClick = _this4.handleClick.bind(_this4);
     _this4.chartdraw = _this4.chartdraw.bind(_this4);
     return _this4;
@@ -39127,13 +39116,26 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
 
       var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
       var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
-      var line = d3.line().x(function (d) {
+
+      var average_line = d3.line().x(function (d) {
         return xScale(d.date);
       }).y(function (d) {
         return yScale(d.average_price);
       });
 
-      var recSvg = d3.select("#RecChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+      var lowest_line = d3.line().x(function (d) {
+        return xScale(d.date);
+      }).y(function (d) {
+        return yScale(d.lowest_price);
+      });
+
+      var highest_line = d3.line().x(function (d) {
+        return xScale(d.date);
+      }).y(function (d) {
+        return yScale(d.highest_price);
+      });
+
+      var svg = d3.select("#RecChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
 
       data.forEach(function (d) {
         d.date = parseTime(d.date);
@@ -39141,14 +39143,20 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       xScale.domain(d3.extent(data, function (d) {
         return d.date;
       }));
-      yScale.domain(d3.extent(data, function (d) {
-        return d.average_price;
-      }));
+      yScale.domain([d3.min(data, function (d) {
+        return Math.min(d.lowest_price, d.average_price, d.highest_price);
+      }), d3.max(data, function (d) {
+        return Math.max(d.lowest_price, d.average_price, d.highest_price);
+      })]);
 
-      recSvg.append("path").data([data]).attr("class", "line").attr("d", line);
+      svg.append("path").data([data]).attr("class", "line").attr("stroke", "yellow").attr("d", highest_line);
 
-      recSvg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
-      recSvg.append("g").call(d3.axisRight(yScale));
+      svg.append("path").data([data]).attr("class", "line").style("stroke", "blue").attr("d", average_line);
+
+      svg.append("path").data([data]).attr("class", "line").style("stroke", "red").attr("d", lowest_line);
+
+      svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
+      svg.append("g").call(d3.axisRight(yScale));
     }
   }, {
     key: "handleClick",
@@ -39156,17 +39164,8 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       var _this5 = this;
 
       d3.selectAll("#RecChartA > *").remove();
-      var dayMinus = parseInt(e.target.value);
-      var today = new Date();
-      today.setDate(today.getDate() - dayMinus);
-      this.setState({
-        startDate: today
-      });
-
-      var startQuery = this.state.startDate.getFullYear() + "-" + (this.state.startDate.getMonth() + 1) + "-" + this.state.startDate.getDay();
-      var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
-
-      fetch("/rec_data/average_price/" + startQuery + "/" + endQuery + "/total").then(function (response) {
+      var land = e.target.value;
+      fetch("/rec_data1/average_price/lowest_price/highest_price/" + land).then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39182,9 +39181,7 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
     value: function componentDidMount() {
       var _this6 = this;
 
-      var startQuery = this.state.startDate.getFullYear() + "-" + (this.state.startDate.getMonth() + 1) + "-" + this.state.startDate.getDay();
-      var endQuery = this.state.endDate.getFullYear() + "-" + (this.state.endDate.getMonth() + 1) + "-" + this.state.endDate.getDay();
-      fetch("/rec_data/average_price/" + startQuery + "/" + endQuery + "/total").then(function (response) {
+      fetch("/rec_data1/average_price/lowest_price/highest_price/total").then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39201,10 +39198,9 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       return _react2.default.createElement(
         "div",
         null,
-        _react2.default.createElement(TimeButton, { buttonName: "\uC804\uCCB4", buttonValue: "10000", onClick: this.handleClick }),
-        _react2.default.createElement(TimeButton, { buttonName: "6\uAC1C\uC6D4\uC804", buttonValue: "180", onClick: this.handleClick }),
-        _react2.default.createElement(TimeButton, { buttonName: "3\uAC1C\uC6D4\uC804", buttonValue: "90", onClick: this.handleClick }),
-        _react2.default.createElement(TimeButton, { buttonName: "1\uAC1C\uC6D4\uC804", buttonValue: "30", onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: "\uC81C\uC8FC", buttonValue: "jeju", onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: "\uC721\uC9C0", buttonValue: "land", onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: "\uD1B5\uD569", buttonValue: "total", onClick: this.handleClick }),
         _react2.default.createElement("svg", { id: "RecChartA" })
       );
     }
