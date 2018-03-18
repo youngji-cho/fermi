@@ -5,7 +5,8 @@ export class SmpChartA extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      color:"steelblue"
+      color:"steelblue",
+      legend:"SMP 월간가중평균가격"
     };
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
@@ -17,6 +18,7 @@ export class SmpChartA extends React.Component{
       width=1000,
       height=500;
 
+    let legend={bottom:100,left:50,width:20};
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
     let line=d3.line()
@@ -46,11 +48,12 @@ export class SmpChartA extends React.Component{
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisTop(xScale)
-      .tickFormat(d3.timeFormat("%Y-%m-%d")));
+        .tickFormat(d3.timeFormat("%Y-%m-%d")));
     svg.append("g")
       .call(d3.axisRight(yScale));
 
-    svg.selectAll(".dot")
+    svg.append("g")
+      .selectAll(".dot")
       .data(data)
       .enter().append("circle")
         .attr("class", "dot")
@@ -58,6 +61,28 @@ export class SmpChartA extends React.Component{
         .attr("cy", line.y())
         .attr("r", 3.5)
         .style("fill",this.state.color);
+
+    let legendbox=svg.append('g').selectAll()
+        .data([this.state.color])
+          .enter().append("rect")
+          .attr("width",10)
+          .attr("height",10)
+          .attr("fill",function(d){
+            return d;
+          })
+          .attr("transform",function(d,i){
+            return "translate("+(legend.left+10) +","+ (legend.bottom-i*legend.width)+")"
+          });
+
+      let legendtext=svg.append('g').selectAll()
+          .data([this.state.legend])
+            .enter().append('text')
+            .text(function(d){
+                return d;
+              })
+            .attr("transform",function(d,i){
+              return "translate("+(legend.left+30) +","+ (legend.bottom-i*legend.width+10)+")"
+            });
   }
 
   handleClick(e){
@@ -109,7 +134,8 @@ export class RecChartA extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      color:["blue","red","yellow"]
+      color:["blue","red","yellow"],
+      legend:["평균가(종가)","최고가","최저가"]
     };
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
@@ -120,6 +146,7 @@ export class RecChartA extends React.Component{
     let margin ={top:20, right:20,bottom:30,left:50},
       width=1000,
       height=500;
+    let legend={bottom:height-100,left:50,width:20}
 
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
@@ -159,13 +186,13 @@ export class RecChartA extends React.Component{
       .data([data])
       .attr("class", "line")
       .style("stroke",this.state.color[0])
-      .attr("d", highest_line);
+      .attr("d", average_line);
 
     svg.append("path")
       .data([data])
       .attr("class", "line")
       .style("stroke",this.state.color[1] )
-      .attr("d", average_line);
+      .attr("d", highest_line);
 
     svg.append("path")
       .data([data])
@@ -176,29 +203,33 @@ export class RecChartA extends React.Component{
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisTop(xScale)
-      .tickFormat(d3.timeFormat("%Y-%m-%d")));
+        .tickFormat(d3.timeFormat("%Y-%m-%d")));
+
     svg.append("g")
       .call(d3.axisRight(yScale));
 
-    svg.selectAll(".dot2")
-      .data(data.filter(function(d){return d.highest_price}))
-      .enter().append("circle")
-        .attr("class", "dot")
-        .attr("cx", highest_line.x())
-        .attr("cy", highest_line.y())
-        .attr("r", 3.5)
-        .style("fill",this.state.color[0]);
-
-    svg.selectAll(".dot1")
+    svg.append("g")
+      .selectAll(".dot1")
       .data(data.filter(function(d){return d.average_price}))
       .enter().append("circle")
         .attr("class", "dot")
         .attr("cx", average_line.x())
         .attr("cy", average_line.y())
         .attr("r", 3.5)
+        .style("fill",this.state.color[0]);
+
+    svg.append("g")
+      .selectAll(".dot2")
+      .data(data.filter(function(d){return d.highest_price}))
+      .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", highest_line.x())
+        .attr("cy", highest_line.y())
+        .attr("r", 3.5)
         .style("fill",this.state.color[1]);
 
-    svg.selectAll(".dot3")
+    svg.append("g")
+      .selectAll(".dot3")
       .data(data.filter(function(d){return d.lowest_price}))
       .enter().append("circle")
         .attr("class", "dot")
@@ -206,6 +237,28 @@ export class RecChartA extends React.Component{
         .attr("cy", lowest_line.y())
         .attr("r", 3.5)
         .style("fill",this.state.color[2]);
+
+    let legendbox=svg.append('g').selectAll()
+      .data(this.state.color)
+      .enter().append("rect")
+      .attr("width",10)
+      .attr("height",10)
+      .attr("fill",function(d){
+        return d;
+      })
+      .attr("transform",function(d,i){
+        return "translate("+(legend.left+10) +","+ (legend.bottom-i*legend.width)+")"
+      });
+
+    let legendtext=svg.append('g').selectAll()
+      .data(this.state.legend)
+      .enter().append('text')
+      .text(function(d){
+          return d;
+      })
+      .attr("transform",function(d,i){
+        return "translate("+(legend.left+30) +","+ (legend.bottom-i*legend.width+10)+")"
+      });
   }
 
   handleClick(e){

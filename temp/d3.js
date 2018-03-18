@@ -1,3 +1,41 @@
+let svg=d3.select("#chart")
+
+let legendbox=svg.append('g').selectAll()
+  .data(["yellow","red","blue"])
+  .enter().append("rect")
+  .attr("width",10)
+  .attr("height",10)
+  .attr("fill",function(d){
+    return d;
+  })
+  .attr("transform",function(d,i){
+    return "translate(50,"+ (i*20+20)+")"
+  });
+
+let legendtext=svg.append('g').selectAll()
+  .data([1,2,3])
+  .enter().append('text')
+  .text(function(d){
+    return d;
+  })
+  .attr("transform",function(d,i){
+    return "translate(70,"+ (i*20+30)+")"
+  });
+
+/*
+legend.selectAll()
+  .data([1,2,3])
+  .enter()
+
+
+svg.selectAll('.legends')
+  .data([1,2,3])
+  .enter().append('g')
+*/
+
+
+
+
 function chartdraw(data){
   let parseTime = d3.timeParse("%Y-%m-%d");
   let margin ={top:20, right:20,bottom:30,left:50},

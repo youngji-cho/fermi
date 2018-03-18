@@ -38994,7 +38994,8 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (SmpChartA.__proto__ || Object.getPrototypeOf(SmpChartA)).call(this, props));
 
     _this.state = {
-      color: "steelblue"
+      color: "steelblue",
+      legend: "SMP 월간가중평균가격"
     };
     _this.handleClick = _this.handleClick.bind(_this);
     _this.chartdraw = _this.chartdraw.bind(_this);
@@ -39009,6 +39010,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
           width = 1000,
           height = 500;
 
+      var legend = { bottom: 100, left: 50, width: 20 };
       var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
       var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
       var line = d3.line().x(function (d) {
@@ -39034,7 +39036,19 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
       svg.append("g").call(d3.axisRight(yScale));
 
-      svg.selectAll(".dot").data(data).enter().append("circle").attr("class", "dot").attr("cx", line.x()).attr("cy", line.y()).attr("r", 3.5).style("fill", this.state.color);
+      svg.append("g").selectAll(".dot").data(data).enter().append("circle").attr("class", "dot").attr("cx", line.x()).attr("cy", line.y()).attr("r", 3.5).style("fill", this.state.color);
+
+      var legendbox = svg.append('g').selectAll().data([this.state.color]).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 10) + "," + (legend.bottom - i * legend.width) + ")";
+      });
+
+      var legendtext = svg.append('g').selectAll().data([this.state.legend]).enter().append('text').text(function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 30) + "," + (legend.bottom - i * legend.width + 10) + ")";
+      });
     }
   }, {
     key: "handleClick",
@@ -39105,7 +39119,8 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
     var _this4 = _possibleConstructorReturn(this, (RecChartA.__proto__ || Object.getPrototypeOf(RecChartA)).call(this, props));
 
     _this4.state = {
-      color: ["blue", "red", "yellow"]
+      color: ["blue", "red", "yellow"],
+      legend: ["평균가(종가)", "최고가", "최저가"]
     };
     _this4.handleClick = _this4.handleClick.bind(_this4);
     _this4.chartdraw = _this4.chartdraw.bind(_this4);
@@ -39119,6 +39134,7 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       var margin = { top: 20, right: 20, bottom: 30, left: 50 },
           width = 1000,
           height = 500;
+      var legend = { bottom: height - 100, left: 50, width: 20 };
 
       var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
       var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
@@ -39161,26 +39177,39 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
         return Math.max(d.lowest_price, d.average_price, d.highest_price);
       })]);
 
-      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[0]).attr("d", highest_line);
+      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[0]).attr("d", average_line);
 
-      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[1]).attr("d", average_line);
+      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[1]).attr("d", highest_line);
 
       svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[2]).attr("d", lowest_line);
 
       svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
+
       svg.append("g").call(d3.axisRight(yScale));
 
-      svg.selectAll(".dot2").data(data.filter(function (d) {
-        return d.highest_price;
-      })).enter().append("circle").attr("class", "dot").attr("cx", highest_line.x()).attr("cy", highest_line.y()).attr("r", 3.5).style("fill", this.state.color[0]);
-
-      svg.selectAll(".dot1").data(data.filter(function (d) {
+      svg.append("g").selectAll(".dot1").data(data.filter(function (d) {
         return d.average_price;
-      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", 3.5).style("fill", this.state.color[1]);
+      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", 3.5).style("fill", this.state.color[0]);
 
-      svg.selectAll(".dot3").data(data.filter(function (d) {
+      svg.append("g").selectAll(".dot2").data(data.filter(function (d) {
+        return d.highest_price;
+      })).enter().append("circle").attr("class", "dot").attr("cx", highest_line.x()).attr("cy", highest_line.y()).attr("r", 3.5).style("fill", this.state.color[1]);
+
+      svg.append("g").selectAll(".dot3").data(data.filter(function (d) {
         return d.lowest_price;
       })).enter().append("circle").attr("class", "dot").attr("cx", lowest_line.x()).attr("cy", lowest_line.y()).attr("r", 3.5).style("fill", this.state.color[2]);
+
+      var legendbox = svg.append('g').selectAll().data(this.state.color).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 10) + "," + (legend.bottom - i * legend.width) + ")";
+      });
+
+      var legendtext = svg.append('g').selectAll().data(this.state.legend).enter().append('text').text(function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 30) + "," + (legend.bottom - i * legend.width + 10) + ")";
+      });
     }
   }, {
     key: "handleClick",

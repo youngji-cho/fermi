@@ -21,7 +21,7 @@ create table energy.`rec_price`(
 
 create table energy.`smp_price`(
     `id` int auto_increment,
-	`date` date not null,
+		`date` date not null,
     `land_price`mediumint,
     `jeju_price` mediumint,
     `total_price` mediumint,
