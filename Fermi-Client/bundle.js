@@ -38983,7 +38983,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var d3 = __webpack_require__(383);
+d3 = __webpack_require__(383);
 
 var SmpChartA = exports.SmpChartA = function (_React$Component) {
   _inherits(SmpChartA, _React$Component);
@@ -39003,13 +39003,13 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
   }
 
   _createClass(SmpChartA, [{
-    key: "chartdraw",
+    key: 'chartdraw',
     value: function chartdraw(data) {
       var parseTime = d3.timeParse("%Y-%m-%d");
       var margin = { top: 20, right: 20, bottom: 30, left: 50 },
           width = 1000,
           height = 500;
-
+      var radius = 3.5;
       var legend = { bottom: 100, left: 50, width: 20 };
       var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
       var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
@@ -39032,12 +39032,26 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       }));
 
       svg.append("path").data([data]).attr("class", "line").attr("d", line).style("stroke", this.state.color);
-
       svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
       svg.append("g").call(d3.axisRight(yScale));
 
-      svg.append("g").selectAll(".dot").data(data).enter().append("circle").attr("class", "dot").attr("cx", line.x()).attr("cy", line.y()).attr("r", 3.5).style("fill", this.state.color);
-
+      svg.append("g").selectAll(".dot").data(data).enter().append("circle").attr("class", "dot").attr("cx", line.x()).attr("cy", line.y()).attr("r", radius).style("fill", this.state.color).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut);
+      //EventHandler
+      function handleMouseOver(d, i) {
+        d3.select(this).attr("r", radius * 3);
+        svg.append("text").attr("id", 'smpdot-' + i).attr("x", function () {
+          return xScale(d.date) - 30;
+        }).attr("y", function () {
+          return yScale(d.total_price) - 15;
+        }).text(function () {
+          return '\uC2DC\uAE30: ' + d.date.getFullYear() + '-' + (d.date.getMonth() + 1) + '-' + d.date.getDate() + ', \uAC00\uACA9: ' + d.total_price;
+        });
+      }
+      function handleMouseOut(d, i) {
+        d3.select(this).attr("r", radius);
+        d3.select('#smpdot-' + i).remove(); // Remove text location
+      }
+      //Legend
       var legendbox = svg.append('g').selectAll().data([this.state.color]).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
         return d;
       }).attr("transform", function (d, i) {
@@ -39051,7 +39065,7 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       });
     }
   }, {
-    key: "handleClick",
+    key: 'handleClick',
     value: function handleClick(e) {
       var _this2 = this;
 
@@ -39061,11 +39075,11 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       var endDate = new Date();
       startDate.setDate(startDate.getDate() - dayMinus);
 
-      var startQuery = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDay();
-      var endQuery = endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDay();
+      var startQuery = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDay();
+      var endQuery = endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDay();
       console.log(startQuery, endQuery);
 
-      fetch("/smp_data/total_price/" + startQuery + "/" + endQuery).then(function (response) {
+      fetch('/smp_data/total_price/' + startQuery + '/' + endQuery).then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39077,11 +39091,11 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       });
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       var _this3 = this;
 
-      fetch("/smp_data/total_price/2000-01-01/2100-12-31").then(function (response) {
+      fetch('/smp_data/total_price/2000-01-01/2100-12-31').then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39093,16 +39107,16 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "div",
+        'div',
         null,
-        _react2.default.createElement(TimeButton, { buttonName: "\uC804\uCCB4", buttonValue: "10000", onClick: this.handleClick }),
-        _react2.default.createElement(TimeButton, { buttonName: "\uCD5C\uADFC 3\uB144", buttonValue: "1095", onClick: this.handleClick }),
-        _react2.default.createElement(TimeButton, { buttonName: "\uCD5C\uADFC 1\uB144", buttonValue: "365", onClick: this.handleClick }),
-        _react2.default.createElement(TimeButton, { buttonName: "\uCD5C\uADFC 6\uAC1C\uC6D4", buttonValue: "180", onClick: this.handleClick }),
-        _react2.default.createElement("svg", { id: "SmpChartA" })
+        _react2.default.createElement(TimeButton, { buttonName: '\uC804\uCCB4', buttonValue: '10000', onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: '\uCD5C\uADFC 3\uB144', buttonValue: '1095', onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: '\uCD5C\uADFC 1\uB144', buttonValue: '365', onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: '\uCD5C\uADFC 6\uAC1C\uC6D4', buttonValue: '180', onClick: this.handleClick }),
+        _react2.default.createElement('svg', { id: 'SmpChartA' })
       );
     }
   }]);
@@ -39128,13 +39142,14 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
   }
 
   _createClass(RecChartA, [{
-    key: "chartdraw",
+    key: 'chartdraw',
     value: function chartdraw(data) {
       var parseTime = d3.timeParse("%Y-%m-%d");
       var margin = { top: 20, right: 20, bottom: 30, left: 50 },
           width = 1000,
-          height = 500;
+          height = 1000;
       var legend = { bottom: height - 100, left: 50, width: 20 };
+      var radius = 3.5;
 
       var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
       var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
@@ -39189,15 +39204,44 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
 
       svg.append("g").selectAll(".dot1").data(data.filter(function (d) {
         return d.average_price;
-      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", 3.5).style("fill", this.state.color[0]);
+      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", radius).style("fill", this.state.color[0]).on("mouseover", handleMouseOver1).on("mouseout", handleMouseOut);
+
+      function handleMouseOver1(d, i) {
+        d3.select(this).attr("r", radius * 3);
+        notice(d.date, d.average_price, i);
+      }
 
       svg.append("g").selectAll(".dot2").data(data.filter(function (d) {
         return d.highest_price;
-      })).enter().append("circle").attr("class", "dot").attr("cx", highest_line.x()).attr("cy", highest_line.y()).attr("r", 3.5).style("fill", this.state.color[1]);
+      })).enter().append("circle").attr("class", "dot").attr("cx", highest_line.x()).attr("cy", highest_line.y()).attr("r", radius).style("fill", this.state.color[1]).on("mouseover", handleMouseOver2).on("mouseout", handleMouseOut);
+
+      function handleMouseOver2(d, i) {
+        d3.select(this).attr("r", radius * 3);
+        notice(d.date, d.highest_price, i);
+      }
 
       svg.append("g").selectAll(".dot3").data(data.filter(function (d) {
         return d.lowest_price;
-      })).enter().append("circle").attr("class", "dot").attr("cx", lowest_line.x()).attr("cy", lowest_line.y()).attr("r", 3.5).style("fill", this.state.color[2]);
+      })).enter().append("circle").attr("class", "dot").attr("cx", lowest_line.x()).attr("cy", lowest_line.y()).attr("r", radius).style("fill", this.state.color[2]).on("mouseover", handleMouseOver3).on("mouseout", handleMouseOut);
+
+      function handleMouseOver3(d, i) {
+        d3.select(this).attr("r", radius * 3);
+        notice(d.date, d.lowest_price, i);
+      }
+
+      function notice(x, y, i) {
+        svg.append("text").attr("id", 'recdot-' + i).attr("x", function () {
+          return xScale(x) - 30;
+        }).attr("y", function () {
+          return yScale(y) - 15;
+        }).text(function () {
+          return '\uC2DC\uAE30: ' + x.getFullYear() + '-' + (x.getMonth() + 1) + '-' + x.getDate() + ', \uAC00\uACA9: ' + y;
+        });
+      }
+      function handleMouseOut(d, i) {
+        d3.select(this).attr("r", radius);
+        d3.select('#recdot-' + i).remove(); // Remove text location
+      }
 
       var legendbox = svg.append('g').selectAll().data(this.state.color).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
         return d;
@@ -39212,13 +39256,13 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       });
     }
   }, {
-    key: "handleClick",
+    key: 'handleClick',
     value: function handleClick(e) {
       var _this5 = this;
 
       d3.selectAll("#RecChartA > *").remove();
       var land = e.target.value;
-      fetch("/rec_data1/average_price/lowest_price/highest_price/" + land).then(function (response) {
+      fetch('/rec_data1/average_price/lowest_price/highest_price/' + land).then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39230,11 +39274,11 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       });
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       var _this6 = this;
 
-      fetch("/rec_data1/average_price/lowest_price/highest_price/total").then(function (response) {
+      fetch('/rec_data1/average_price/lowest_price/highest_price/total').then(function (response) {
         if (response.ok) {
           return response.json();
         }
@@ -39246,15 +39290,15 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "div",
+        'div',
         null,
-        _react2.default.createElement(TimeButton, { buttonName: "\uC81C\uC8FC", buttonValue: "jeju", onClick: this.handleClick }),
-        _react2.default.createElement(TimeButton, { buttonName: "\uC721\uC9C0", buttonValue: "land", onClick: this.handleClick }),
-        _react2.default.createElement(TimeButton, { buttonName: "\uD1B5\uD569", buttonValue: "total", onClick: this.handleClick }),
-        _react2.default.createElement("svg", { id: "RecChartA" })
+        _react2.default.createElement(TimeButton, { buttonName: '\uC81C\uC8FC', buttonValue: 'jeju', onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: '\uC721\uC9C0', buttonValue: 'land', onClick: this.handleClick }),
+        _react2.default.createElement(TimeButton, { buttonName: '\uD1B5\uD569', buttonValue: 'total', onClick: this.handleClick }),
+        _react2.default.createElement('svg', { id: 'RecChartA' })
       );
     }
   }]);
@@ -39272,11 +39316,11 @@ var TimeButton = exports.TimeButton = function (_React$Component3) {
   }
 
   _createClass(TimeButton, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "button",
-        { className: "mdl-button mdl-js-button mdl-button--accent", value: this.props.buttonValue, onClick: this.props.onClick },
+        'button',
+        { className: 'mdl-button mdl-js-button mdl-button--accent', value: this.props.buttonValue, onClick: this.props.onClick },
         this.props.buttonName
       );
     }

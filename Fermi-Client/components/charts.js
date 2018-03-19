@@ -1,5 +1,5 @@
 import React from 'react';
-const d3=require("d3");
+d3=require('d3')
 
 export class SmpChartA extends React.Component{
   constructor(props){
@@ -17,7 +17,7 @@ export class SmpChartA extends React.Component{
     let margin ={top:20, right:20,bottom:30,left:50},
       width=1000,
       height=500;
-
+    let radius=3.5;
     let legend={bottom:100,left:50,width:20};
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
@@ -44,7 +44,6 @@ export class SmpChartA extends React.Component{
       .attr("class", "line")
       .attr("d", line)
       .style("stroke",this.state.color);
-
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisTop(xScale)
@@ -59,9 +58,28 @@ export class SmpChartA extends React.Component{
         .attr("class", "dot")
         .attr("cx", line.x())
         .attr("cy", line.y())
-        .attr("r", 3.5)
-        .style("fill",this.state.color);
-
+        .attr("r", radius)
+        .style("fill",this.state.color)
+        .on("mouseover", handleMouseOver)
+        .on("mouseout", handleMouseOut)
+    //EventHandler
+    function handleMouseOver(d,i) {
+      d3.select(this)
+        .attr("r",radius*3);
+      svg.append("text")
+        .attr("id",`smpdot-${i}`)
+        .attr("x",function(){return xScale(d.date) - 30; })
+        .attr("y",function(){return yScale(d.total_price) - 15; })
+        .text(function(){
+          return ( `시기: ${d.date.getFullYear()}-${d.date.getMonth()+1}-${d.date.getDate()}, 가격: ${d.total_price}`);
+        })
+    }
+    function handleMouseOut(d, i) {
+      d3.select(this)
+        .attr("r",radius);
+      d3.select(`#smpdot-${i}`).remove(); // Remove text location
+    }
+    //Legend
     let legendbox=svg.append('g').selectAll()
         .data([this.state.color])
           .enter().append("rect")
@@ -145,8 +163,9 @@ export class RecChartA extends React.Component{
     let parseTime = d3.timeParse("%Y-%m-%d");
     let margin ={top:20, right:20,bottom:30,left:50},
       width=1000,
-      height=500;
-    let legend={bottom:height-100,left:50,width:20}
+      height=1000;
+    let legend={bottom:height-100,left:50,width:20};
+    let radius=3.5;
 
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
@@ -215,8 +234,16 @@ export class RecChartA extends React.Component{
         .attr("class", "dot")
         .attr("cx", average_line.x())
         .attr("cy", average_line.y())
-        .attr("r", 3.5)
-        .style("fill",this.state.color[0]);
+        .attr("r", radius)
+        .style("fill",this.state.color[0])
+        .on("mouseover", handleMouseOver1)
+        .on("mouseout", handleMouseOut);
+
+    function handleMouseOver1(d,i) {
+      d3.select(this)
+        .attr("r",radius*3);
+      notice(d.date,d.average_price,i)
+    }
 
     svg.append("g")
       .selectAll(".dot2")
@@ -225,8 +252,16 @@ export class RecChartA extends React.Component{
         .attr("class", "dot")
         .attr("cx", highest_line.x())
         .attr("cy", highest_line.y())
-        .attr("r", 3.5)
-        .style("fill",this.state.color[1]);
+        .attr("r", radius)
+        .style("fill",this.state.color[1])
+        .on("mouseover", handleMouseOver2)
+        .on("mouseout", handleMouseOut);
+
+    function handleMouseOver2(d,i) {
+      d3.select(this)
+        .attr("r",radius*3);
+      notice(d.date,d.highest_price,i)
+    }
 
     svg.append("g")
       .selectAll(".dot3")
@@ -235,8 +270,31 @@ export class RecChartA extends React.Component{
         .attr("class", "dot")
         .attr("cx", lowest_line.x())
         .attr("cy", lowest_line.y())
-        .attr("r", 3.5)
-        .style("fill",this.state.color[2]);
+        .attr("r", radius)
+        .style("fill",this.state.color[2])
+        .on("mouseover", handleMouseOver3)
+        .on("mouseout", handleMouseOut);
+
+    function handleMouseOver3(d,i) {
+      d3.select(this)
+        .attr("r",radius*3);
+      notice(d.date,d.lowest_price,i)
+    }
+
+    function notice(x,y,i){
+      svg.append("text")
+        .attr("id",`recdot-${i}`)
+        .attr("x",function(){return xScale(x) - 30; })
+        .attr("y",function(){return yScale(y) - 15; })
+        .text(function(){
+          return ( `시기: ${x.getFullYear()}-${x.getMonth()+1}-${x.getDate()}, 가격: ${y}`);
+        })
+    }
+    function handleMouseOut(d, i) {
+        d3.select(this)
+          .attr("r",radius);
+        d3.select(`#recdot-${i}`).remove(); // Remove text location
+    }
 
     let legendbox=svg.append('g').selectAll()
       .data(this.state.color)

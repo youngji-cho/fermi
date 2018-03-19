@@ -1,14 +1,15 @@
 let svg=d3.select("#chart")
 
-d3.select("rect").on("onclick",()=>{
-  alert("I love lisa")
-})
+/*
+svg.on("click", function() {
+    var coords = d3.select(this);
+    console.log(this)
 
-d3.select("svg").on("mouseover",()=>{
-  console.log("I love lisa")
-})
+    // Normally we go from data to pixels, but here we're doing pixels to data
+  });
+*/
 
-let legendbox=svg.append('g').selectAll()
+svg.append('g').selectAll()
   .data(["yellow","red","blue"])
   .enter().append("rect")
   .attr("width",10)
@@ -18,7 +19,31 @@ let legendbox=svg.append('g').selectAll()
   })
   .attr("transform",function(d,i){
     return "translate(50,"+ (i*20+20)+")"
-  });
+  })
+  .on("mouseover", handleMouseOver)
+  .on("mouseout", handleMouseOut);
+
+  function handleMouseOver(d, i) {
+    d3.select(this).attr({
+      width: 12,
+      height: 12,
+      fill:"orange"
+    });
+  }
+
+  function handleMouseOut(d, i) {
+        // Use D3 to select element, change color back to normal
+        d3.select(this).attr({
+          width: 10,
+          height: 10
+        });
+  }
+  /*
+  .on("mouseout",()=>{
+    d3.select("rect")
+      .attr("fill","green")
+
+  })*/
 
 let legendtext=svg.append('g').selectAll()
   .data([1,2,3])
@@ -28,7 +53,7 @@ let legendtext=svg.append('g').selectAll()
   })
   .attr("transform",function(d,i){
     return "translate(70,"+ (i*20+30)+")"
-  });
+  })
 /*
 function chartdraw(data){
   let parseTime = d3.timeParse("%Y-%m-%d");
