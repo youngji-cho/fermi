@@ -1,5 +1,13 @@
 let svg=d3.select("#chart")
 
+d3.select("rect").on("onclick",()=>{
+  alert("I love lisa")
+})
+
+d3.select("svg").on("mouseover",()=>{
+  console.log("I love lisa")
+})
+
 let legendbox=svg.append('g').selectAll()
   .data(["yellow","red","blue"])
   .enter().append("rect")
@@ -21,21 +29,7 @@ let legendtext=svg.append('g').selectAll()
   .attr("transform",function(d,i){
     return "translate(70,"+ (i*20+30)+")"
   });
-
 /*
-legend.selectAll()
-  .data([1,2,3])
-  .enter()
-
-
-svg.selectAll('.legends')
-  .data([1,2,3])
-  .enter().append('g')
-*/
-
-
-
-
 function chartdraw(data){
   let parseTime = d3.timeParse("%Y-%m-%d");
   let margin ={top:20, right:20,bottom:30,left:50},
@@ -123,3 +117,4 @@ function recGraph(id){
     console.log(networkError.message);
   }).then(jsonResponse => chartdraw(jsonResponse));
 }
+*/

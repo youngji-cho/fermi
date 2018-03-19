@@ -39172,7 +39172,7 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
         return d.date;
       }));
       yScale.domain([d3.min(data, function (d) {
-        return Math.min(d.lowest_price, d.average_price, d.highest_price);
+        return Math.min(d.lowest_price, d.average_price, d.highest_price) || Infinity;
       }), d3.max(data, function (d) {
         return Math.max(d.lowest_price, d.average_price, d.highest_price);
       })]);
