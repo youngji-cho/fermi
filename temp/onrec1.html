@@ -1,0 +1,112 @@
+<form id="recSearchVO" name="recSearchVO" class="table03_select_box" action="./selectRecSMPList.do?key=1966" method="post">
+				<input id="excelYN" name="excelYN" title="엑셀다운로드 여부" type="hidden" value="N">
+				<table>
+					<caption>현황별 조회</caption>
+					<colgroup>
+						<col style="width: 120px">
+						<col style="width: *">
+					</colgroup>
+					<tbody>
+						<tr>
+							<th>구분</th>
+
+							<td class="taL pl10">
+							<input id="searchType1" name="searchType" onclick="javascript:fncChecked412(1);" class="mr5" type="radio" value="hour">시간대별
+								<span class="sod_select regional" title="regional" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">육지</span><span class="sod_list_wrapper regional"><span class="sod_list"><span class="sod_option  selected active " title="육지" data-value="1">육지</span><span class="sod_option " title="제주" data-value="9">제주</span><span class="sod_option " title="통합" data-value="total">통합</span></span></span><select id="area_type" name="area_type" title="regional" class="basic alpa">
+									<option value="1">육지</option>
+									<option value="9">제주</option>
+									<option value="total">통합</option>
+								</select></span>
+							<input id="searchType2" name="searchType" onclick="javascript:fncChecked412(2);" class="ml10 mr5" type="radio" value="day">일간
+							<input id="searchType3" name="searchType" onclick="javascript:fncChecked412(3);" class="ml10 mr5" type="radio" value="month" checked="checked">월간
+							<!-- <input id="searchType4" name="searchType" onclick="javascript:fncChecked412(4);" class="ml10 mr5" type="radio" value="year"/>연간 -->
+							</td>
+						</tr>
+						<tr>
+							<th>조회기간</th>
+							<td class="taL padding10">
+
+								<div id="div1" style="display: none;">
+									<input id="searchDate" name="searchDate" onclick="ds_sh(this);" class="timesInput mr5 taC" readonly="readonly" type="text" value="2018-03-20" maxlength="12">
+
+									<a href="javascript:void(0);" onclick="fnSearch();" class="btn search ml5">검색하기</a> <a href="javascript:void(0);" class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+								</div>
+								<div id="div2" style="display: none">
+									<input id="searchDate_from" name="searchDate_from" onclick="ds_sh(this);" class="timesInput mr5 taC" readonly="readonly" type="text" value="" maxlength="12">
+									<span class="waveBox">~</span>
+									<input id="searchDate_to" name="searchDate_to" onclick="ds_sh(this);" class="timesInput ml5 mr5 taC" readonly="readonly" type="text" value="" maxlength="12">
+									<a href="javascript:void(0);" onclick="fnSearch();" class="btn search ml5">검색하기</a> <a href="javascript:void(0);" class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+									<p class="disB tit3 mt10">※ 일간일 경우 조회기간이 1개월을 넘길수 없습니다.</p>
+								</div>
+								<div id="div3" style="">
+									<span class="sod_select yearB scroollWrap focus open" title="yearB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">2003</span><span class="sod_list_wrapper yearB scroollWrap"><span class="sod_list"><span class="sod_option selected" title="2003" data-value="2003">2003</span><span class="sod_option" title="2004" data-value="2004">2004</span><span class="sod_option active" title="2005" data-value="2005">2005</span>
+<span class="sod_option" title="2006" data-value="2006">2006</span><span class="sod_option" title="2007" data-value="2007">2007</span><span class="sod_option" title="2008" data-value="2008">2008</span><span class="sod_option" title="2009" data-value="2009">2009</span><span class="sod_option" title="2010" data-value="2010">2010</span><span class="sod_option" title="2011" data-value="2011">2011</span><span class="sod_option" title="2012" data-value="2012">2012</span><span class="sod_option" title="2013" data-value="2013">2013</span><span class="sod_option" title="2014" data-value="2014">2014</span><span class="sod_option" title="2015" data-value="2015">2015</span><span class="sod_option" title="2016" data-value="2016">2016</span><span class="sod_option" title="2017" data-value="2017">2017</span>
+<span class="sod_option" title="2018
+									" data-value="2018">2018
+									</span></span></span><select id="year_from1" name="year_from1" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018" selected="">2018
+									</option></select></span>
+									<span class="sod_select monthB scroollWrap" title="monthB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">03</span><span class="sod_list_wrapper monthB scroollWrap"><span class="sod_list"><span class="sod_option" title="01" data-value="01">01</span><span class="sod_option" title="02" data-value="02">02</span><span class="sod_option  selected active" title="03" data-value="03">03</span><span class="sod_option" title="04" data-value="04">04</span><span class="sod_option" title="05" data-value="05">05</span><span class="sod_option" title="06" data-value="06">06</span><span class="sod_option" title="07" data-value="07">07</span><span class="sod_option" title="08" data-value="08">08</span><span class="sod_option" title="09" data-value="09">09</span><span class="sod_option" title="10" data-value="10">10</span><span class="sod_option" title="11" data-value="11">11</span><span class="sod_option" title="12
+									" data-value="12">12
+									</span></span></span><select id="month_from1" name="month_from1" title="monthB scroollWrap" class="basic">
+										<script>
+											fnGetMonthSelect();
+										</script><option value="01">01</option><option value="02">02</option><option value="03" selected="">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12
+									</option></select></span>
+									<span class="waveBox">~</span>
+									<span class="sod_select yearB scroollWrap" title="yearB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">2018
+									</span><span class="sod_list_wrapper yearB scroollWrap"><span class="sod_list"><span class="sod_option " title="2003" data-value="2003">2003</span><span class="sod_option " title="2004" data-value="2004">2004</span><span class="sod_option " title="2005" data-value="2005">2005</span><span class="sod_option " title="2006" data-value="2006">2006</span><span class="sod_option " title="2007" data-value="2007">2007</span><span class="sod_option " title="2008" data-value="2008">2008</span><span class="sod_option " title="2009" data-value="2009">2009</span><span class="sod_option " title="2010" data-value="2010">2010</span><span class="sod_option " title="2011" data-value="2011">2011</span><span class="sod_option " title="2012" data-value="2012">2012</span><span class="sod_option " title="2013" data-value="2013">2013</span><span class="sod_option " title="2014" data-value="2014">2014</span><span class="sod_option " title="2015" data-value="2015">2015</span><span class="sod_option " title="2016" data-value="2016">2016</span><span class="sod_option " title="2017" data-value="2017">2017</span><span class="sod_option  selected active " title="2018
+									" data-value="2018">2018
+									</span></span></span><select id="year_to1" name="year_to1" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018" selected="">2018
+									</option></select></span>
+									<span class="sod_select monthB scroollWrap" title="monthB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">01</span><span class="sod_list_wrapper monthB scroollWrap"><span class="sod_list"><span class="sod_option " title="01" data-value="01">01</span><span class="sod_option " title="02" data-value="02">02</span><span class="sod_option  selected active " title="03" data-value="03">03</span><span class="sod_option " title="04" data-value="04">04</span><span class="sod_option " title="05" data-value="05">05</span><span class="sod_option " title="06" data-value="06">06</span><span class="sod_option " title="07" data-value="07">07</span><span class="sod_option " title="08" data-value="08">08</span><span class="sod_option " title="09" data-value="09">09</span><span class="sod_option " title="10" data-value="10">10</span><span class="sod_option " title="11" data-value="11">11</span><span class="sod_option " title="12
+									" data-value="12">12
+									</span></span></span><select id="month_to1" name="month_to1" title="monthB scroollWrap" class="basic">
+										<script>
+											fnGetMonthSelect();
+										</script><option value="01">01</option><option value="02">02</option><option value="03" selected="">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12
+									</option></select></span>
+
+									<a href="javascript:void(0);" onclick="fnSearch();" class="btn search ml5">검색하기</a> <a href="javascript:void(0);" class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+									<p class="disB tit3 mt10">※ 월간일 경우 조회기간이 한달을 넘길 수 없습니다.</p>
+								</div>
+								<div id="div4" style="display: none">
+									<span class="sod_select yearB scroollWrap" title="yearB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">2018
+									</span><span class="sod_list_wrapper yearB scroollWrap"><span class="sod_list"><span class="sod_option " title="2003" data-value="2003">2003</span><span class="sod_option " title="2004" data-value="2004">2004</span><span class="sod_option " title="2005" data-value="2005">2005</span><span class="sod_option " title="2006" data-value="2006">2006</span><span class="sod_option " title="2007" data-value="2007">2007</span><span class="sod_option " title="2008" data-value="2008">2008</span><span class="sod_option " title="2009" data-value="2009">2009</span><span class="sod_option " title="2010" data-value="2010">2010</span><span class="sod_option " title="2011" data-value="2011">2011</span><span class="sod_option " title="2012" data-value="2012">2012</span><span class="sod_option " title="2013" data-value="2013">2013</span><span class="sod_option " title="2014" data-value="2014">2014</span><span class="sod_option " title="2015" data-value="2015">2015</span><span class="sod_option " title="2016" data-value="2016">2016</span><span class="sod_option " title="2017" data-value="2017">2017</span><span class="sod_option  selected active " title="2018
+									" data-value="2018">2018
+									</span></span></span><select id="year_from2" name="year_from2" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018" selected="">2018
+									</option></select></span>
+									<span class="waveBox">~</span>
+									<span class="sod_select yearB scroollWrap" title="yearB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">2018
+									</span><span class="sod_list_wrapper yearB scroollWrap"><span class="sod_list"><span class="sod_option " title="2003" data-value="2003">2003</span><span class="sod_option " title="2004" data-value="2004">2004</span><span class="sod_option " title="2005" data-value="2005">2005</span><span class="sod_option " title="2006" data-value="2006">2006</span><span class="sod_option " title="2007" data-value="2007">2007</span><span class="sod_option " title="2008" data-value="2008">2008</span><span class="sod_option " title="2009" data-value="2009">2009</span><span class="sod_option " title="2010" data-value="2010">2010</span><span class="sod_option " title="2011" data-value="2011">2011</span><span class="sod_option " title="2012" data-value="2012">2012</span><span class="sod_option " title="2013" data-value="2013">2013</span><span class="sod_option " title="2014" data-value="2014">2014</span><span class="sod_option " title="2015" data-value="2015">2015</span><span class="sod_option " title="2016" data-value="2016">2016</span><span class="sod_option " title="2017" data-value="2017">2017</span><span class="sod_option  selected active " title="2018
+									" data-value="2018">2018
+									</span></span></span><select id="year_to2" name="year_to2" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018" selected="">2018
+									</option></select></span>
+
+									<a href="javascript:void(0);" onclick="fnSearch();" class="btn search ml5">검색하기</a> <a href="javascript:void(0);" onclick="fnExcelDown()" class="btn download ml5">다운로드</a>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>조회방법</th>
+							<td class="taL pl10 searchMode1"><input id="searchMode1" name="searchMode" onclick="javascript:fncCheckedtext_img(1);" type="radio" value="table"><label for="searchMode1">수치로 보기</label>
+								&nbsp; <input id="searchMode2" name="searchMode" onclick="javascript:fncCheckedtext_img(2);" type="radio" value="chart" checked="checked"><label for="searchMode2">그래프로 보기</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+
+
+경제지표<a href="/epsisnew/selectEkesKeiChart.do?menuId=010100" target="_self" id="010100">경제지표</a>

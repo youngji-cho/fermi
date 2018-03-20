@@ -1,8 +1,8 @@
 module.exports = {
-    entry: './client/render.js',
+    entry: __dirname + '/Fermi-Client/render.js',
 
     output: {
-        path: __dirname + '/public/',
+        path: __dirname + '/Fermi-Client',
         filename: 'bundle.js'
     },
     // bundle.js에서 최종적으로 실행된다.
@@ -10,12 +10,12 @@ module.exports = {
     devServer: {
         inline: true,
         port: 8081,
-        contentBase: __dirname + '/public/',
+        contentBase: __dirname + '/Fermi-Client',
         historyApiFallback: true
     },
 
     module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.js$/,
                     loader: 'babel-loader',
@@ -24,6 +24,10 @@ module.exports = {
                         cacheDirectory: true,
                         presets: ['es2015', 'react']
                     }
+                },
+                {
+                  test:/\.css$/,
+                  use:['style-loader','css-loader']
                 }
             ]
         }

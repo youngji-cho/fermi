@@ -1,0 +1,1681 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>신재생 원스톱 사업정보</title>
+<link rel="stylesheet" href="/site/portal/css/default.css" media="all" />
+<link rel="shortcut icon" href="/site/portal/img/favicon.ico" />
+<script src="/site/portal/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/common/js/sub.js"></script>
+<script type="text/javascript" src="/site/portal/js/common.js"></script>
+<script type="text/javascript" src="/site/portal/js/common01.js"></script>
+<script type="text/javascript" src="/site/portal/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/site/portal/js/jquery.min.js"></script>
+<script type="text/javascript" src="/site/portal/js/selectordie.min.js"></script>
+<script type="text/javascript" src="/site/portal/js/selectBox.js"></script>
+<script type="text/javascript" src="/site/portal/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/site/portal/js/jquery-ui.min.js"></script>
+<script type="text/javascript">var $J = $.noConflict();</script>
+    <script type="text/javascript" src="/site/portal/js/ui.jquery.js"></script>
+<script type="text/javascript" src="/site/member/js/common.js"></script>
+<script type="text/javascript" src="/site/portal/js/contents/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+
+    //로케이션바 드랍다운 메뉴
+    $(".page-nav a").each(function(){
+       $(this).on("click", function(){
+
+           nextSubmenu = $(this).next();
+
+           if( nextSubmenu.hasClass("sub") ){
+               nextSubmenu.toggle();
+           }
+
+       });
+    });
+
+    //접근 디바이스가 모바일인 경우 모바일사이트로 이동
+    if(mobileCheck() == true){
+    	alert('모바일 사이트로 이동합니다.');
+    	location.href="/mobile/index.do";
+    }
+});
+
+function openloading() {
+	var popupObj = $("#loading");
+	var left = ($(window).scrollLeft() + ($(window).width() - popupObj.width())/2);
+	var top = ($(window).scrollTop() + ($(window).height() - popupObj.height())/2);
+
+	var mHeight = $(document).height();
+	var mWidth = $(document).width();
+	$("#mask").css({
+		position:'absolute',
+		width:mWidth,
+		height:mHeight,
+		left:0,
+		top:0,
+		background:'black',
+		opacity:'0.8',
+		display:'block'
+	});
+	$("#mask").css("z-index","4999");
+	//$("#mask").fadeTo("fast",0.5);
+
+	$("#loading").css({
+		width:'800px',
+		height:'500px',
+		position:'absolute',
+		left:left,
+		top:top,
+		display:'block'
+	});
+	$("#loading").css("z-index","5000");
+}
+
+function fnTotalSearch(){
+	 var totalSearchFrm = document.totalSearchForm;
+	/*if(totalSearchFrm.kwd.value == ""){
+		alert("검색어를 입력 하세요");
+		return false;
+	} */
+
+	totalSearchFrm.submit();
+}
+
+/* function fnSearchKey(){
+	if(event.keyCode == 13) fnTotalSearch();
+	onkeyPress="fnSearchKey();"
+} */
+
+function goStie() {
+	window.open('about:blank').location.href = $("#go_site").val();
+}
+
+function openTutol(){
+	window.open('/portal/openTutolPopup.do','0','top=0, left=0, width=1000, height=750 ,scrollbars=yes , resizable=no , copyhistory=no');
+}
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="decorator" content="portal" />
+
+<script type="text/javascript">
+	window.onload = function() {
+		/*기존 검색값 세팅*/
+		$("#area_type").val("1");
+		var selected = "";
+		if ("1" == "1") {
+			selected = "육지";
+		} else if ("1" == "9") {
+			selected = "제주";
+		} else {
+			selected = "통합";
+		}
+		$(".pl10").children("span").find(".sod_label").text(selected);
+
+		if ("month" == "month") {
+			$("#year_from1").val("2018");
+			$("#month_from1")
+					.val("01");
+			$("#year_to1").val("2018");
+			$("#month_to1").val("01");
+
+			$("#div3")
+					.children("span")
+					.each(
+							function(i) {
+								if (i == 0)
+									$(this)
+											.find(".sod_label")
+											.text(
+													"2018");
+								if (i == 1)
+									$(this)
+											.find(".sod_label")
+											.text(
+													"01");
+								if (i == 3)
+									$(this)
+											.find(".sod_label")
+											.text(
+													"2018");
+								if (i == 4)
+									$(this)
+											.find(".sod_label")
+											.text(
+													"01");
+							});
+		} else if ("month" == "year") {
+			$("#year_from2").val("2018");
+			$("#year_to2").val("2018");
+
+			$("#div4")
+					.children("span")
+					.each(
+							function(i) {
+								if (i == 0)
+									$(this)
+											.find(".sod_label")
+											.text(
+													"2018");
+								if (i == 2)
+									$(this)
+											.find(".sod_label")
+											.text(
+													"2018");
+							});
+
+		}
+
+		if ("table" == "chart") { //검색전 조회방법이 '그래프로 보기'로 체크되어 있었으면 그래프를 보여준다.
+			fncCheckedtext_img(2);
+		}
+
+		//화면컨트롤
+		if ($('input:radio[name="searchType"]:checked').val() == "hour") { //시간대별
+			fncChecked412(1); //조회기간 데이트피커 보이도록
+			//수치로보기(시간대별 양식 보이도록)
+			$("#div1_t").show();
+			$("#div2_t").hide();
+			//그래프로 보기(시간대별 양식 보이도록)
+			$("#div1_img").show();
+			$("#div2_img").hide();
+		} else { //일간,월간,연간
+			if ($('input:radio[name="searchType"]:checked').val() == "day") {
+				fncChecked412(2); //조회기간 데이트피커 from~to 보이도록
+			} else if ($('input:radio[name="searchType"]:checked').val() == "month") {
+				fncChecked412(3); //조회기간 년,월 보이도록
+			} else if ($('input:radio[name="searchType"]:checked').val() == "year") {
+				fncChecked412(4); //조회기간 년도만 보이도록
+			}
+			//수치로 보기(일간,월간,연간 양식 보이도록)
+			$("#div1_t").hide();
+			$("#div2_t").show();
+			//그래프로 보기(일간,월간,연간 양식 보이도록)
+			$("#div1_img").hide();
+			$("#div2_img").show();
+		}
+
+		$("#div_s_img img").attr("alt", "그래프");
+
+	};
+
+	//검색하기 버튼 클릭시
+	function fnSearch() {
+
+		if (!fnCheckValidate()) {
+			return;
+		}
+
+		var form = document.recSearchVO;
+
+		if (!validateRecSearchVO(form)) { //필수값 체크
+			return;
+		} else {
+			$("#excelYN").val("N");
+			openloading(); //로딩바
+			form.submit();
+		}
+
+	}
+
+	//자료다운로드
+	function fnExcelDown() {
+
+		if (!fnCheckValidate()) {
+			return;
+		}
+
+		var form = document.recSearchVO;
+
+		if (!validateRecSearchVO(form)) { //필수값 체크
+			return;
+		} else {
+			$("#excelYN").val("Y");
+			form.submit();
+		}
+	}
+
+	function fnCheckValidate() {
+
+		if ($('input:radio[name="searchType"]:checked').val() == "hour") { //시간대별 검색인 경우
+
+			//필수체크
+			if ($("#searchDate").val() == null || $("#searchDate").val() == "") {
+				alert('조회기간 은 필수 입력값입니다.');
+				return false;
+			}
+
+			/*비교할 날짜*/
+			var tmp = $("#searchDate").val();
+			var searchDate = tmp.replace("-", "");
+
+			/*오늘날짜*/
+			var date = new Date();
+			var today = date.getFullYear().toString();
+			if (date.getMonth() < 9) {
+				today += "0" + (date.getMonth() + 1);
+			} else {
+				today += (date.getMonth() + 1);
+			}
+			if (date.getDate() < 9) {
+				today += "0" + date.getDate();
+			} else {
+				today += date.getDate();
+			}
+
+			if (today < searchDate) {
+				alert('현재 날짜까지만 조회가 가능합니다.'); //현재 날짜까지만 조회가 가능합니다.
+				return false;
+			}
+		} else if ($('input:radio[name="searchType"]:checked').val() == "day") {
+
+			//필수체크
+			if ($("#searchDate_from").val() == null
+					|| $("#searchDate_from").val() == ""
+					|| $("#searchDate_to").val() == null
+					|| $("#searchDate_to").val() == "") {
+				alert('조회기간 은 필수 입력값입니다.');
+				return false;
+			}
+
+			var input1 = $("#searchDate_from").val();
+			var input2 = $("#searchDate_to").val();
+
+			var dayCnt = fnCalYearMonthDay_cnt(input1, input2); //기간이 몇일 차이나는지 계산
+			var monthDayCnt = new Date(input1.substr(0, 4), (input1
+					.substr(5, 2)), 0); //검색하는 달의 날짜수
+
+			//검색기간 제한(일간일 경우 1개월)
+			if (dayCnt >= monthDayCnt.getDate()) {
+				alert('일간일 경우 조회기간이 1개월을 넘길수 없습니다.'); //일간일 경우 조회기간이 1개월을 넘길수 없습니다.
+				return false;
+			}
+
+		} else if ($('input:radio[name="searchType"]:checked').val() == "month") { //검색기간 제한(월간일 경우 2년)
+
+			var input1 = $("#year_from1").val() + "-" + $("#month_from1").val()
+					+ "-" + "01";
+			var input2 = $("#year_to1").val() + "-" + $("#month_to1").val()
+					+ "-" + "01";
+
+
+			var dayCnt = fnCalYearMonthDay_cnt(input1, input2); //기간이 몇 년 차이나는지 계산
+
+			//검색기간 제한(월간일 경우 2년)
+			if (dayCnt >= 1) {
+				alert('월간일 경우 조회기간이 1달을 넘길수 없습니다.'); //월간일 경우 조회기간이 2년을 넘길수 없습니다.
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	// 날짜 차이 계산
+	function fnCalYearMonthDay_cnt(input1, input2) {
+		var from = new Date(input1.substr(0, 4), (input1.substr(5, 2) - 1),
+				input1.substr(8, 2));
+		var to = new Date(input2.substr(0, 4), (input2.substr(5, 2) - 1),
+				input2.substr(8, 2));
+
+		var term = to - from;
+		var day = 1000 * 60 * 60 * 24;
+		var month = day * 30;
+		var year = month * 12;
+
+		if ($('input:radio[name="searchType"]:checked').val() == "day") {
+			return parseInt(term / day);
+		} else if ($('input:radio[name="searchType"]:checked').val() == "month") {
+			//return parseInt(term / year);
+			return parseInt(term / month);
+		}
+	}
+</script>
+<body>
+
+<div id="accessibility">
+	<ul>
+		<li><a href="#area_contenter">본문 바로가기</a></li>
+		<li><a href="#gnb">주 메뉴 바로가기</a></li>
+	</ul>
+</div>
+<div id="area_wrap">
+<div id="area_header">
+  <div class="header_1dt">
+    <div class="header_1dtcon">
+      <div class="rec_caunter"> REC회원수: 22,616 </div>
+      <span class="home"><a href="/portal/index.do" title="신재생 원스톱 사업정보 통합포털 홈으로"><img src="/site/portal/img/home.png" alt="신재생 원스톱 사업정보 통합포털 홈으로" /></a></span>
+      <div class="area_utils control_text">
+        <ul>
+          <li class="p0"><img src="/site/portal/img/font_plus.png" alt="폰트크게" id="btn_text_large" class="ir img_comn"> </li>
+		  <li class="p0"><img src="/site/portal/img/font_100.png" alt="폰트 100" id="btn_text_default"></li>
+		  <li class="p0"><img src="/site/portal/img/font_minus.png" alt="폰트작게" id="btn_text_small" class="ir img_comn"> </li>
+
+		    <li><a href="https://onerec.kmos.kr/memberShip/login.do?type=easy">간편 로그인</a></li>
+		    <li><a href="https://onerec.kmos.kr/memberShip/login.do?type=cert">공인인증서 로그인</a></li>
+		    <li><a href="https://onerec.kmos.kr/memberShip/index.do">회원가입</a></li>
+		    <li><a href="https://onerec.kmos.kr/memberShip/certReg.do">인증서등록/변경</a></li>
+
+		  <li><a href="javascript:void(0);" onclick="openTutol()"><img alt="인터넷상단" src="/site/portal/img/internet_top.jpg">서비스이용안내</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- #header -->
+  <div class="header_2dt">
+    <h1><a href="/portal/index.do" title="신재생 원스톱 사업정보 통합포털 홈으로"><img src="/site/portal/img/logo.png" alt="신재생 원스톱 사업정보 통합포털 로고"/></a></h1>
+    <div class="top_section">
+	    <div class="total_menu"><a href="/portal/contents.do?key=1997" id="totalOpen" title="전체메뉴 보기"><img src="/site/portal/img/totalm_btn.png" alt="전체메뉴"/></a></div>
+	    <div class="box_search">
+	    	<fieldset>
+				<legend>통합검색</legend>
+				<form name="totalSearchForm" method="get" action="/portal/selectSearchList.do">
+					<input type="hidden" name="key" value="1885"/>
+					<input type="text" name="searchKeyword" class="bg"  id="kwd" title="검색어 입력 하세요" value="" style="ime-mode:active;"/>
+					<a href="javascript:void(0);" onclick="fnTotalSearch();" class="ml5" ><img src="/site/portal/img/btn_search.png" alt="검색찾기" /></a>
+				</form>
+			</fieldset>
+	    </div>
+    </div>
+
+   <!--  <div id="navigation">
+	  <a href="#total_navi" onclick="totalm_show(); return false;" id="totalOpen" title="전체메뉴 보기"><img src="/site/portal/img/totalm_btn.png" alt="전체메뉴"/></a>
+      <div id="total_navi" style="display:none;">
+        <span class="totalNaviBG"></span>
+        <div class="menu-box">
+          <span class="menu-boxtit">신재생 원스톱 사업정보 통합포털 전체메뉴</span>
+		<dl>
+			<dt class="menu1">
+				<a href="/portal/contents.do?key=1941" target="_self">RPS 사업절차</a>
+			</dt>
+			<dd>
+				<ul>
+
+						<li><a href="/portal/contents.do?key=1941"  target="_self">RPS 제도소개</a>
+						</li>
+
+
+						<li><a href="/portal/contents.do?key=1942"  target="_self">신재생 발전사업 절차</a>
+						</li>
+
+
+						<li><a href="/portal/contents.do?key=1943"  target="_self">RPS 설비확인 및 REC 발급 절차</a>
+						</li>
+
+
+						<li><a href="/portal/contents.do?key=1944"  target="_self">REC 거래절차</a>
+						</li>
+
+
+						<li><a href="/portal/contents.do?key=1945"  target="_self">법령정보</a>
+						</li>
+
+				</ul>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="menu2">
+				<a href="/portal/ips/lnkRpsTargetFacility.do?key=1948" target="_self">통합업무지원</a>
+			</dt>
+			<dd>
+				<ul>
+						<div class="totalLine">
+						<li><a href="/portal/ips/lnkRpsTargetFacility.do?key=1948"  target="_self">RPS  설비확인  및  REC  발급</a>
+							<span><ul>
+								<li><a href="/portal/ips/lnkRpsTargetFacility.do?key=1948"  target="_self">RPS 대상설비확인</a></li>
+								<li><a href="/portal/ips/lnkRpsRecGen.do?key=2065"  target="_self">REC 발급신청</a></li>
+								<li><a href="/portal/ips/lnkRpsRecConfirm.do?key=1949"  target="_self">REC 수수료발급</a></li>
+								<li><a href="http://rps.kemco.or.kr/sso_index.aspx"  target="_blank">RPS 종합지원시스템 바로가기</a></li>
+							</ul></span>
+						</li>
+						</div>
+						<div class="totalLine">
+						<li><a href="/portal/contentsLink.do?url=rec.kmos.kr/&window=new"  target="_blank">REC 거래하기</a>
+							<span><ul>
+								<li><a href="/portal/contentsLink.do?url=rec.kmos.kr/&window=new"  target="_blank">현물시장(매도/매수)</a></li>
+								<li><a href="/portal/contentsLink.do?url=rec.kmos.kr/&window=new"  target="_blank">계약시장(등록)</a></li>
+								<li><a href="http://rec.kmos.kr"  target="_blank">REC 거래시스템 바로가기</a></li>
+							</ul></span>
+						</li>
+						</div>
+						<div class="totalLine">
+						<li><a href="/portal/contents.do?key=1955"  target="_self">전력거래(판매)</a>
+						</li>
+						</div>
+				</ul>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="menu3">
+				<a href="/portal/mci/selectMciBasicList.do?key=1959" target="_self">나의 사업 정보</a>
+			</dt>
+			<dd>
+				<ul>
+						<div class="totalLine">
+						<li><a href="/portal/mci/selectMciBasicList.do?key=1959"  target="_self">나의 사업 정보</a>
+						</li>
+						</div>
+						<div class="totalLine">
+						<li><a href="http://939.co.kr/kpxrec1/"  target="_blank">원격지원</a>
+						</li>
+						</div>
+				</ul>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="menu4">
+				<a href="/portal/rec/selectRecRegional_capacityList.do?key=1964" target="_self">REC 시장 정보</a>
+			</dt>
+			<dd>
+				<ul>
+						<div class="totalLine">
+						<li><a href="/portal/rec/selectRecRegional_capacityList.do?key=1964"  target="_self">거래시장 현황보기</a>
+							<span><ul>
+								<li><a href="/portal/rec/selectRecRegional_capacityList.do?key=1964"  target="_self">지역별 전력거래 현황</a></li>
+								<li><a href="/portal/rec/selectRecSMPList.do?key=1965"  target="_self">SMP(계통한계가격)</a></li>
+								<li><a href="/portal/selectSupplyDutyServiceList.do?key=1968"  target="_self">연도별 의무공급량</a></li>
+								<li><a href="http://home.kepco.co.kr/kepco/CO/H/A/COHAPP001/COHAPP001.do?menuCd=FN040607"  target="_blank">지역별 계통허용용량</a></li>
+							</ul></span>
+						</li>
+						</div>
+						<div class="totalLine">
+						<li><a href="/portal/weather/weather.do?key=1962"  target="_self">날씨 정보 보기</a>
+						</li>
+						</div>
+						<div class="totalLine">
+						<li><a href="/portal/selectBbsNttList.do?bbsNo=477&key=1970"  target="_self">REC 시장 분석하기</a>
+							<span><ul>
+								<li><a href="/portal/selectBbsNttList.do?bbsNo=477&key=1970"  target="_self">오늘의 REC 시장</a></li>
+								<li><a href="/portal/selectBbsNttList.do?bbsNo=537&key=1971"  target="_self">REC 거래동향 리포트</a></li>
+								<li><a href="/portal/selectBbsNttList.do?bbsNo=457&key=1972"  target="_self">국내외 신재생 정책정보</a></li>
+							</ul></span>
+						</li>
+						</div>
+				</ul>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="menu5">
+				<a href="/portal/contents.do?key=1985" target="_self">사업성 자가진단</a>
+			</dt>
+			<dd>
+				<ul>
+						<div class="totalLine">
+						<li><a href="/portal/contents.do?key=1985"  target="_self">수익성 자가진단</a>
+						</li>
+						</div>
+						<div class="totalLine">
+						<li><a href="/portal/contents.do?key=1871"  target="_self">사업성 자가진단</a>
+						</li>
+						</div>
+				</ul>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="menu6">
+				<a href="/portal/contents.do?key=1976" target="_self">창업지원센터</a>
+			</dt>
+			<dd>
+				<ul>
+						<div class="totalLine">
+						<li><a href="/portal/contents.do?key=1976"  target="_self">신재생 창업교육</a>
+							<span><ul>
+								<li><a href="/portal/contents.do?key=1976"  target="_self">교육계획 및 안내</a></li>
+								<li><a href="http://epems.kpx.or.kr/reqlec.kpx"  target="_blank">수강신청</a></li>
+								<li><a href="http://epems.kpx.or.kr/pds1.kpx"  target="_blank">교육자료 다운로드</a></li>
+							</ul></span>
+						</li>
+						</div>
+						<div class="totalLine">
+						<li><a href="/portal/selectBbsNttList.do?bbsNo=446&key=1975"  target="_self">사이버 컨설팅센터</a>
+						</li>
+						</div>
+				</ul>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="menu7">
+				<a href="/portal/selectBbsNttList.do?bbsNo=433&key=1980" target="_self">고객센터</a>
+			</dt>
+			<dd>
+				<ul>
+
+						<li><a href="/portal/selectBbsNttList.do?bbsNo=433&key=1980"  target="_self">공지사항</a>
+						</li>
+
+
+						<li><a href="/portal/selectBbsNttList.do?bbsNo=434&key=1872"  target="_self">자료실</a>
+						</li>
+
+
+						<li><a href="/portal/selectBbsNttList.do?bbsNo=435&key=1876"  target="_self">자주 묻는 질문</a>
+						</li>
+
+
+						<li><a href="/portal/selectQestnarList.do?key=1983"  target="_self">설문조사</a>
+						</li>
+
+
+						<li><a href="/portal/contents.do?key=1984"  target="_self">전화번호 안내</a>
+						</li>
+
+				</ul>
+			</dd>
+		</dl>
+		</div>
+        <div class="total_bottom"><a href="#totalOpen" onclick="totalm_hide(); return false;"> 닫기&nbsp;<img src="/site/portal/img/all_menu_close.png" alt="CLOSE"/></a></div>
+    </div> -->
+  </div>
+   <!--  <div id="navigation"> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+
+	<div class="header_3dt">
+	<!-- top -->
+
+
+
+
+
+
+
+ <script type="text/javascript">
+  function menuEventRemove() {
+      gnbWrap = $J('.gnb-menu').off();
+  }
+ </script>
+
+ <div class="header-gnb-all-menu">
+	<ul class="gnb-menu">
+			<li class="mn01">
+				<h2><a href="/portal/contents.do?key=1941">RPS 사업절차</a></h2>
+			<div class="gnb-sub-menu" style="display: none;">
+				<div class="gnb-sub-cont">
+					<div class="gnbTitBox m01">
+						<span>RPS 사업절차</span>
+					</div>
+						<ul class="gnbDepth2">
+										<li>
+
+										<a href="/portal/contents.do?key=1941" onclick="return openloading();" target="_self">RPS 제도소개</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/contents.do?key=1942" onclick="return openloading();" target="_self">신재생 발전사업 절차</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/contents.do?key=1943" onclick="return openloading();" target="_self">RPS 설비확인 및 REC 발급 절차</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/contents.do?key=1944" onclick="return openloading();" target="_self">REC 거래절차</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/contents.do?key=1945" onclick="return openloading();" target="_self">법령정보</a>
+
+										</li>
+						</ul>
+				     </div>
+				  </div>
+			  </li>
+		<li class="mn02">
+				<h2><a href="/portal/ips/lnkRpsTargetFacility.do?key=1948">통합업무지원</a></h2>
+			<div class="gnb-sub-menu" style="display: none;">
+				<div class="gnb-sub-cont">
+					<div class="gnbTitBox m02">
+						<span>통합업무지원</span>
+					</div>
+						<ul class="gnbDepth2">
+										<li>
+
+										<a href="/portal/ips/lnkRpsTargetFacility.do?key=1948" onclick="return openloading();" target="_self">RPS  설비확인  및  REC  발급</a>
+
+											<div class="gnbDepth3">
+														<a href="/portal/ips/lnkRpsTargetFacility.do?key=1948" onclick="return openloading();" target="_self">RPS 대상설비확인</a>
+														<a href="/portal/ips/lnkRpsRecGen.do?key=2065" onclick="return openloading();" target="_self">REC 발급신청</a>
+														<a href="/portal/ips/lnkRpsRecConfirm.do?key=1949" onclick="return openloading();" target="_self">REC 수수료발급</a>
+														<a href="http://rps.kemco.or.kr/sso_index.aspx"  target="_blank">RPS 종합지원시스템 바로가기</a>
+											</div>
+										</li>
+										<li>
+
+										<a href="/portal/contentsLink.do?url=rec.kmos.kr/&window=new"  target="_blank">REC 거래하기</a>
+
+											<div class="gnbDepth3">
+														<a href="/portal/contentsLink.do?url=rec.kmos.kr/&window=new"  target="_blank">현물시장(매도/매수)</a>
+														<a href="/portal/contentsLink.do?url=rec.kmos.kr/&window=new"  target="_blank">계약시장(등록)</a>
+														<a href="http://rec.kmos.kr"  target="_blank">REC 거래시스템 바로가기</a>
+											</div>
+										</li>
+										<li>
+
+										<a href="/portal/contents.do?key=1955" onclick="return openloading();" target="_self">전력거래(판매)</a>
+
+										</li>
+						</ul>
+				     </div>
+				  </div>
+			  </li>
+		<li class="mn03">
+
+
+				<h2><a href="/portal/mci/selectMciBasicList.do?key=1959">나의 사업 정보</a></h2>
+
+			<div class="gnb-sub-menu" style="display: none;">
+				<div class="gnb-sub-cont">
+					<div class="gnbTitBox m03">
+						<span>나의 사업 정보</span>
+					</div>
+						<ul class="gnbDepth2">
+										<li>
+
+
+											<a href="/portal/mci/selectMciBasicList.do?key=1959" onclick="return openloading();" target="_self">나의 사업 정보</a>
+
+
+										</li>
+										<li>
+
+										<a href="http://939.co.kr/kpxrec1/"  target="_blank">원격지원</a>
+
+										</li>
+						</ul>
+				     </div>
+				  </div>
+			  </li>
+		<li class="mn04">
+				<h2><a href="/portal/rec/selectRecRegional_capacityList.do?key=1964">REC 시장 정보</a></h2>
+			<div class="gnb-sub-menu" style="display: none;">
+				<div class="gnb-sub-cont">
+					<div class="gnbTitBox m04">
+						<span>REC 시장 정보</span>
+					</div>
+						<ul class="gnbDepth2">
+										<li>
+
+										<a href="/portal/rec/selectRecRegional_capacityList.do?key=1964" onclick="return openloading();" target="_self">거래시장 현황보기</a>
+
+											<div class="gnbDepth3">
+														<a href="/portal/rec/selectRecRegional_capacityList.do?key=1964" onclick="return openloading();" target="_self">지역별 전력거래 현황</a>
+														<a href="/portal/rec/selectRecSMPList.do?key=1965" onclick="return openloading();" target="_self">SMP(계통한계가격)</a>
+														<a href="/portal/selectSupplyDutyServiceList.do?key=1968" onclick="return openloading();" target="_self">연도별 의무공급량</a>
+														<a href="http://home.kepco.co.kr/kepco/CO/H/A/COHAPP001/COHAPP001.do?menuCd=FN040607"  target="_blank">지역별 계통허용용량</a>
+											</div>
+										</li>
+										<li>
+
+										<a href="/portal/weather/weather.do?key=1962" onclick="return openloading();" target="_self">날씨 정보 보기</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/selectBbsNttList.do?bbsNo=477&key=1970" onclick="return openloading();" target="_self">REC 시장 분석하기</a>
+
+											<div class="gnbDepth3">
+														<a href="/portal/selectBbsNttList.do?bbsNo=477&key=1970" onclick="return openloading();" target="_self">오늘의 REC 시장</a>
+														<a href="/portal/selectBbsNttList.do?bbsNo=537&key=1971" onclick="return openloading();" target="_self">REC 거래동향 리포트</a>
+														<a href="/portal/selectBbsNttList.do?bbsNo=457&key=1972" onclick="return openloading();" target="_self">국내외 신재생 정책정보</a>
+											</div>
+										</li>
+						</ul>
+				     </div>
+				  </div>
+			  </li>
+		<li class="mn05">
+				<h2><a href="/portal/contents.do?key=1985">사업성 자가진단</a></h2>
+			<div class="gnb-sub-menu" style="display: none;">
+				<div class="gnb-sub-cont">
+					<div class="gnbTitBox m05">
+						<span>사업성 자가진단</span>
+					</div>
+						<ul class="gnbDepth2">
+										<li>
+
+										<a href="/portal/contents.do?key=1985" onclick="return openloading();" target="_self">수익성 자가진단</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/contents.do?key=1871" onclick="return openloading();" target="_self">사업성 자가진단</a>
+
+										</li>
+						</ul>
+				     </div>
+				  </div>
+			  </li>
+		<li class="mn06">
+				<h2><a href="/portal/contents.do?key=1976">창업지원센터</a></h2>
+			<div class="gnb-sub-menu" style="display: none;">
+				<div class="gnb-sub-cont">
+					<div class="gnbTitBox m06">
+						<span>창업지원센터</span>
+					</div>
+						<ul class="gnbDepth2">
+										<li>
+
+										<a href="/portal/contents.do?key=1976" onclick="return openloading();" target="_self">신재생 창업교육</a>
+
+											<div class="gnbDepth3">
+														<a href="/portal/contents.do?key=1976" onclick="return openloading();" target="_self">교육계획 및 안내</a>
+														<a href="http://epems.kpx.or.kr/reqlec.kpx"  target="_blank">수강신청</a>
+														<a href="http://epems.kpx.or.kr/pds1.kpx"  target="_blank">교육자료 다운로드</a>
+											</div>
+										</li>
+										<li>
+
+										<a href="/portal/selectBbsNttList.do?bbsNo=446&key=1975" onclick="return openloading();" target="_self">사이버 컨설팅센터</a>
+
+										</li>
+						</ul>
+				     </div>
+				  </div>
+			  </li>
+		<li class="mn07">
+				<h2><a href="/portal/selectBbsNttList.do?bbsNo=433&key=1980">고객센터</a></h2>
+			<div class="gnb-sub-menu" style="display: none;">
+				<div class="gnb-sub-cont">
+					<div class="gnbTitBox m07">
+						<span>고객센터</span>
+					</div>
+						<ul class="gnbDepth2">
+										<li>
+
+										<a href="/portal/selectBbsNttList.do?bbsNo=433&key=1980" onclick="return openloading();" target="_self">공지사항</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/selectBbsNttList.do?bbsNo=434&key=1872" onclick="return openloading();" target="_self">자료실</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/selectBbsNttList.do?bbsNo=435&key=1876" onclick="return openloading();" target="_self">자주 묻는 질문</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/selectQestnarList.do?key=1983" onclick="return openloading();" target="_self">설문조사</a>
+
+										</li>
+										<li>
+
+										<a href="/portal/contents.do?key=1984" onclick="return openloading();" target="_self">전화번호 안내</a>
+
+										</li>
+						</ul>
+				     </div>
+				  </div>
+			  </li>
+	 </ul>
+	</div>
+	<!-- //top -->
+
+	<!-- left -->
+
+
+
+
+			<div class="location">
+			<ul class="location-cont">
+				<!-- <li><a href="/portal/index.do" class="home"><i class="ic-home">HOME</i></a></li> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							<li><a href="#none">REC 시장 정보
+								</a>
+									<ul class="location-menu">
+											<li><a href="/portal/rec/selectRecRegional_capacityList.do?key=1964" target="_self">거래시장 현황보기</a></li>
+											<li><a href="/portal/weather/weather.do?key=1962" target="_self">날씨 정보 보기</a></li>
+											<li><a href="/portal/selectBbsNttList.do?bbsNo=477&key=1970" target="_self">REC 시장 분석하기</a></li>
+									</ul>
+							</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							<li><a href="#none">거래시장 현황보기
+								</a>
+									<ul  class="location-menu">
+											<li><a href="/portal/rec/selectRecRegional_capacityList.do?key=1964" target="_self">지역별 전력거래 현황</a></li>
+											<li><a href="/portal/rec/selectRecSMPList.do?key=1965" target="_self">SMP(계통한계가격)</a></li>
+											<li><a href="/portal/selectSupplyDutyServiceList.do?key=1968" target="_self">연도별 의무공급량</a></li>
+											<li><a href="http://home.kepco.co.kr/kepco/CO/H/A/COHAPP001/COHAPP001.do?menuCd=FN040607" target="_blank">지역별 계통허용용량</a></li>
+									</ul>
+							</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</ul>
+			<span class="printArea" style="display:none;"><a href="">인쇄하기</a></span>
+
+			</div>
+	<!-- //left -->
+
+	</div>
+	<!-- //#indigator -->
+
+	<!-- #hcontainer" -->
+	<!-- <div id="container"> -->
+		<!-- <div id="contents" class="wrap"> -->
+
+			<!-- title area -->
+			<!-- <div class="sec-header">
+				<div class="title-area">
+					<i class="icon "></i>
+					<span class="cate1">REC 시장 정보</span>
+					<h2 class="cate2">REC 거래현황</h2>
+				</div> -->
+				<!-- <div class="util">
+					2016-09-01 기능추가
+					<script type="text/javascript" src="/site/portal/js/ZoomControl.js"></script> 확대축소 js파일
+					<button type="button" onclick="javascript:jsBrowseSizeUp();"><span class="sp-nav zoom-in">확대</span></button>
+					<button type="button" onclick="javascript:jsBrowseSizeDown();"><span class="sp-nav zoom-out">축소</span></button>
+					// 2016-09-01 기능추가
+					<button type="button" onclick="var openNewWindow=window.open('about:blank');openNewWindow.location.href='https://www.facebook.com/kepcoenc';"><span class="sp-nav fb">페이스북</span></button>
+					<button type="button" onclick="printAA()"><span class="sp-nav print">프린트</span></button>
+					<script type="text/javascript" src="/common/js/jquery.printElement.js"></script>
+					<script>
+					function printAA(){
+						var contents = "/site/portal/css/sub.css";
+						var ptcss = "/site/portal/css/common.css";
+						var ptbase = "/site/portal/css/base.css";
+						$("#mcontent").printElement({
+							printMode : 'popup', //팝업설정 popup = 팝업창, iframe = iframe
+							overrideElementCSS:[contents, ptcss, ptbase], //css 경로
+							pageTitle:'한국전력기술', //인쇄타이틀
+							printBodyOption:{
+							styleToAdd: 'width=1300,height=1000; margin:0 auto' //style attributes to add to the body of print document
+							},
+							leaveOpen : false //false = 인쇄후 창닫기
+						});
+
+						return false;
+					}
+					</script>
+				</div>			 -->
+			<!-- </div> -->
+			<!-- //title area -->
+			</div>
+			<div id="area_contenter" class="mt40">
+
+			<script type="text/javascript">
+
+     var bCancel = false;
+
+    function validateRecSearchVO(form) {
+        if (bCancel)
+      return true;
+        else
+       return validateRequired(form);
+   }
+
+    function required () {
+     this.aa = new Array("area_type", "구분 은 필수 입력값입니다.", new Function ("varName", " return this[varName];"));
+     this.ab = new Array("searchType", "조회기간 은 필수 입력값입니다.", new Function ("varName", " return this[varName];"));
+    }
+
+
+</script>
+
+
+<script type="text/javascript" src="/cmm/validator.do"></script>
+
+
+
+
+
+
+
+
+	<table id="ds_conclass"
+		style="display: none; background-color: #ffffff; border: 1px solid #cccccc; position: absolute; z-index: 32767; width: 202px">
+		<tr>
+			<td id="ds_calclass"></td>
+		</tr>
+	</table>
+	<script type="text/javascript" src="/site/portal/js/calendar.js"></script>
+	<h2>
+		<span class="blue">SMP</span>(계통한계가격)<span class="subcon_bg dt04"></span>
+	</h2>
+	<div id="area_sub_content">
+		<h3>SMP (계통한계가격)</h3>
+		<div class="myBusinessSearch mt40">
+			<form id="recSearchVO" name="recSearchVO" class="table03_select_box" action="./selectRecSMPList.do?key=1966" method="post">
+				<input id="excelYN" name="excelYN" title="엑셀다운로드 여부" type="hidden" value="N"/>
+
+				<table>
+					<caption>현황별 조회</caption>
+					<colgroup>
+						<col style="width: 120px" />
+						<col style="width: *" />
+					</colgroup>
+					<tbody>
+						<tr>
+							<th>구분</th>
+
+							<td class="taL pl10">
+							<input id="searchType1" name="searchType" onclick="javascript:fncChecked412(1);" class="mr5" type="radio" value="hour"/>시간대별
+								<select id="area_type" name="area_type" title="regional" class="basic alpa">
+									<option value="1">육지</option>
+									<option value="9">제주</option>
+									<option value="total">통합</option>
+								</select>
+							<input id="searchType2" name="searchType" onclick="javascript:fncChecked412(2);" class="ml10 mr5" type="radio" value="day"/>일간
+							<input id="searchType3" name="searchType" onclick="javascript:fncChecked412(3);" class="ml10 mr5" type="radio" value="month" checked="checked"/>월간
+							<!-- <input id="searchType4" name="searchType" onclick="javascript:fncChecked412(4);" class="ml10 mr5" type="radio" value="year"/>연간 -->
+							</td>
+						</tr>
+						<tr>
+							<th>조회기간</th>
+							<td class="taL padding10">
+
+								<div id="div1">
+									<input id="searchDate" name="searchDate" onclick="ds_sh(this);" class="timesInput mr5 taC" readonly="readonly" type="text" value="2018-03-20" maxlength="12"/>
+
+									<a href="javascript:void(0);" onclick="fnSearch();"
+										class="btn search ml5">검색하기</a> <a href="javascript:void(0);"
+										class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+								</div>
+								<div id="div2" style="display: none">
+									<input id="searchDate_from" name="searchDate_from" onclick="ds_sh(this);" class="timesInput mr5 taC" readonly="readonly" type="text" value="" maxlength="12"/>
+									<span class="waveBox">~</span>
+									<input id="searchDate_to" name="searchDate_to" onclick="ds_sh(this);" class="timesInput ml5 mr5 taC" readonly="readonly" type="text" value="" maxlength="12"/>
+									<a href="javascript:void(0);" onclick="fnSearch();"
+										class="btn search ml5">검색하기</a> <a href="javascript:void(0);"
+										class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+									<p class="disB tit3 mt10">※ 일간일 경우 조회기간이 1개월을 넘길수 없습니다.</p>
+								</div>
+								<div id="div3" style="display: none">
+									<select id="year_from1" name="year_from1" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script>
+									</select>
+									<select id="month_from1" name="month_from1" title="monthB scroollWrap" class="basic">
+										<script>
+											fnGetMonthSelect();
+										</script>
+									</select>
+									<span class="waveBox">~</span>
+									<select id="year_to1" name="year_to1" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script>
+									</select>
+									<select id="month_to1" name="month_to1" title="monthB scroollWrap" class="basic">
+										<script>
+											fnGetMonthSelect();
+										</script>
+									</select>
+
+									<a href="javascript:void(0);" onclick="fnSearch();"
+										class="btn search ml5">검색하기</a> <a href="javascript:void(0);"
+										class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+									<p class="disB tit3 mt10">※ 월간일 경우 조회기간이 한달을 넘길 수 없습니다.</p>
+								</div>
+								<div id="div4" style="display: none">
+									<select id="year_from2" name="year_from2" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script>
+									</select>
+									<span class="waveBox">~</span>
+									<select id="year_to2" name="year_to2" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script>
+									</select>
+
+									<a href="javascript:void(0);" onclick="fnSearch();"
+										class="btn search ml5">검색하기</a> <a href="javascript:void(0);"
+										onclick="fnExcelDown()" class="btn download ml5">다운로드</a>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>조회방법</th>
+							<td class="taL pl10 searchMode1"><input id="searchMode1" name="searchMode" onclick="javascript:fncCheckedtext_img(1);" type="radio" value="table" checked="checked"/><label for="searchMode1">수치로 보기</label>
+								&nbsp; <input id="searchMode2" name="searchMode" onclick="javascript:fncCheckedtext_img(2);" type="radio" value="chart"/><label for="searchMode2">그래프로 보기</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+
+		<span class="disB taR mt25">(단위: 원,kWh)</span>
+		<div id="div_s_txt">
+			<div id="div1_t" class="businessInfoTable mt10">
+				<table>
+					<caption>계통한계가격</caption>
+					<colgroup>
+						<col style="width: 120px" />
+						<col style="width: 151px" />
+						<col style="width: 151px" />
+						<col style="width: 151px" />
+						<col style="width: 151px" />
+						<col style="width: 151px" />
+						<col style="width: 151px" />
+						<col style="width: 151px" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="row">구분</th>
+
+						</tr>
+					</thead>
+					<tfoot class="rec">
+
+					</tfoot>
+
+
+						<tbody>
+							<tr>
+								<td colspan="8" style="text-align: center;">검색 결과가 없습니다.</td>
+							</tr>
+						</tbody>
+
+				</table>
+			</div>
+
+			<div id="div2_t" style="display: none" class="businessInfoTable mt10">
+				<table>
+					<caption>계통한계가격</caption>
+					<colgroup>
+						<col style="width: 120px;" />
+						<col style="width: 25%" />
+						<col style="width: 25%" />
+						<col style="width: 25%" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">기간</th>
+							<th scope="col">육지</th>
+							<th scope="col">제주</th>
+							<th scope="col">통합</th>
+						</tr>
+					</thead>
+
+						<tfoot class="rec">
+							<tr>
+								<th>최대</th>
+								<td>91.8</td>
+								<td>133.46</td>
+								<td>92.23</td>
+							</tr>
+							<tr>
+								<th>최소</th>
+								<td>91.8</td>
+								<td>133.46</td>
+								<td>92.23</td>
+							</tr>
+							<tr>
+								<th>가중평균</th>
+								<td>91.8</td>
+								<td>133.46</td>
+								<td>92.23</td>
+							</tr>
+						</tfoot>
+						<tbody>
+
+								<tr">
+									<th>2018.01</th>
+									<td class="taR pr5">91.8</td>
+									<td class="taR pr5">133.46</td>
+									<td class="taR pr5">92.23</td>
+								</tr>
+
+						</tbody>
+
+
+				</table>
+			</div>
+		</div>
+
+		<div id="div_s_img" style="display: none">
+			<div id="div1_img" class="mt10 taC">
+				<img src='/site/portal/img/noSearchData_Chart.png' alt='해당기간에 검색된 결과값이 없습니다.' />
+
+			</div>
+			<div id="div2_img" style="display: none" class="mt10 taC">
+				<link href="/SfxWebResourceServlet?com.softwarefx.chartfx.server.internal.Dhtml.Dummy*scripts.chartfxstyles.css" rel="stylesheet" type="text/css"
+ />
+<form  name="form_Page" action="/ChartCallbackServlet" method="post" >
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="" />
+<input type="hidden" name="__ctl47829_VIEWSTATE" id="__ctl47829_VIEWSTATE" value="CFV0320_0049460AE3C.chs" />
+<script type="text/javascript">
+//<![CDATA[
+var SFX_fontNameArray =  new Array("Bitstream Vera Sans Mono","썬돋움","Arial Narrow MT","FreeSans","LucidaSans","CordiaUPC","Monotype Corsiva","LucidaSansCyr","Helvetica","Rockwell MT","KacstDecorative","Liberation Serif","KacstOne","Bembo MT","Monotype Century Schoolbook","Myeongjo","Gothic","LucidaSansTypCyr","AngsanaUPC","Bookman Old Style","Bitstream Vera Sans","KacstTitle","Monospaced","Courier New Hebrew","FreeSerif","Courier New","LucidaBrightLat2","Century Schoolbook","LucidaBrightLat4","LucidaBrightLat5","Liberation Mono","Arial Hebrew","FZSongTi","Shayyal MT","LucidaSansTypewriter","Gill Sans MT","Times","Lucida Bright","KacstDigital","LucidaSansGreek","Naskh MT","Times New Roman Hebrew","LucidaSansLat4","LucidaSansLat5","LucidaSansLat2","HG-GothicB-Sun","Century Gothic Cyr","DialogInput","백묵 돋움","KacstArt","Book Antiqua Cyr","RoundedGothic","Saraswati5","Lucida Sans Thai Typewriter","백묵 바탕","Utopia","Bitstream Vera Serif","KacstPoster","Akhbar MT","Liberation Sans","썬돋움체 ","Bookman Old Style Cyr","Gill Sans Cyr MT","Corsiva","Saraswati 5","LucidaSansTypGreek","Lucida Sans Typewriter Devanagari","LucidaBright","KacstBook","FZMingTi","BookAntiqua","BrowalliaUPC","Symbol","Arial","LucidaSansTypLat4","KacstFarsi","LucidaSansTypLat5","Monotype Sorts","SansSerif","Gill Sans CE","Lucida Sans","Century Schoolbook Cyr","Courier","LucidaSansHebrew","Serif","M 潠冼","Times New Roman","KacstQurn","백묵 굴림","Century Gothic","Book Antiqua","백묵 헤드라인","Gill Sans Greek","Dialog","LucidaSansTypHebrew","Lucida Sans Typewriter","Haeseo","FreeMono","KacstOneFixed");
+//]]></script>
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form_Page'];
+if (!theForm) {
+theForm = document.form_Page;
+}
+function __doPostBack(eventTarget, eventArgument) {
+if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+theForm.__EVENTTARGET.value = eventTarget;
+theForm.__EVENTARGUMENT.value = eventArgument;
+theForm.submit();
+ }
+}
+
+//]]>
+</script>
+<script src="/SfxWebResourceServlet?com.softwarefx.chartfx.server.internal.Dhtml.Dummy*scripts.msdotnetcallback.js" type="text/javascript"></script>
+<script src="/SfxWebResourceServlet?com.softwarefx.chartfx.server.internal.Dhtml.Dummy*scripts.chartfxclient.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function SFX_Callback (chartId, clickId) {
+WebForm_DoCallback(chartId,clickId,SFX_OnCallbackReady,chartId,SFX_OnCallbackError,true);
+}
+
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+function SFX_PostBack (chartId, clickId) {
+__doPostBack(chartId,clickId);
+}
+
+//]]>
+</script>
+<map id="ctl47829Map" name="ctl47829Map">
+<area shape="rect" coords="797,458,886,470" title="최대
+통합
+92.23" />
+<area shape="rect" coords="439,59,528,470" title="최대
+제주
+133.46" />
+<area shape="rect" coords="82,462,171,470" title="최대
+육지
+91.8" />
+<area shape="rect" coords="886,458,975,470" title="가중평균
+통합
+92.23" />
+<area shape="rect" coords="528,59,617,470" title="가중평균
+제주
+133.46" />
+<area shape="rect" coords="171,462,260,470" title="가중평균
+육지
+91.8" />
+<area shape="rect" coords="975,458,1065,470" title="최소
+통합
+92.23" />
+<area shape="rect" coords="617,59,707,470" title="최소
+제주
+133.46" />
+<area shape="rect" coords="260,462,349,470" title="최소
+육지
+91.8" />
+</map>
+<div id="SFXdiv-29549" onmouseout="SFX_HideIconOver()" class="SFXIconHover" oncontextmenu="return false">
+<p>앞으로 스크롤</p>
+</div>
+<div id="SFXdiv-29551" onmouseout="SFX_HideIconOver()" class="SFXIconHover" oncontextmenu="return false">
+<p>앞페이지로 스크롤</p>
+</div>
+<div id="SFXdiv-29550" onmouseout="SFX_HideIconOver()" class="SFXIconHover" oncontextmenu="return false">
+<p>뒤로 스크롤</p>
+</div>
+<div id="SFXdiv-29552" onmouseout="SFX_HideIconOver()" class="SFXIconHover" oncontextmenu="return false">
+<p>뒷페이지로 스크롤</p>
+</div>
+<img id="ctl47829" src="/chartfx70/temp/CFV0320_0049460AE3C.png"  WIDTH="1140" HEIGHT="500"  usemap="#ctl47829Map" border="0" oncontextmenu="return SFX_OnChartContextMenu();"/><script type="text/javascript">
+//<![CDATA[
+var SFX_fontDialog='/SfxWebResourceServlet?com.softwarefx.chartfx.server.internal.Dhtml.Dummy*scripts.FontDialog.htm';
+
+WebForm_InitCallback();
+//]]>
+</script>
+</form>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	 </div>
+
+	<!-- //#container" -->
+
+	<div id="mask" style="display:none;"></div>
+	<div id="loading" style="display:none;"><img alt="로딩중입니다." src="/site/portal/img/style05_01.gif"></div>
+
+<!-- #footer -->
+ <a href="#" id="scrollup" style="display:none;">Scroll</a>
+<div id="area_footer">
+  <div id="box_footer1">
+    <div class="footer_link"> <div>바로<br />가기</div>
+      <ul>
+        <li class="m01"><a href="http://939.co.kr/kpxrec1/" target="blank" title="원격지원 새창으로">원격지원</a></li>
+		<li class="m02"><a href="/portal/contents.do?key=1941" title="RPS사업절차">RPS사업절차</a></li>
+		<li class="m03"><a href="http://rec.kmos.kr/vertx/tiles/vertxTiles.do?vertx=0" target="_BLANK">REC거래하기</a></li>
+		<li class="m04"><a href="/portal/rec/selectRecSMPList.do?key=1965" title="SMP정보">SMP정보</a></li>
+        <li class="m05"><a href="/portal/selectBbsNttList.do?bbsNo=435&key=1876" title="자주묻는질문">자주묻는질문</a></li>
+		<li class="m06"><a href="/portal/selectBbsNttList.do?bbsNo=434&key=1872" title="자료실">자료실</a></li>
+		<li class="m07"><a href="/portal/mci/selectMciBasicList.do?key=1959" title="정산관리">정산관리</a></li>
+		<li class="m08"><a href="/portal/selectQestnarList.do?key=1983" title="설문조사">설문조사</a></li>
+		<li class="m09"><a href="http://blog.daum.net/rectrading" target="blank" title="다음블로그 새창으로">창업지원 블로그</a></li>
+      </ul>
+    </div>sod_list_wrapper yearB scroollWrap
+  </div>
+
+  <div id="box_footer">
+    <!--  <p class="flogo"><img src="/site/portal/img/f_logo.png" alt="신재생에너지 사업정보 통합포털"></p>  -->
+    <!-- <p class="flogo">
+    	<a href="#" title="새창열기"><img src="/site/portal/img/kpx_logo.png" alt="전력거래소 로고"></a>
+    	<a href="#" title="새창열기"><img src="/site/portal/img/kepco_logo.png" alt="전력거래소 로고"></a>
+    	<a href="#" title="새창열기"><img src="/site/portal/img/energy_logo.png" alt="전력거래소 로고"></a>
+    </p> -->
+    <div class="box_info">
+    	<div class="logo_list">
+        <a href="http://www.kpx.or.kr"  target="_blank"  title="새창열기"><img src="/site/portal/img/kpx_logo.png" alt="전력거래소 로고"></a>
+        <a href="http://home.kepco.co.kr" target="_blank" title="새창열기"><img src="/site/portal/img/kepco_logo.png" alt="한국전력공사 로고"></a>
+        <a href="http://www.kemco.or.kr" target="_blank" title="새창열기"><img src="/site/portal/img/energy_logo.png" alt="에너지관리공단 로고"></a>
+        </div>
+      <ul>
+        <li><a href="./contents.do?key=1994">프로그램다운로드</a></li>
+		<li><a href="./contents.do?key=1995" style="color:red">개인정보처리방침</a></li>
+        <li><a href="./contents.do?key=1996">이메일무단수집거부</a></li>
+        <li><a href="./contents.do?key=1997">사이트맵</a></li>
+        </ul>
+      <address class="mt5 disinB">
+	      (우 58322) 전라남도 나주시 빛가람로 625 전력거래소 신재생시장팀
+	      </address>
+	      <div class="br mt5 ft_sty01" ><strong>TEL</strong> : 1600-9617&nbsp;&nbsp;<strong>|</strong>&nbsp;&nbsp;<strong>FAX</strong> : 061-330-8597&nbsp;&nbsp;<strong>|</strong>&nbsp;&nbsp;<strong>E-mail</strong> : rec@kpx.or.kr&nbsp;&nbsp;<strong>|</strong>&nbsp;&nbsp;<strong>사업자번호</strong> : 120-82-05834</div>
+	      <!-- <p class="p_count mt20">총 방문자 수 : 100,000 &nbsp; 오늘 방문자수 : 20,000</p> -->
+	      <p class="p_count mt20">Copyright(c) 2016. KPX all rights reserved.</p>
+    </div>
+	<div class="qrcord"><img src="/site/portal/img/qrcord.png" alt="신재생에너지 모바일"></div>
+    <div class="gosite">
+			<span>유관기관사이트 바로가기</span>
+			<div class="mt10">
+				<select class="basic" id="go_site" name="go_site" title="go_site">
+					<option value="select" label="선택하세요">선택하세요</option>
+					<option value="http://www.kpx.or.kr" label="전력거래소">전력거래소</option>
+					<option value="http://www.kwater.or.kr" label="K-WATER">K-WATER</option>
+					<option value="http://www.kdhc.co.kr" label="한국지역난방공사">한국지역난방공사</option>
+					<option value="http://www.mpc.co.kr" label="MPC">MPC</option>
+					<option value="http://www.gspower.co.kr" label="GS 파워">GS 파워</option>
+					<option value="http://www.gseps.com" label="GS EPS">GS EPS</option>
+					<option value="http://www.poscopower.com" label="POSCO-POWER">POSCO-POWER</option>
+					<option value="http://www.ewp.co.kr" label="한국동서발전㈜">한국동서발전㈜</option>
+					<option value="http://www.kospo.co.kr" label="한국남부발전㈜">한국남부발전㈜</option>
+					<option value="http://www.iwest.co.kr" label="한국서부발전㈜">한국서부발전㈜</option>
+					<option value="http://www.komipo.co.kr" label="한국중부발전㈜">한국중부발전㈜</option>
+					<option value="http://www.koenergy.kr" label="한국남동발전㈜">한국남동발전㈜</option>
+				</select> <input type="button" onclick="goStie();" value="이동" class="search_btn" />
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src='http://recsso.kmos.kr//exsso.ks?ONESTOP'></script>
+</html>
+
+<form id="recSearchVO" name="recSearchVO" class="table03_select_box" action="./selectRecSMPList.do?key=1966" method="post">
+				<input id="excelYN" name="excelYN" title="엑셀다운로드 여부" type="hidden" value="N">
+
+				<table>
+					<caption>현황별 조회</caption>
+					<colgroup>
+						<col style="width: 120px">
+						<col style="width: *">
+					</colgroup>
+					<tbody>
+						<tr>
+							<th>구분</th>
+
+							<td class="taL pl10">
+							<input id="searchType1" name="searchType" onclick="javascript:fncChecked412(1);" class="mr5" type="radio" value="hour">시간대별
+								<span class="sod_select regional" title="regional" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">육지</span><span class="sod_list_wrapper regional"><span class="sod_list"><span class="sod_option  selected active " title="육지" data-value="1">육지</span><span class="sod_option " title="제주" data-value="9">제주</span><span class="sod_option " title="통합" data-value="total">통합</span></span></span><select id="area_type" name="area_type" title="regional" class="basic alpa">
+									<option value="1">육지</option>
+									<option value="9">제주</option>
+									<option value="total">통합</option>
+								</select></span>
+							<input id="searchType2" name="searchType" onclick="javascript:fncChecked412(2);" class="ml10 mr5" type="radio" value="day">일간
+							<input id="searchType3" name="searchType" onclick="javascript:fncChecked412(3);" class="ml10 mr5" type="radio" value="month" checked="checked">월간
+							<!-- <input id="searchType4" name="searchType" onclick="javascript:fncChecked412(4);" class="ml10 mr5" type="radio" value="year"/>연간 -->
+							</td>
+						</tr>
+						<tr>
+							<th>조회기간</th>
+							<td class="taL padding10">
+
+								<div id="div1" style="display: none;">
+									<input id="searchDate" name="searchDate" onclick="ds_sh(this);" class="timesInput mr5 taC" readonly="readonly" type="text" value="2018-03-20" maxlength="12">
+
+									<a href="javascript:void(0);" onclick="fnSearch();" class="btn search ml5">검색하기</a> <a href="javascript:void(0);" class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+								</div>
+								<div id="div2" style="display: none">
+									<input id="searchDate_from" name="searchDate_from" onclick="ds_sh(this);" class="timesInput mr5 taC" readonly="readonly" type="text" value="" maxlength="12">
+									<span class="waveBox">~</span>
+									<input id="searchDate_to" name="searchDate_to" onclick="ds_sh(this);" class="timesInput ml5 mr5 taC" readonly="readonly" type="text" value="" maxlength="12">
+									<a href="javascript:void(0);" onclick="fnSearch();" class="btn search ml5">검색하기</a> <a href="javascript:void(0);" class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+									<p class="disB tit3 mt10">※ 일간일 경우 조회기간이 1개월을 넘길수 없습니다.</p>
+								</div>
+								<div id="div3" style="">
+									<span class="sod_select yearB scroollWrap" title="yearB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">2018</span><span class="sod_list_wrapper yearB scroollWrap"><span class="sod_list"><span class="sod_option " title="2003" data-value="2003">2003</span><span class="sod_option " title="2004" data-value="2004">2004</span><span class="sod_option " title="2005" data-value="2005">2005</span><span class="sod_option " title="2006" data-value="2006">2006</span><span class="sod_option " title="2007" data-value="2007">2007</span><span class="sod_option " title="2008" data-value="2008">2008</span><span class="sod_option " title="2009" data-value="2009">2009</span><span class="sod_option " title="2010" data-value="2010">2010</span><span class="sod_option " title="2011" data-value="2011">2011</span><span class="sod_option " title="2012" data-value="2012">2012</span><span class="sod_option " title="2013" data-value="2013">2013</span><span class="sod_option " title="2014" data-value="2014">2014</span><span class="sod_option " title="2015" data-value="2015">2015</span><span class="sod_option " title="2016" data-value="2016">2016</span><span class="sod_option " title="2017" data-value="2017">2017</span><span class="sod_option  selected active " title="2018
+									" data-value="2018">2018
+									</span></span></span><select id="year_from1" name="year_from1" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018" selected="">2018
+									</option></select></span>
+									<span class="sod_select monthB scroollWrap" title="monthB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">01</span><span class="sod_list_wrapper monthB scroollWrap"><span class="sod_list"><span class="sod_option " title="01" data-value="01">01</span><span class="sod_option " title="02" data-value="02">02</span><span class="sod_option  selected active " title="03" data-value="03">03</span><span class="sod_option " title="04" data-value="04">04</span><span class="sod_option " title="05" data-value="05">05</span><span class="sod_option " title="06" data-value="06">06</span><span class="sod_option " title="07" data-value="07">07</span><span class="sod_option " title="08" data-value="08">08</span><span class="sod_option " title="09" data-value="09">09</span><span class="sod_option " title="10" data-value="10">10</span><span class="sod_option " title="11" data-value="11">11</span><span class="sod_option " title="12
+									" data-value="12">12
+									</span></span></span><select id="month_from1" name="month_from1" title="monthB scroollWrap" class="basic">
+										<script>
+											fnGetMonthSelect();
+										</script><option value="01">01</option><option value="02">02</option><option value="03" selected="">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12
+									</option></select></span>
+									<span class="waveBox">~</span>
+									<span class="sod_select yearB scroollWrap" title="yearB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">2018</span><span class="sod_list_wrapper yearB scroollWrap"><span class="sod_list"><span class="sod_option " title="2003" data-value="2003">2003</span><span class="sod_option " title="2004" data-value="2004">2004</span><span class="sod_option " title="2005" data-value="2005">2005</span><span class="sod_option " title="2006" data-value="2006">2006</span><span class="sod_option " title="2007" data-value="2007">2007</span><span class="sod_option " title="2008" data-value="2008">2008</span><span class="sod_option " title="2009" data-value="2009">2009</span><span class="sod_option " title="2010" data-value="2010">2010</span><span class="sod_option " title="2011" data-value="2011">2011</span><span class="sod_option " title="2012" data-value="2012">2012</span><span class="sod_option " title="2013" data-value="2013">2013</span><span class="sod_option " title="2014" data-value="2014">2014</span><span class="sod_option " title="2015" data-value="2015">2015</span><span class="sod_option " title="2016" data-value="2016">2016</span><span class="sod_option " title="2017" data-value="2017">2017</span><span class="sod_option  selected active " title="2018
+									" data-value="2018">2018
+									</span></span></span>
+                  <select id="year_to1" name="year_to1" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018" selected="">2018
+									</option></select></span>
+									<span class="sod_select monthB scroollWrap" title="monthB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">01</span><span class="sod_list_wrapper monthB scroollWrap"><span class="sod_list"><span class="sod_option " title="01" data-value="01">01</span><span class="sod_option " title="02" data-value="02">02</span><span class="sod_option  selected active " title="03" data-value="03">03</span><span class="sod_option " title="04" data-value="04">04</span><span class="sod_option " title="05" data-value="05">05</span><span class="sod_option " title="06" data-value="06">06</span><span class="sod_option " title="07" data-value="07">07</span><span class="sod_option " title="08" data-value="08">08</span><span class="sod_option " title="09" data-value="09">09</span><span class="sod_option " title="10" data-value="10">10</span><span class="sod_option " title="11" data-value="11">11</span><span class="sod_option " title="12
+									" data-value="12">12
+									</span></span></span>
+                  <select id="month_to1" name="month_to1" title="monthB scroollWrap" class="basic">
+										<script>
+											fnGetMonthSelect();
+										</script>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03" selected="">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12
+									</option>
+                </select>
+                </span>
+
+									<a href="javascript:void(0);" onclick="fnSearch();" class="btn search ml5">검색하기</a> <a href="javascript:void(0);" class="btn download ml5" onclick="fnExcelDown()">다운로드</a>
+									<p class="disB tit3 mt10">※ 월간일 경우 조회기간이 한달을 넘길 수 없습니다.</p>
+								</div>
+								<div id="div4" style="display: none">
+									<span class="sod_select yearB scroollWrap" title="yearB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter="">
+                    <span class="sod_label">2018
+									</span><span class="sod_list_wrapper yearB scroollWrap">
+                    <span class="sod_list">
+                      <span class="sod_option " title="2003" data-value="2003">2003</span>
+                      <span class="sod_option " title="2004" data-value="2004">2004</span>
+                      <span class="sod_option " title="2005" data-value="2005">2005</span>
+                      <span class="sod_option " title="2006" data-value="2006">2006</span>
+                      <span class="sod_option " title="2007" data-value="2007">2007</span>
+                      <span class="sod_option " title="2008" data-value="2008">2008</span>
+                      <span class="sod_option " title="2009" data-value="2009">2009</span>
+                      <span class="sod_option " title="2010" data-value="2010">2010</span>
+                      <span class="sod_option " title="2011" data-value="2011">2011</span>
+                      <span class="sod_option " title="2012" data-value="2012">2012</span>
+                      <span class="sod_option " title="2013" data-value="2013">2013</span>
+                      <span class="sod_option " title="2014" data-value="2014">2014</span>
+                      <span class="sod_option " title="2015" data-value="2015">2015</span>
+                      <span class="sod_option " title="2016" data-value="2016">2016</span>
+                      <span class="sod_option " title="2017" data-value="2017">2017</span>
+                      <span class="sod_option  selected active " title="2018
+									" data-value="2018">2018
+									</span></span></span>
+                  <select id="year_from2" name="year_from2" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018" selected="">2018
+									</option></select></span>
+									<span class="waveBox">~</span>
+									<span class="sod_select yearB scroollWrap" title="yearB scroollWrap" tabindex="0" data-cycle="false" data-links="false" data-links-external="false" data-placeholder-option="false" data-filter=""><span class="sod_label">2018
+									</span><span class="sod_list_wrapper yearB scroollWrap"><span class="sod_list"><span class="sod_option " title="2003" data-value="2003">2003</span><span class="sod_option " title="2004" data-value="2004">2004</span><span class="sod_option " title="2005" data-value="2005">2005</span><span class="sod_option " title="2006" data-value="2006">2006</span><span class="sod_option " title="2007" data-value="2007">2007</span><span class="sod_option " title="2008" data-value="2008">2008</span><span class="sod_option " title="2009" data-value="2009">2009</span><span class="sod_option " title="2010" data-value="2010">2010</span><span class="sod_option " title="2011" data-value="2011">2011</span><span class="sod_option " title="2012" data-value="2012">2012</span><span class="sod_option " title="2013" data-value="2013">2013</span><span class="sod_option " title="2014" data-value="2014">2014</span><span class="sod_option " title="2015" data-value="2015">2015</span><span class="sod_option " title="2016" data-value="2016">2016</span><span class="sod_option " title="2017" data-value="2017">2017</span><span class="sod_option  selected active " title="2018
+									" data-value="2018">2018
+									</span></span></span><select id="year_to2" name="year_to2" title="yearB scroollWrap" class="basic">
+										<script>
+											fnGetYearSelect(15);
+										</script><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018" selected="">2018
+									</option></select></span>
+
+									<a href="javascript:void(0);" onclick="fnSearch();" class="btn search ml5">검색하기</a> <a href="javascript:void(0);" onclick="fnExcelDown()" class="btn download ml5">다운로드</a>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>조회방법</th>
+							<td class="taL pl10 searchMode1"><input id="searchMode1" name="searchMode" onclick="javascript:fncCheckedtext_img(1);" type="radio" value="table"><label for="searchMode1">수치로 보기</label>
+								&nbsp; <input id="searchMode2" name="searchMode" onclick="javascript:fncCheckedtext_img(2);" type="radio" value="chart" checked="checked"><label for="searchMode2">그래프로 보기</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
