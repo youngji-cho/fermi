@@ -14,10 +14,10 @@ export class SmpChartA extends React.Component{
 
   chartdraw(data){
     let parseTime = d3.timeParse("%Y-%m-%d");
-    let margin ={top:20, right:20,bottom:30,left:50},
+    let margin ={top:50, right:50,bottom:50,left:50},
       width=1000,
-      height=500;
-    let radius=3.5;
+      height=1000;
+    let radius=5;
     let legend={bottom:100,left:50,width:20};
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
@@ -66,19 +66,38 @@ export class SmpChartA extends React.Component{
     function handleMouseOver(d,i) {
       d3.select(this)
         .attr("r",radius*3);
-      svg.append("text")
-        .attr("id",`smpdot-${i}`)
+
+      let text=svg.append("g")
+        .attr("id",`smpdot-${i}`);
+
+      text.append("rect")
+        .attr("width",100)
+        .attr("height",40)
+        .attr("style","fill:white;stroke-width:3;stroke:black")
+        .attr("x",function(){return xScale(d.date) - 35; })
+        .attr("y",function(){return yScale(d.total_price)-50; })
+
+      text.append("text")
+        .attr("x",function(){return xScale(d.date) - 30; })
+        .attr("y",function(){return yScale(d.total_price) - 30; })
+        .text(function(){
+          return ( ` ${d.date.getFullYear()}-${d.date.getMonth()+1}-${d.date.getDate()}`)
+        })
+
+      text.append("text")
         .attr("x",function(){return xScale(d.date) - 30; })
         .attr("y",function(){return yScale(d.total_price) - 15; })
         .text(function(){
-          return ( `시기: ${d.date.getFullYear()}-${d.date.getMonth()+1}-${d.date.getDate()}, 가격: ${d.total_price}`);
+              return ( `${d.total_price}원`);
         })
     }
+
     function handleMouseOut(d, i) {
       d3.select(this)
         .attr("r",radius);
       d3.select(`#smpdot-${i}`).remove(); // Remove text location
     }
+    
     //Legend
     let legendbox=svg.append('g').selectAll()
         .data([this.state.color])
@@ -105,12 +124,8 @@ export class SmpChartA extends React.Component{
 
   handleClick(e){
      d3.selectAll("#SmpChartA > *").remove();
-     let dayMinus=parseInt(e.target.value);
-     let startDate=new Date();
+     let startQuery= e.target.value;
      let endDate=new Date();
-     startDate.setDate(startDate.getDate()-dayMinus)
-
-     let startQuery= `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDay()}`;
      let endQuery= `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDay()}`;
      console.log(startQuery,endQuery)
 
@@ -125,7 +140,7 @@ export class SmpChartA extends React.Component{
        }).then(jsonResponse => this.chartdraw(jsonResponse));
   }
   componentDidMount() {
-    fetch(`/smp_data/total_price/2000-01-01/2100-12-31`).then(
+    fetch(`/smp_data/total_price/2010-01-01/2100-12-31`).then(
       response => {
        if (response.ok) {
          return response.json();
@@ -138,10 +153,9 @@ export class SmpChartA extends React.Component{
   render(){
     return(
       <div>
-          <TimeButton buttonName="전체" buttonValue="10000" onClick={this.handleClick} />
-          <TimeButton buttonName="최근 3년" buttonValue="1095" onClick={this.handleClick} />
-          <TimeButton buttonName="최근 1년" buttonValue="365" onClick={this.handleClick} />
-          <TimeButton buttonName="최근 6개월" buttonValue="180" onClick={this.handleClick} />
+          <TimeButton buttonName="전체(2001년 이후)" buttonValue="2001-01-01" onClick={this.handleClick} />
+          <TimeButton buttonName="2010년 이후" buttonValue="2010-01-01" onClick={this.handleClick} />
+          <TimeButton buttonName="2015년 이후" buttonValue="2015-01-01" onClick={this.handleClick} />
         <svg id="SmpChartA"></svg>
       </div>
     )
@@ -165,7 +179,7 @@ export class RecChartA extends React.Component{
       width=1000,
       height=1000;
     let legend={bottom:height-100,left:50,width:20};
-    let radius=3.5;
+    let radius=5;
 
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
     let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
