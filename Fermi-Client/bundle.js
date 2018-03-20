@@ -6089,13 +6089,12 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
           return d.total_price + '\uC6D0';
         });
       }
-      /*
+
       function handleMouseOut(d, i) {
-        d3.select(this)
-          .attr("r",radius);
-        d3.select(`#smpdot-${i}`).remove(); // Remove text location
+        d3.select(this).attr("r", radius);
+        d3.select('#smpdot-' + i).remove(); // Remove text location
       }
-      */
+
       //Legend
       var legendbox = svg.append('g').selectAll().data([this.state.color]).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
         return d;
