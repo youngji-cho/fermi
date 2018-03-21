@@ -12,6 +12,163 @@ export class SmpChartA extends React.Component{
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
   }
+  chartdraw(data){
+    let parseTime = d3.timeParse("%Y-%m-%d");
+    let margin ={top:50, right:50,bottom:50,left:50},
+      width=1000,
+      height=1000;
+    let radius=5;
+    let legend={bottom:100,left:50,width:20};
+    let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
+    let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
+    let line=d3.line()
+      .x(function(d){return xScale(d.date)})
+      .y(function(d){return yScale(d.total_price)});
+
+    let svg=d3.select("#SmpChartA")
+      .attr("width",width + margin.left + margin.right)
+      .attr("height",height + margin.top + margin.bottom)
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+    data.forEach(function(d){d.date=parseTime(d.date)});
+    xScale.domain(d3.extent(data,function(d){
+      return d.date;
+    }));
+    yScale.domain(d3.extent(data,function(d){
+      return d.total_price;
+    }));
+    svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", line)
+      .style("stroke",this.state.color);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisTop(xScale)
+        .tickFormat(d3.timeFormat("%Y-%m-%d")));
+    svg.append("g")
+      .call(d3.axisRight(yScale));
+    svg.append("g")
+      .selectAll(".dot")
+      .data(data)
+      .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", line.x())
+        .attr("cy", line.y())
+        .attr("r", radius)
+        .style("fill",this.state.color)
+        .on("mouseover", handleMouseOver)
+        .on("mouseout", handleMouseOut)
+    //EventHandler
+    function handleMouseOver(d,i) {
+      d3.select(this)
+        .attr("r",radius*3);
+      notice("SMP",d.date,d.total_price,i);
+    }
+    function handleMouseOut(d, i) {
+      d3.select(this)
+        .attr("r",radius);
+      d3.select(`#SMPdot-${i}`).remove(); // Remove text location
+    }
+
+    let last=(data.length-1);
+    notice("SMP최신",data[last].date,data[last].total_price);
+
+    function notice(subject,x,y,i){
+      let text=svg.append("g")
+        .attr("id",`${subject}dot-${i}`);
+      text.append("rect")
+        .attr("width",150)
+        .attr("height",40)
+        .attr("style","fill:white;stroke-width:3;stroke:black")
+        .attr("x",function(){return xScale(x) - 35; })
+        .attr("y",function(){return yScale(y)-50; })
+      text.append("text")
+        .attr("x",function(){return xScale(x) - 30; })
+        .attr("y",function(){return yScale(y) - 30; })
+        .text(function(){
+          return ( ` ${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}일`)
+        })
+      text.append("text")
+        .attr("x",function(){return xScale(x) - 30; })
+        .attr("y",function(){return yScale(y) - 15; })
+        .text(function(){
+              return ( `${subject}가격:${y}원`);
+        })
+    }
+    //Legend
+    let legendbox=svg.append('g').selectAll()
+        .data([this.state.color])
+          .enter().append("rect")
+          .attr("width",10)
+          .attr("height",10)
+          .attr("fill",function(d){
+            return d;
+          })
+          .attr("transform",function(d,i){
+            return "translate("+(legend.left+10) +","+ (legend.bottom-i*legend.width)+")"
+          });
+
+      let legendtext=svg.append('g').selectAll()
+          .data([this.state.legend])
+            .enter().append('text')
+            .text(function(d){
+                return d;
+              })
+            .attr("transform",function(d,i){
+              return "translate("+(legend.left+30) +","+ (legend.bottom-i*legend.width+10)+")"
+            });
+  }
+
+  handleClick(e){
+     d3.selectAll("#SmpChartA > *").remove();
+     let startQuery= e.target.value;
+     let endDate=new Date();
+     let endQuery= `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDay()}`;
+
+     fetch(`/smp_data/total_price/${startQuery}/${endQuery}`).then(
+       response => {
+       	if (response.ok) {
+          return response.json();
+         }
+         throw new Error('Request failed!');
+       }, networkError => {
+         console.log(networkError.message);
+       }).then(jsonResponse => this.chartdraw(jsonResponse));
+  }
+  componentDidMount() {
+    fetch(`/smp_data/total_price/2010-01-01/2100-12-31`).then(
+      response => {
+       if (response.ok) {
+         return response.json();
+        }
+        throw new Error('Request failed!');
+      }, networkError => {
+        console.log(networkError.message);
+      }).then(jsonResponse => this.chartdraw(jsonResponse));
+  }
+  render(){
+    return(
+      <div>
+          <TimeButton buttonName="전체(2001년 이후)" buttonValue="2001-01-01" onClick={this.handleClick} />
+          <TimeButton buttonName="2010년 이후" buttonValue="2010-01-01" onClick={this.handleClick} />
+          <TimeButton buttonName="2015년 이후" buttonValue="2015-01-01" onClick={this.handleClick} />
+        <svg id="SmpChartA"></svg>
+      </div>
+    )
+  }
+}
+export class SmpChartB extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
+      color:"rgb(57,106,177)",
+      legend:"SMP 월간가중평균가격"
+    };
+    this.handleClick=this.handleClick.bind(this);
+    this.chartdraw=this.chartdraw.bind(this)
+  }
 
   chartdraw(data){
     let parseTime = d3.timeParse("%Y-%m-%d");
@@ -127,7 +284,6 @@ export class SmpChartA extends React.Component{
      let startQuery= e.target.value;
      let endDate=new Date();
      let endQuery= `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDay()}`;
-     console.log(startQuery,endQuery)
 
      fetch(`/smp_data/total_price/${startQuery}/${endQuery}`).then(
        response => {
@@ -156,12 +312,11 @@ export class SmpChartA extends React.Component{
           <TimeButton buttonName="전체(2001년 이후)" buttonValue="2001-01-01" onClick={this.handleClick} />
           <TimeButton buttonName="2010년 이후" buttonValue="2010-01-01" onClick={this.handleClick} />
           <TimeButton buttonName="2015년 이후" buttonValue="2015-01-01" onClick={this.handleClick} />
-        <svg id="SmpChartA"></svg>
+        <svg id="SmpChartB"></svg>
       </div>
     )
   }
 }
-
 export class RecChartA extends React.Component{
   constructor(props){
     super(props);
@@ -172,7 +327,6 @@ export class RecChartA extends React.Component{
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
   }
-
   chartdraw(data){
     let parseTime = d3.timeParse("%Y-%m-%d");
     let margin ={top:50, right:50,bottom:50,left:50},
@@ -229,9 +383,9 @@ export class RecChartA extends React.Component{
         .attr("r",radius*3);
       notice("REC",d.date,d.average_price,i);
     }
-
     let last=(data.length-1);
     notice("REC최신",data[last].date,data[last].average_price);
+
     function notice(subject,x,y,i){
       let text=svg.append("g")
         .attr("id",`${subject}dot-${i}`);
@@ -314,6 +468,315 @@ export class RecChartA extends React.Component{
           <TimeButton buttonName="육지" buttonValue="land" onClick={this.handleClick} />
           <TimeButton buttonName="통합" buttonValue="total" onClick={this.handleClick} />
         <svg id="RecChartA"></svg>
+      </div>
+    )
+  }
+}
+
+export class RecChartB extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
+      color:["rgb(204,37,41)"],
+      legend:["평균가(종가)"]
+    };
+    this.handleClick=this.handleClick.bind(this);
+    this.chartdraw=this.chartdraw.bind(this)
+  }
+
+  chartdraw(data){
+    let parseTime = d3.timeParse("%Y-%m-%d");
+    let margin ={top:50, right:50,bottom:50,left:50},
+      width=1000,
+      height=1000;
+    let legend={bottom:height-100,left:50,width:20};
+    let radius=5;
+    let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
+    let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
+    let average_line=d3.line()
+      .defined(function(d) { return d.average_price; })
+      .x(function(d){return xScale(d.date)})
+      .y(function(d){return yScale(d.average_price)});
+    let svg=d3.select("#RecChartA")
+      .attr("width",width + margin.left + margin.right)
+      .attr("height",height + margin.top + margin.bottom)
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+    data.forEach(function(d){d.date=parseTime(d.date)});
+    xScale.domain(d3.extent(data,function(d){
+      return d.date;
+    }));
+    yScale.domain([d3.min(data,function(d){
+      return /*Math.min(d.lowest_price,*/d.average_price/*,d.highest_price)*/|| Infinity;
+    }),d3.max(data,function(d){
+      return /*Math.max(d.lowest_price,*/d.average_price/*,d.highest_price)*/;
+    })]);
+    svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke",this.state.color[0])
+      .attr("d", average_line);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisTop(xScale)
+        .tickFormat(d3.timeFormat("%Y-%m-%d")));
+    svg.append("g")
+      .call(d3.axisRight(yScale));
+    svg.append("g")
+      .selectAll(".dot1")
+      .data(data.filter(function(d){return d.average_price}))
+      .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", average_line.x())
+        .attr("cy", average_line.y())
+        .attr("r", radius)
+        .style("fill",this.state.color[0])
+        .on("mouseover", handleMouseOver)
+        .on("mouseout", handleMouseOut);
+
+    function handleMouseOver(d,i) {
+      d3.select(this)
+        .attr("r",radius*3);
+      notice("REC",d.date,d.average_price,i);
+    }
+    let last=(data.length-1);
+    notice("REC최신",data[last].date,data[last].average_price);
+
+    function notice(subject,x,y,i){
+      let text=svg.append("g")
+        .attr("id",`${subject}dot-${i}`);
+      text.append("rect")
+        .attr("width",150)
+        .attr("height",40)
+        .attr("style","fill:white;stroke-width:3;stroke:black")
+        .attr("x",function(){return xScale(x) - 35; })
+        .attr("y",function(){return yScale(y)-50; })
+      text.append("text")
+        .attr("x",function(){return xScale(x) - 30; })
+        .attr("y",function(){return yScale(y) - 30; })
+        .text(function(){
+          return ( `${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}일`)
+        })
+      text.append("text")
+        .attr("x",function(){return xScale(x) - 30; })
+        .attr("y",function(){return yScale(y) - 15; })
+        .text(function(){
+              return ( `${subject}가격:${y}원`);
+        })
+    }
+    function handleMouseOut(d, i) {
+      d3.select(this)
+        .attr("r",radius);
+      d3.select(`#RECdot-${i}`).remove(); // Remove text location
+    }
+    let legendbox=svg.append('g').selectAll()
+      .data(this.state.color)
+      .enter().append("rect")
+      .attr("width",10)
+      .attr("height",10)
+      .attr("fill",function(d){
+        return d;
+      })
+      .attr("transform",function(d,i){
+        return "translate("+(legend.left+10) +","+ (legend.bottom-i*legend.width)+")"
+      });
+    let legendtext=svg.append('g').selectAll()
+      .data(this.state.legend)
+      .enter().append('text')
+      .text(function(d){
+          return d;
+      })
+      .attr("transform",function(d,i){
+        return "translate("+(legend.left+30) +","+ (legend.bottom-i*legend.width+10)+")"
+      });
+  }
+  handleClick(e){
+    d3.selectAll("#RecChartB > *").remove();
+    let land=e.target.value;
+    fetch(`/rec_data1/average_price/lowest_price/highest_price/${land}`).then(
+      response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Request failed!');
+      }, networkError => {
+         console.log(networkError.message);
+      }).then(jsonResponse => this.chartdraw(jsonResponse));
+  }
+  componentDidMount() {
+    fetch(`/rec_data1/average_price/lowest_price/highest_price/total`).then(
+      response => {
+       if (response.ok) {
+         return response.json();
+        }
+        throw new Error('Request failed!');
+      }, networkError => {
+        console.log(networkError.message);
+      }).then(jsonResponse => this.chartdraw(jsonResponse));
+  }
+  render(){
+    return(
+      <div>
+          <TimeButton buttonName="제주" buttonValue="jeju" onClick={this.handleClick} />
+          <TimeButton buttonName="육지" buttonValue="land" onClick={this.handleClick} />
+          <TimeButton buttonName="통합" buttonValue="total" onClick={this.handleClick} />
+        <svg id="RecChartB"></svg>
+      </div>
+    )
+  }
+}
+export class RecChartC extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
+      color:["rgb(204,37,41)"],
+      legend:["평균가(종가)"]
+    };
+    this.handleClick=this.handleClick.bind(this);
+    this.chartdraw=this.chartdraw.bind(this)
+  }
+  chartdraw(data){
+    let parseTime = d3.timeParse("%Y-%m-%d");
+    let margin ={top:50, right:50,bottom:50,left:50},
+      width=1000,
+      height=1000;
+    let legend={bottom:height-100,left:50,width:20};
+    let radius=5;
+    let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
+    let yScale=d3.scaleLinear().range([height-margin.top,margin.bottom]);
+    let average_line=d3.line()
+      .defined(function(d) { return d.average_price; })
+      .x(function(d){return xScale(d.date)})
+      .y(function(d){return yScale(d.average_price)});
+    let svg=d3.select("#RecChartA")
+      .attr("width",width + margin.left + margin.right)
+      .attr("height",height + margin.top + margin.bottom)
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+    data.forEach(function(d){d.date=parseTime(d.date)});
+    xScale.domain(d3.extent(data,function(d){
+      return d.date;
+    }));
+    yScale.domain([d3.min(data,function(d){
+      return /*Math.min(d.lowest_price,*/d.average_price/*,d.highest_price)*/|| Infinity;
+    }),d3.max(data,function(d){
+      return /*Math.max(d.lowest_price,*/d.average_price/*,d.highest_price)*/;
+    })]);
+    svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke",this.state.color[0])
+      .attr("d", average_line);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisTop(xScale)
+        .tickFormat(d3.timeFormat("%Y-%m-%d")));
+    svg.append("g")
+      .call(d3.axisRight(yScale));
+    svg.append("g")
+      .selectAll(".dot1")
+      .data(data.filter(function(d){return d.average_price}))
+      .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", average_line.x())
+        .attr("cy", average_line.y())
+        .attr("r", radius)
+        .style("fill",this.state.color[0])
+        .on("mouseover", handleMouseOver)
+        .on("mouseout", handleMouseOut);
+
+    function handleMouseOver(d,i) {
+      d3.select(this)
+        .attr("r",radius*3);
+      notice("REC",d.date,d.average_price,i);
+    }
+    let last=(data.length-1);
+    notice("REC최신",data[last].date,data[last].average_price);
+
+    function notice(subject,x,y,i){
+      let text=svg.append("g")
+        .attr("id",`${subject}dot-${i}`);
+      text.append("rect")
+        .attr("width",150)
+        .attr("height",40)
+        .attr("style","fill:white;stroke-width:3;stroke:black")
+        .attr("x",function(){return xScale(x) - 35; })
+        .attr("y",function(){return yScale(y)-50; })
+      text.append("text")
+        .attr("x",function(){return xScale(x) - 30; })
+        .attr("y",function(){return yScale(y) - 30; })
+        .text(function(){
+          return ( `${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}일`)
+        })
+      text.append("text")
+        .attr("x",function(){return xScale(x) - 30; })
+        .attr("y",function(){return yScale(y) - 15; })
+        .text(function(){
+              return ( `${subject}가격:${y}원`);
+        })
+    }
+
+    function handleMouseOut(d, i) {
+      d3.select(this)
+        .attr("r",radius);
+      d3.select(`#RECdot-${i}`).remove(); // Remove text location
+    }
+    let legendbox=svg.append('g').selectAll()
+      .data(this.state.color)
+      .enter().append("rect")
+      .attr("width",10)
+      .attr("height",10)
+      .attr("fill",function(d){
+        return d;
+      })
+      .attr("transform",function(d,i){
+        return "translate("+(legend.left+10) +","+ (legend.bottom-i*legend.width)+")"
+      });
+    let legendtext=svg.append('g').selectAll()
+      .data(this.state.legend)
+      .enter().append('text')
+      .text(function(d){
+          return d;
+      })
+      .attr("transform",function(d,i){
+        return "translate("+(legend.left+30) +","+ (legend.bottom-i*legend.width+10)+")"
+      });
+  }
+
+  handleClick(e){
+    d3.selectAll("#RecChartC > *").remove();
+    let land=e.target.value;
+    fetch(`/rec_data1/average_price/lowest_price/highest_price/${land}`).then(
+      response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Request failed!');
+      }, networkError => {
+         console.log(networkError.message);
+      }).then(jsonResponse => this.chartdraw(jsonResponse));
+  }
+
+  componentDidMount() {
+    fetch(`/rec_data1/average_price/lowest_price/highest_price/total`).then(
+      response => {
+       if (response.ok) {
+         return response.json();
+        }
+        throw new Error('Request failed!');
+      }, networkError => {
+        console.log(networkError.message);
+      }).then(jsonResponse => this.chartdraw(jsonResponse));
+  }
+  render(){
+    return(
+      <div>
+          <TimeButton buttonName="제주" buttonValue="jeju" onClick={this.handleClick} />
+          <TimeButton buttonName="육지" buttonValue="land" onClick={this.handleClick} />
+          <TimeButton buttonName="통합" buttonValue="total" onClick={this.handleClick} />
+        <svg id="RecChartC"></svg>
       </div>
     )
   }

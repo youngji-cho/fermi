@@ -32,23 +32,10 @@ img {
     width: 100%;
     height: auto;
 }
-
 .text{
-  display: flex
+  display: flex;
 }
 
-.filter {
-  width:100%;
-  min-height:10px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.dashboard {
-  width: 100%;
-  min-height: 300px;
-  margin-left: auto;
-  margin-right: auto;
-}
 .chart {
   display: -webkit-flex;
   display: -ms-flexbox;

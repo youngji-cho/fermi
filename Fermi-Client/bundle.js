@@ -3888,16 +3888,11 @@ var Table = exports.Table = function (_React$Component4) {
         { className: "demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" },
         _react2.default.createElement(
           "div",
-          null,
+          { style: { "overflowX": "auto" } },
           _react2.default.createElement(
             "h4",
             null,
             this.props.name
-          ),
-          _react2.default.createElement(
-            "p",
-            null,
-            this.props.content
           ),
           this.props.children
         )
@@ -6015,7 +6010,7 @@ var createTransitionManager = function createTransitionManager() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RecChartA = exports.SmpChartA = undefined;
+exports.RecChartC = exports.RecChartB = exports.RecChartA = exports.SmpChartB = exports.SmpChartA = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6142,7 +6137,6 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
       var startQuery = e.target.value;
       var endDate = new Date();
       var endQuery = endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDay();
-      console.log(startQuery, endQuery);
 
       fetch('/smp_data/total_price/' + startQuery + '/' + endQuery).then(function (response) {
         if (response.ok) {
@@ -6188,21 +6182,172 @@ var SmpChartA = exports.SmpChartA = function (_React$Component) {
   return SmpChartA;
 }(_react2.default.Component);
 
-var RecChartA = exports.RecChartA = function (_React$Component2) {
-  _inherits(RecChartA, _React$Component2);
+var SmpChartB = exports.SmpChartB = function (_React$Component2) {
+  _inherits(SmpChartB, _React$Component2);
 
-  function RecChartA(props) {
-    _classCallCheck(this, RecChartA);
+  function SmpChartB(props) {
+    _classCallCheck(this, SmpChartB);
 
-    var _this4 = _possibleConstructorReturn(this, (RecChartA.__proto__ || Object.getPrototypeOf(RecChartA)).call(this, props));
+    var _this4 = _possibleConstructorReturn(this, (SmpChartB.__proto__ || Object.getPrototypeOf(SmpChartB)).call(this, props));
 
     _this4.state = {
-      color: ["rgb(204,37,41)"],
-      legend: ["평균가(종가)"]
+      color: "rgb(57,106,177)",
+      legend: "SMP 월간가중평균가격"
     };
     _this4.handleClick = _this4.handleClick.bind(_this4);
     _this4.chartdraw = _this4.chartdraw.bind(_this4);
     return _this4;
+  }
+
+  _createClass(SmpChartB, [{
+    key: 'chartdraw',
+    value: function chartdraw(data) {
+      var parseTime = d3.timeParse("%Y-%m-%d");
+      var margin = { top: 50, right: 50, bottom: 50, left: 50 },
+          width = 1000,
+          height = 1000;
+      var radius = 5;
+      var legend = { bottom: 100, left: 50, width: 20 };
+      var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
+      var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
+      var line = d3.line().x(function (d) {
+        return xScale(d.date);
+      }).y(function (d) {
+        return yScale(d.total_price);
+      });
+
+      var svg = d3.select("#SmpChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+      data.forEach(function (d) {
+        d.date = parseTime(d.date);
+      });
+      xScale.domain(d3.extent(data, function (d) {
+        return d.date;
+      }));
+      yScale.domain(d3.extent(data, function (d) {
+        return d.total_price;
+      }));
+      svg.append("path").data([data]).attr("class", "line").attr("d", line).style("stroke", this.state.color);
+      svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
+      svg.append("g").call(d3.axisRight(yScale));
+      svg.append("g").selectAll(".dot").data(data).enter().append("circle").attr("class", "dot").attr("cx", line.x()).attr("cy", line.y()).attr("r", radius).style("fill", this.state.color).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut);
+      //EventHandler
+      function handleMouseOver(d, i) {
+        d3.select(this).attr("r", radius * 3);
+        notice("SMP", d.date, d.total_price, i);
+      }
+      function handleMouseOut(d, i) {
+        d3.select(this).attr("r", radius);
+        d3.select('#SMPdot-' + i).remove(); // Remove text location
+      }
+
+      var last = data.length - 1;
+      notice("SMP최신", data[last].date, data[last].total_price);
+
+      function notice(subject, x, y, i) {
+        var text = svg.append("g").attr("id", subject + 'dot-' + i);
+        text.append("rect").attr("width", 150).attr("height", 40).attr("style", "fill:white;stroke-width:3;stroke:black").attr("x", function () {
+          return xScale(x) - 35;
+        }).attr("y", function () {
+          return yScale(y) - 50;
+        });
+        text.append("text").attr("x", function () {
+          return xScale(x) - 30;
+        }).attr("y", function () {
+          return yScale(y) - 30;
+        }).text(function () {
+          return ' ' + x.getFullYear() + '\uB144 ' + (x.getMonth() + 1) + '\uC6D4 ' + x.getDate() + '\uC77C';
+        });
+        text.append("text").attr("x", function () {
+          return xScale(x) - 30;
+        }).attr("y", function () {
+          return yScale(y) - 15;
+        }).text(function () {
+          return subject + '\uAC00\uACA9:' + y + '\uC6D0';
+        });
+      }
+      //Legend
+      var legendbox = svg.append('g').selectAll().data([this.state.color]).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 10) + "," + (legend.bottom - i * legend.width) + ")";
+      });
+
+      var legendtext = svg.append('g').selectAll().data([this.state.legend]).enter().append('text').text(function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 30) + "," + (legend.bottom - i * legend.width + 10) + ")";
+      });
+    }
+  }, {
+    key: 'handleClick',
+    value: function handleClick(e) {
+      var _this5 = this;
+
+      d3.selectAll("#SmpChartA > *").remove();
+      var startQuery = e.target.value;
+      var endDate = new Date();
+      var endQuery = endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDay();
+
+      fetch('/smp_data/total_price/' + startQuery + '/' + endQuery).then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        return _this5.chartdraw(jsonResponse);
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this6 = this;
+
+      fetch('/smp_data/total_price/2010-01-01/2100-12-31').then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        return _this6.chartdraw(jsonResponse);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '\uC804\uCCB4(2001\uB144 \uC774\uD6C4)', buttonValue: '2001-01-01', onClick: this.handleClick }),
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '2010\uB144 \uC774\uD6C4', buttonValue: '2010-01-01', onClick: this.handleClick }),
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '2015\uB144 \uC774\uD6C4', buttonValue: '2015-01-01', onClick: this.handleClick }),
+        _react2.default.createElement('svg', { id: 'SmpChartB' })
+      );
+    }
+  }]);
+
+  return SmpChartB;
+}(_react2.default.Component);
+
+var RecChartA = exports.RecChartA = function (_React$Component3) {
+  _inherits(RecChartA, _React$Component3);
+
+  function RecChartA(props) {
+    _classCallCheck(this, RecChartA);
+
+    var _this7 = _possibleConstructorReturn(this, (RecChartA.__proto__ || Object.getPrototypeOf(RecChartA)).call(this, props));
+
+    _this7.state = {
+      color: ["rgb(204,37,41)"],
+      legend: ["평균가(종가)"]
+    };
+    _this7.handleClick = _this7.handleClick.bind(_this7);
+    _this7.chartdraw = _this7.chartdraw.bind(_this7);
+    return _this7;
   }
 
   _createClass(RecChartA, [{
@@ -6249,9 +6394,9 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
         d3.select(this).attr("r", radius * 3);
         notice("REC", d.date, d.average_price, i);
       }
-
       var last = data.length - 1;
       notice("REC최신", data[last].date, data[last].average_price);
+
       function notice(subject, x, y, i) {
         var text = svg.append("g").attr("id", subject + 'dot-' + i);
         text.append("rect").attr("width", 150).attr("height", 40).attr("style", "fill:white;stroke-width:3;stroke:black").attr("x", function () {
@@ -6293,7 +6438,7 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
   }, {
     key: 'handleClick',
     value: function handleClick(e) {
-      var _this5 = this;
+      var _this8 = this;
 
       d3.selectAll("#RecChartA > *").remove();
       var land = e.target.value;
@@ -6305,13 +6450,13 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       }, function (networkError) {
         console.log(networkError.message);
       }).then(function (jsonResponse) {
-        return _this5.chartdraw(jsonResponse);
+        return _this8.chartdraw(jsonResponse);
       });
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this6 = this;
+      var _this9 = this;
 
       fetch('/rec_data1/average_price/lowest_price/highest_price/total').then(function (response) {
         if (response.ok) {
@@ -6321,7 +6466,7 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       }, function (networkError) {
         console.log(networkError.message);
       }).then(function (jsonResponse) {
-        return _this6.chartdraw(jsonResponse);
+        return _this9.chartdraw(jsonResponse);
       });
     }
   }, {
@@ -6339,6 +6484,311 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
   }]);
 
   return RecChartA;
+}(_react2.default.Component);
+
+var RecChartB = exports.RecChartB = function (_React$Component4) {
+  _inherits(RecChartB, _React$Component4);
+
+  function RecChartB(props) {
+    _classCallCheck(this, RecChartB);
+
+    var _this10 = _possibleConstructorReturn(this, (RecChartB.__proto__ || Object.getPrototypeOf(RecChartB)).call(this, props));
+
+    _this10.state = {
+      color: ["rgb(204,37,41)"],
+      legend: ["평균가(종가)"]
+    };
+    _this10.handleClick = _this10.handleClick.bind(_this10);
+    _this10.chartdraw = _this10.chartdraw.bind(_this10);
+    return _this10;
+  }
+
+  _createClass(RecChartB, [{
+    key: 'chartdraw',
+    value: function chartdraw(data) {
+      var parseTime = d3.timeParse("%Y-%m-%d");
+      var margin = { top: 50, right: 50, bottom: 50, left: 50 },
+          width = 1000,
+          height = 1000;
+      var legend = { bottom: height - 100, left: 50, width: 20 };
+      var radius = 5;
+      var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
+      var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
+      var average_line = d3.line().defined(function (d) {
+        return d.average_price;
+      }).x(function (d) {
+        return xScale(d.date);
+      }).y(function (d) {
+        return yScale(d.average_price);
+      });
+      var svg = d3.select("#RecChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+      data.forEach(function (d) {
+        d.date = parseTime(d.date);
+      });
+      xScale.domain(d3.extent(data, function (d) {
+        return d.date;
+      }));
+      yScale.domain([d3.min(data, function (d) {
+        return (/*Math.min(d.lowest_price,*/d.average_price /*,d.highest_price)*/ || Infinity
+        );
+      }), d3.max(data, function (d) {
+        return (/*Math.max(d.lowest_price,*/d.average_price /*,d.highest_price)*/
+        );
+      })]);
+      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[0]).attr("d", average_line);
+      svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
+      svg.append("g").call(d3.axisRight(yScale));
+      svg.append("g").selectAll(".dot1").data(data.filter(function (d) {
+        return d.average_price;
+      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", radius).style("fill", this.state.color[0]).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut);
+
+      function handleMouseOver(d, i) {
+        d3.select(this).attr("r", radius * 3);
+        notice("REC", d.date, d.average_price, i);
+      }
+      var last = data.length - 1;
+      notice("REC최신", data[last].date, data[last].average_price);
+
+      function notice(subject, x, y, i) {
+        var text = svg.append("g").attr("id", subject + 'dot-' + i);
+        text.append("rect").attr("width", 150).attr("height", 40).attr("style", "fill:white;stroke-width:3;stroke:black").attr("x", function () {
+          return xScale(x) - 35;
+        }).attr("y", function () {
+          return yScale(y) - 50;
+        });
+        text.append("text").attr("x", function () {
+          return xScale(x) - 30;
+        }).attr("y", function () {
+          return yScale(y) - 30;
+        }).text(function () {
+          return x.getFullYear() + '\uB144 ' + (x.getMonth() + 1) + '\uC6D4 ' + x.getDate() + '\uC77C';
+        });
+        text.append("text").attr("x", function () {
+          return xScale(x) - 30;
+        }).attr("y", function () {
+          return yScale(y) - 15;
+        }).text(function () {
+          return subject + '\uAC00\uACA9:' + y + '\uC6D0';
+        });
+      }
+      function handleMouseOut(d, i) {
+        d3.select(this).attr("r", radius);
+        d3.select('#RECdot-' + i).remove(); // Remove text location
+      }
+      var legendbox = svg.append('g').selectAll().data(this.state.color).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 10) + "," + (legend.bottom - i * legend.width) + ")";
+      });
+      var legendtext = svg.append('g').selectAll().data(this.state.legend).enter().append('text').text(function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 30) + "," + (legend.bottom - i * legend.width + 10) + ")";
+      });
+    }
+  }, {
+    key: 'handleClick',
+    value: function handleClick(e) {
+      var _this11 = this;
+
+      d3.selectAll("#RecChartB > *").remove();
+      var land = e.target.value;
+      fetch('/rec_data1/average_price/lowest_price/highest_price/' + land).then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        return _this11.chartdraw(jsonResponse);
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this12 = this;
+
+      fetch('/rec_data1/average_price/lowest_price/highest_price/total').then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        return _this12.chartdraw(jsonResponse);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '\uC81C\uC8FC', buttonValue: 'jeju', onClick: this.handleClick }),
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '\uC721\uC9C0', buttonValue: 'land', onClick: this.handleClick }),
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '\uD1B5\uD569', buttonValue: 'total', onClick: this.handleClick }),
+        _react2.default.createElement('svg', { id: 'RecChartB' })
+      );
+    }
+  }]);
+
+  return RecChartB;
+}(_react2.default.Component);
+
+var RecChartC = exports.RecChartC = function (_React$Component5) {
+  _inherits(RecChartC, _React$Component5);
+
+  function RecChartC(props) {
+    _classCallCheck(this, RecChartC);
+
+    var _this13 = _possibleConstructorReturn(this, (RecChartC.__proto__ || Object.getPrototypeOf(RecChartC)).call(this, props));
+
+    _this13.state = {
+      color: ["rgb(204,37,41)"],
+      legend: ["평균가(종가)"]
+    };
+    _this13.handleClick = _this13.handleClick.bind(_this13);
+    _this13.chartdraw = _this13.chartdraw.bind(_this13);
+    return _this13;
+  }
+
+  _createClass(RecChartC, [{
+    key: 'chartdraw',
+    value: function chartdraw(data) {
+      var parseTime = d3.timeParse("%Y-%m-%d");
+      var margin = { top: 50, right: 50, bottom: 50, left: 50 },
+          width = 1000,
+          height = 1000;
+      var legend = { bottom: height - 100, left: 50, width: 20 };
+      var radius = 5;
+      var xScale = d3.scaleTime().range([margin.left, width - margin.right]);
+      var yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]);
+      var average_line = d3.line().defined(function (d) {
+        return d.average_price;
+      }).x(function (d) {
+        return xScale(d.date);
+      }).y(function (d) {
+        return yScale(d.average_price);
+      });
+      var svg = d3.select("#RecChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
+
+      data.forEach(function (d) {
+        d.date = parseTime(d.date);
+      });
+      xScale.domain(d3.extent(data, function (d) {
+        return d.date;
+      }));
+      yScale.domain([d3.min(data, function (d) {
+        return (/*Math.min(d.lowest_price,*/d.average_price /*,d.highest_price)*/ || Infinity
+        );
+      }), d3.max(data, function (d) {
+        return (/*Math.max(d.lowest_price,*/d.average_price /*,d.highest_price)*/
+        );
+      })]);
+      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[0]).attr("d", average_line);
+      svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
+      svg.append("g").call(d3.axisRight(yScale));
+      svg.append("g").selectAll(".dot1").data(data.filter(function (d) {
+        return d.average_price;
+      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", radius).style("fill", this.state.color[0]).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut);
+
+      function handleMouseOver(d, i) {
+        d3.select(this).attr("r", radius * 3);
+        notice("REC", d.date, d.average_price, i);
+      }
+      var last = data.length - 1;
+      notice("REC최신", data[last].date, data[last].average_price);
+
+      function notice(subject, x, y, i) {
+        var text = svg.append("g").attr("id", subject + 'dot-' + i);
+        text.append("rect").attr("width", 150).attr("height", 40).attr("style", "fill:white;stroke-width:3;stroke:black").attr("x", function () {
+          return xScale(x) - 35;
+        }).attr("y", function () {
+          return yScale(y) - 50;
+        });
+        text.append("text").attr("x", function () {
+          return xScale(x) - 30;
+        }).attr("y", function () {
+          return yScale(y) - 30;
+        }).text(function () {
+          return x.getFullYear() + '\uB144 ' + (x.getMonth() + 1) + '\uC6D4 ' + x.getDate() + '\uC77C';
+        });
+        text.append("text").attr("x", function () {
+          return xScale(x) - 30;
+        }).attr("y", function () {
+          return yScale(y) - 15;
+        }).text(function () {
+          return subject + '\uAC00\uACA9:' + y + '\uC6D0';
+        });
+      }
+
+      function handleMouseOut(d, i) {
+        d3.select(this).attr("r", radius);
+        d3.select('#RECdot-' + i).remove(); // Remove text location
+      }
+      var legendbox = svg.append('g').selectAll().data(this.state.color).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 10) + "," + (legend.bottom - i * legend.width) + ")";
+      });
+      var legendtext = svg.append('g').selectAll().data(this.state.legend).enter().append('text').text(function (d) {
+        return d;
+      }).attr("transform", function (d, i) {
+        return "translate(" + (legend.left + 30) + "," + (legend.bottom - i * legend.width + 10) + ")";
+      });
+    }
+  }, {
+    key: 'handleClick',
+    value: function handleClick(e) {
+      var _this14 = this;
+
+      d3.selectAll("#RecChartC > *").remove();
+      var land = e.target.value;
+      fetch('/rec_data1/average_price/lowest_price/highest_price/' + land).then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        return _this14.chartdraw(jsonResponse);
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this15 = this;
+
+      fetch('/rec_data1/average_price/lowest_price/highest_price/total').then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        return _this15.chartdraw(jsonResponse);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '\uC81C\uC8FC', buttonValue: 'jeju', onClick: this.handleClick }),
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '\uC721\uC9C0', buttonValue: 'land', onClick: this.handleClick }),
+        _react2.default.createElement(_layout.TimeButton, { buttonName: '\uD1B5\uD569', buttonValue: 'total', onClick: this.handleClick }),
+        _react2.default.createElement('svg', { id: 'RecChartC' })
+      );
+    }
+  }]);
+
+  return RecChartC;
 }(_react2.default.Component);
 
 /***/ }),
@@ -39246,11 +39696,7 @@ var MainPage = exports.MainPage = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (MainPage.__proto__ || Object.getPrototypeOf(MainPage)).call(this, props));
 
-    _this.state = {
-      exp1: "Fermi는 재생에너지 포털 프로젝트입니다. 재생에너지 사업검토에 필요한 가격정보를 제공합니다.",
-      exp2: "전력도매시장 가격인 계통한계가격(SMP, System Marginal Price)의 가격입니다. 아래의 그래프는 재생에너지 발전에서 많이 쓰는 월간가중평균 계통한계가격을 나타냅니다.(그래프에 마우스로 점을 클릭하면 가격을 조회할수 있습니다)",
-      exp3: "재생에너지 발전의 대가로 주어지는 재생에너지공급인증서(REC, Renewable Energy Certificate)의 가격입니다. 제주,육지,종합을 기준으로 볼수 있습니다.(그래프에 마우스로 점을 클릭하면 가격을 조회할수 있습니다)"
-    };
+    _this.state = {};
     return _this;
   }
 
@@ -39260,10 +39706,25 @@ var MainPage = exports.MainPage = function (_React$Component) {
       return _react2.default.createElement(
         _layout.Layout,
         null,
-        _react2.default.createElement(_layout.Table, { name: 'fermi', content: this.state.exp1 }),
         _react2.default.createElement(
           _layout.Table,
-          { name: 'SMP \uAC00\uACA9', content: this.state.exp2 },
+          { name: 'fermi' },
+          _react2.default.createElement(
+            'p',
+            null,
+            'Fermi\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uD3EC\uD138 \uD504\uB85C\uC81D\uD2B8\uC785\uB2C8\uB2E4. \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uC0AC\uC5C5\uAC80\uD1A0\uC5D0 \uD544\uC694\uD55C \uAC00\uACA9\uC815\uBCF4\uB97C \uC81C\uACF5\uD569\uB2C8\uB2E4.'
+          )
+        ),
+        _react2.default.createElement(
+          _layout.Table,
+          { name: 'SMP \uAC00\uACA9' },
+          _react2.default.createElement(
+            'p',
+            null,
+            '\uC804\uB825\uB3C4\uB9E4\uC2DC\uC7A5 \uAC00\uACA9\uC778 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9(SMP, System Marginal Price)\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4. \uC544\uB798\uC758 \uADF8\uB798\uD504\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uBC1C\uC804\uC5D0\uC11C \uB9CE\uC774 \uC4F0\uB294 \uC6D4\uAC04\uAC00\uC911\uD3C9\uADE0 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC744 \uB098\uD0C0\uB0C5\uB2C8\uB2E4.(\uADF8\uB798\uD504\uC5D0 \uB9C8\uC6B0\uC2A4\uB85C \uC810\uC744 \uD074\uB9AD\uD558\uBA74 \uAC00\uACA9\uC744 \uC870\uD68C\uD560\uC218 \uC788\uC2B5\uB2C8\uB2E4) ',
+            _react2.default.createElement('br', null),
+            '\uB370\uC774\uD130 \uCD9C\uCC98: \uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uC6D0\uC2A4\uD2C9\uC815\uBCF4\uC11C\uBE44\uC2A4'
+          ),
           _react2.default.createElement(_charts.SmpChartA, null),
           _react2.default.createElement(
             'div',
@@ -39278,6 +39739,13 @@ var MainPage = exports.MainPage = function (_React$Component) {
         _react2.default.createElement(
           _layout.Table,
           { name: 'REC \uAC00\uACA9', content: this.state.exp3 },
+          _react2.default.createElement(
+            'p',
+            null,
+            ' \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uBC1C\uC804\uC758 \uB300\uAC00\uB85C \uC8FC\uC5B4\uC9C0\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0\uACF5\uAE09\uC778\uC99D\uC11C(REC, Renewable Energy Certificate)\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4. \uC81C\uC8FC,\uC721\uC9C0,\uC885\uD569\uC744 \uAE30\uC900\uC73C\uB85C \uBCFC\uC218 \uC788\uC2B5\uB2C8\uB2E4.(\uADF8\uB798\uD504\uC5D0 \uB9C8\uC6B0\uC2A4\uB85C \uC810\uC744 \uD074\uB9AD\uD558\uBA74 \uAC00\uACA9\uC744 \uC870\uD68C\uD560\uC218 \uC788\uC2B5\uB2C8\uB2E4) ',
+            _react2.default.createElement('br', null),
+            '\uB370\uC774\uD130 \uCD9C\uCC98: \uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uC6D0\uC2A4\uD2C9\uC815\uBCF4\uC11C\uBE44\uC2A4'
+          ),
           _react2.default.createElement(_charts.RecChartA, null),
           _react2.default.createElement(
             'div',
@@ -61005,11 +61473,7 @@ var SmpPage = exports.SmpPage = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (SmpPage.__proto__ || Object.getPrototypeOf(SmpPage)).call(this, props));
 
-    _this.state = {
-      exp1: "계통한계가격(SMP,Sytem Marginal Price)은 전력시장에서 거래되는 모든 발전소에 적용되는 기준가격입니다. 발전회사는 전력을 판매하고, 한국전력을 구매해야 합니다. 이때 중간에서 가격을 결정하고, 정산을 하는 기관이 한국전력거래소(KRX, Korea Power Exchange) 입니다.",
-      exp2: "계통한계가격은 한국전력거래소에서 거래되는 전력의 시간대별 기준단가라고 쉽게 정의할 수 있습니다. 한국전력거래소는 전력시장을 총괄적으로 운영합니다. 24시간 전에 항상 다음 24시간의 전력수요를 예측해서 각 발전소마다 얼만큼 생산할지 지시를 합니다. 이를 급전(Dispatch)지시라고 합니다. 급전지시는 가장 가격이 싼 기준으로 순차적으로 지시됩니다.",
-      exp3: "재생에너지 전력판매대금은 계통한계가격을 기준으로 정산 받습니다. 다만,규모에 따라 정산되는 방식이 조금 다릅니다. 1Mw 이상 대형 발전소는 전력거래소에 회원가입을 해서 생산된 전력에 대해서 시간당 계통한계가격으로 정산 받습니다. 1Mw이하의 소규모 발전소의 경우 전력거래소 회원가입이 불가능한 것은 아니지만, 대부분 한국전력과 직접 전력구매계약(Power Purchase Agreement)를 맺습니다. 이 경우 생산된 전력을 거래소를 거치지 않고, 한국전력으로 직접판매합니다. 이때 기준 가격은 월간 가중평균 계통한계가격으로 계산됩니다. 시간마다 가격이 변동되는 것이 아니라, 생산된 전력의 총액을 월간 가중평균 계통한계가격으로 곱해서 매월 대금을 정산 받습니다."
-    };
+    _this.state = {};
     return _this;
   }
 
@@ -61027,9 +61491,46 @@ var SmpPage = exports.SmpPage = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { className: 'mdl-grid demo-content' },
-            _react2.default.createElement(_layout.Table, { name: 'SMP \uAC00\uACA9', content: this.state.exp1 }),
-            _react2.default.createElement(_layout.Table, { name: 'SMP \uC2E4\uC2DC\uAC04\uAC00\uACA9', content: this.state.exp2 }),
-            _react2.default.createElement(_layout.Table, { name: 'SMP \uC6D4\uAC04\uAC00\uC911\uD3C9\uADE0\uAC00\uACA9', content: this.state.exp3 })
+            _react2.default.createElement(
+              _layout.Table,
+              { name: 'SMP \uAC00\uACA9' },
+              _react2.default.createElement(
+                'p',
+                null,
+                '\uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9(SMP,Sytem Marginal Price)\uC740 \uC804\uB825\uC2DC\uC7A5\uC5D0\uC11C \uAC70\uB798\uB418\uB294 \uBAA8\uB4E0 \uBC1C\uC804\uC18C\uC5D0 \uC801\uC6A9\uB418\uB294 \uAE30\uC900\uAC00\uACA9\uC785\uB2C8\uB2E4. \uBC1C\uC804\uD68C\uC0AC\uB294 \uC804\uB825\uC744 \uD310\uB9E4\uD558\uACE0, \uD55C\uAD6D\uC804\uB825\uC744 \uAD6C\uB9E4\uD574\uC57C \uD569\uB2C8\uB2E4. \uC774\uB54C \uC911\uAC04\uC5D0\uC11C \uAC00\uACA9\uC744 \uACB0\uC815\uD558\uACE0, \uC815\uC0B0\uC744 \uD558\uB294 \uAE30\uAD00\uC774 \uD55C\uAD6D\uC804\uB825\uAC70\uB798\uC18C(KRX, Korea Power Exchange) \uC785\uB2C8\uB2E4. ',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                '\uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC740 \uD55C\uAD6D\uC804\uB825\uAC70\uB798\uC18C\uC5D0\uC11C \uAC70\uB798\uB418\uB294 \uC804\uB825\uC758 \uC2DC\uAC04\uB300\uBCC4 \uAE30\uC900\uB2E8\uAC00\uB77C\uACE0 \uC27D\uAC8C \uC815\uC758\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uD55C\uAD6D\uC804\uB825\uAC70\uB798\uC18C\uB294 \uC804\uB825\uC2DC\uC7A5\uC744 \uCD1D\uAD04\uC801\uC73C\uB85C \uC6B4\uC601\uD569\uB2C8\uB2E4. 24\uC2DC\uAC04 \uC804\uC5D0 \uD56D\uC0C1 \uB2E4\uC74C 24\uC2DC\uAC04\uC758 \uC804\uB825\uC218\uC694\uB97C \uC608\uCE21\uD574\uC11C \uAC01 \uBC1C\uC804\uC18C\uB9C8\uB2E4 \uC5BC\uB9CC\uD07C \uC0DD\uC0B0\uD560\uC9C0 \uC9C0\uC2DC\uB97C \uD569\uB2C8\uB2E4. \uC774\uB97C \uAE09\uC804(Dispatch)\uC9C0\uC2DC\uB77C\uACE0 \uD569\uB2C8\uB2E4. \uAE09\uC804\uC9C0\uC2DC\uB294 \uAC00\uC7A5 \uAC00\uACA9\uC774 \uC2FC \uAE30\uC900\uC73C\uB85C \uC21C\uCC28\uC801\uC73C\uB85C \uC9C0\uC2DC\uB429\uB2C8\uB2E4. ',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('img', { src: 'https://s3.ap-northeast-2.amazonaws.com/fermi-public/smp_pricing.png', alt: 'smp_dispatch', height: '100%', width: '100%' }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                '\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uC804\uB825\uD310\uB9E4\uB300\uAE08\uC740 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC744 \uAE30\uC900\uC73C\uB85C \uC815\uC0B0 \uBC1B\uC2B5\uB2C8\uB2E4. \uB2E4\uB9CC,\uADDC\uBAA8\uC5D0 \uB530\uB77C \uC815\uC0B0\uB418\uB294 \uBC29\uC2DD\uC774 \uC870\uAE08 \uB2E4\uB985\uB2C8\uB2E4. 1Mw \uC774\uC0C1 \uB300\uD615 \uBC1C\uC804\uC18C\uB294 \uC804\uB825\uAC70\uB798\uC18C\uC5D0 \uD68C\uC6D0\uAC00\uC785\uC744 \uD574\uC11C \uC0DD\uC0B0\uB41C \uC804\uB825\uC5D0 \uB300\uD574\uC11C \uC2DC\uAC04\uB2F9 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC73C\uB85C \uC815\uC0B0 \uBC1B\uC2B5\uB2C8\uB2E4. 1Mw\uC774\uD558\uC758 \uC18C\uADDC\uBAA8 \uBC1C\uC804\uC18C\uC758 \uACBD\uC6B0 \uC804\uB825\uAC70\uB798\uC18C \uD68C\uC6D0\uAC00\uC785\uC774 \uBD88\uAC00\uB2A5\uD55C \uAC83\uC740 \uC544\uB2C8\uC9C0\uB9CC, \uB300\uBD80\uBD84 \uD55C\uAD6D\uC804\uB825\uACFC \uC9C1\uC811 \uC804\uB825\uAD6C\uB9E4\uACC4\uC57D(Power Purchase Agreement)\uB97C \uB9FA\uC2B5\uB2C8\uB2E4. \uC774 \uACBD\uC6B0 \uC0DD\uC0B0\uB41C \uC804\uB825\uC744 \uAC70\uB798\uC18C\uB97C \uAC70\uCE58\uC9C0 \uC54A\uACE0, \uD55C\uAD6D\uC804\uB825\uC73C\uB85C \uC9C1\uC811\uD310\uB9E4\uD569\uB2C8\uB2E4. \uC774\uB54C \uAE30\uC900 \uAC00\uACA9\uC740 \uC6D4\uAC04 \uAC00\uC911\uD3C9\uADE0 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC73C\uB85C \uACC4\uC0B0\uB429\uB2C8\uB2E4. \uC2DC\uAC04\uB9C8\uB2E4 \uAC00\uACA9\uC774 \uBCC0\uB3D9\uB418\uB294 \uAC83\uC774 \uC544\uB2C8\uB77C, \uC0DD\uC0B0\uB41C \uC804\uB825\uC758 \uCD1D\uC561\uC744 \uC6D4\uAC04 \uAC00\uC911\uD3C9\uADE0 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC73C\uB85C \uACF1\uD574\uC11C \uB9E4\uC6D4 \uB300\uAE08\uC744 \uC815\uC0B0 \uBC1B\uC2B5\uB2C8\uB2E4.',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                '\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uACBD\uC81C\uC131 \uBD84\uC11D\uC5D0\uC11C \uC4F0\uC774\uB294 \uB300\uBD80\uBD84\uC758 \uC218\uCE58\uC778 \uC6D4\uAC04\uAC00\uC911\uD3C9\uADE0\uAC00\uACA9\uC774 \uC870\uD68C\uAC00\uB2A5\uD569\uB2C8\uB2E4.(\uC2E4\uC2DC\uAC04 \uC790\uB8CC \uCD94\uD6C4 \uC5C5\uB370\uC774\uD2B8 \uC608\uC815)'
+              )
+            ),
+            _react2.default.createElement(
+              _layout.Table,
+              { name: 'SMP \uC6D4\uAC04\uAC00\uC911\uD3C9\uADE0\uAC00\uACA9 \uADF8\uB798\uD504' },
+              _react2.default.createElement(
+                'p',
+                null,
+                '\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uBC1C\uC804\uC5D0\uC11C \uAC00\uC7A5 \uB9CE\uC774 \uC4F0\uC774\uB294 \uC6D4\uAC04 \uAC00\uC911\uD3C9\uADE0 \uAC00\uACA9\uC785\uB2C8\uB2E4. '
+              ),
+              _react2.default.createElement(_charts.SmpChartA, null)
+            ),
+            _react2.default.createElement(
+              _layout.Table,
+              { name: 'SMP \uC6D4\uAC04\uAC00\uC911\uD3C9\uADE0\uAC00\uACA9 \uADF8\uB798\uD504(\uBB3C\uAC00\uC0C1\uC2B9\uB960\uBCF4\uC815)' },
+              _react2.default.createElement(
+                'p',
+                null,
+                ' \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC740 \uC7A5\uAE30\uAC04\uC5D0 \uAC78\uCCD0\uC11C \uB370\uC774\uD130\uAC00 \uC874\uC7AC\uD558\uBBC0\uB85C \uBB3C\uAC00\uC0C1\uC2B9\uB960\uC5D0 \uB530\uB77C\uC11C \uBCF4\uC815\uD55C \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC785\uB2C8\uB2E4 \uBB3C\uAC00\uC0C1\uC2B9\uB960\uC740 \uC18C\uBE44\uC790 \uBB3C\uAC00\uC0C1\uC2B9\uB960(CPI,Consumer Price Index)\uC5D0 \uC758\uAC70\uD569\uB2C8\uB2E4 '
+              )
+            )
           )
         )
       );
@@ -61077,12 +61578,7 @@ var RecPage = exports.RecPage = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (RecPage.__proto__ || Object.getPrototypeOf(RecPage)).call(this, props));
 
-    _this.state = {
-      exp1: "REC는 Mwh당 거래가 기본입니다. REC는 도매시장에서 거래를 할수 있고, 장기계약을 맺어서 거래를 할 수도 있습니다. 도매시장의 가격은 매주 2회 결정됩니다. REC장기계약의 경우 에너지 관리공단 주관하에 실시됩니다. 17년 부터는 REC가격과 SMP가격을 통합해서 20년 장기계약이 가능합니다. 연2회 시행됩니다.",
-      exp2: "도매시장에서 매주 2회 거래되는 가격입니다. 증권시장처럼 양방향 입찰로 운영되기 때문에 최저,최고,평균가가 존재합니다. 또한, 제주/육지/전체로 가격이 구분됩니다.",
-      exp3: "도매시장에서 매월 거래되는 REC거래량입니다. 제주/육지/전체로 구분되며, 매도희망,매수희망,체결량을 나타냅니다.",
-      exp4: "매년 2회열리는 장기계약시장의 거래량을 나타냅니다."
-    };
+    _this.state = {};
     return _this;
   }
 
@@ -61100,10 +61596,257 @@ var RecPage = exports.RecPage = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { className: 'mdl-grid demo-content' },
-            _react2.default.createElement(_layout.Table, { name: 'REC \uAC00\uACA9', content: this.state.exp1 }),
-            _react2.default.createElement(_layout.Table, { name: '\uB3C4\uB9E4\uC2DC\uC7A5 \uAC00\uACA9', content: this.state.exp2 }),
-            _react2.default.createElement(_layout.Table, { name: '\uB3C4\uB9E4\uC2DC\uC7A5 \uAC70\uB798\uB7C9', content: this.state.exp3 }),
-            _react2.default.createElement(_layout.Table, { name: '\uC7A5\uAE30\uACC4\uC57D\uC2DC\uC7A5', content: this.state.exp4 })
+            _react2.default.createElement(
+              _layout.Table,
+              { name: 'REC \uAC00\uACA9' },
+              _react2.default.createElement(
+                'p',
+                null,
+                ' \uD55C\uAD6D\uC5D0\uC11C\uB294 \uACF5\uAE09\uACF5\uAE09\uC758\uBB34\uD654\uC81C\uB3C4(RPS,Renewable Eenergy Portfolio)\uB97C \uCC44\uD0DD\uD568\uC5D0 \uB530\uB77C,\uBC1C\uC804\uC790\uD68C\uC0AC\uB294 \uC544\uB798\uC758 \uACF5\uAE09\uC758\uBB34\uD654\uBE44\uC728\uC5D0 \uB530\uB77C \uC758\uBB34\uC801\uC73C\uB85C \uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0\uB97C \uACF5\uAE09\uD574\uC57C\uD558\uACE0, \uBD80\uC871\uD55C \uBD80\uBD84\uC740 \uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uACF5\uAE09\uC778\uC99D\uC11C(REC,Renewable Energy Certificate)\uB97C \uAD6C\uC785\uD558\uC5EC\uC11C \uCDA9\uB2F9\uD560\uC218 \uC788\uC2B5\uB2C8\uB2E4. REC\uB294 \uD604\uBB3C\uC2DC\uC7A5\uC5D0\uC11C \uAD6C\uC785\uD558\uAC70\uB098, \uC7A5\uAE30\uACC4\uC57D\uC2DC\uC7A5\uC5D0\uC11C \uAC70\uB798\uAC00 \uAC00\uB2A5\uD569\uB2C8\uB2E4.',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null)
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'table', style: { "overflowX": "auto" } },
+                _react2.default.createElement(
+                  'table',
+                  { className: 'mdl-data-table mdl-js-data-table mdl-shadow--2dp' },
+                  _react2.default.createElement(
+                    'thead',
+                    null,
+                    _react2.default.createElement(
+                      'tr',
+                      null,
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2012\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2013\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2014\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2015\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2016\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2017\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2018\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2019\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2020\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2021\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2022\uB144'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '2023\uB144 \uC774\uD6C4'
+                      )
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tbody',
+                    null,
+                    _react2.default.createElement(
+                      'tr',
+                      null,
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '2%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '2.5%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '3.0%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '3.0%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '3.5%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '4.0%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '5.0%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '6.0%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '7.0%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '8.0%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '9.0%'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '10.0%'
+                      )
+                    )
+                  )
+                )
+              )
+            ),
+            _react2.default.createElement(
+              _layout.Table,
+              { name: 'REC\uD1B5\uD569\uC2DC\uC7A5 \uC591\uBC29\uD5A5\uAC70\uB798\uC2DC\uC7A5' },
+              _react2.default.createElement(
+                'p',
+                null,
+                ' \uD604\uBB3C\uC2DC\uC7A5\uC5D0\uC11C \uAC70\uB798\uC911\uC778 REC\uAC00\uACA9 \uC911 \uD3C9\uADE0\uAC00(\uC885\uAC00)\uAE30\uC900\uC785\uB2C8\uB2E4. \uC591\uBC29\uD5A5 \uAC70\uB798\uAC00 \uC2DC\uC791\uB41C 17\uB144 3\uC6D4 28\uC77C \uC774\uD6C4 \uBD80\uD130 \uC870\uD68C\uAC00\uB2A5\uD569\uB2C8\uB2E4.'
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(_charts.RecChartA, null)
+            ),
+            _react2.default.createElement(
+              _layout.Table,
+              { name: '\uC7A5\uAE30\uACC4\uC57D\uC2DC\uC7A5' },
+              _react2.default.createElement(
+                'p',
+                null,
+                ' 17\uB144\uBD80\uD130 \uC2DC\uC791\uB41C SMP+REC\uACE0\uC815\uAC00\uACA9\uC2DC\uC7A5\uC758 \uC785\uCC30 \uACB0\uACFC\uC785\uB2C8\uB2E4.\uD3C9\uADE0\uAC00\uB97C \uC870\uD68C\uAC00\uB2A5\uD569\uB2C8\uB2E4.'
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'div',
+                { className: 'table', style: { "overflowX": "auto" } },
+                _react2.default.createElement(
+                  'table',
+                  { className: 'mdl-data-table mdl-js-data-table mdl-shadow--2dp' },
+                  _react2.default.createElement(
+                    'thead',
+                    null,
+                    _react2.default.createElement(
+                      'tr',
+                      null,
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '\uAD6C\uBD84'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '\uC721\uC9C0\uC9C0\uC5ED'
+                      ),
+                      _react2.default.createElement(
+                        'th',
+                        null,
+                        '\uC81C\uC8FC\uC9C0\uC5ED'
+                      )
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tbody',
+                    null,
+                    _react2.default.createElement(
+                      'tr',
+                      null,
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '17\uB144 \uD558\uBC18\uAE30'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '184,595\uC6D0'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '192,000\uC6D0'
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'tr',
+                      null,
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '17\uB144 \uC0C1\uBC18\uAE30'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '181,486\uC6D0'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        null,
+                        '186,726\uC6D0'
+                      )
+                    )
+                  )
+                )
+              )
+            )
           )
         )
       );
@@ -61172,7 +61915,7 @@ exports = module.exports = __webpack_require__(931)(false);
 
 
 // module
-exports.push([module.i, "/**\n * Copyright 2015 Google Inc. All Rights Reserved.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\nhtml, body {\n  font-family: 'Roboto', 'Helvetica', sans-serif;\n}\n\nsvg{\n  width:100%;\n  height:100%;\n}\n.line {\n  fill: none;\n  stroke: steelblue;\n  stroke-width: 3px;\n}\n\nimg {\n    width: 100%;\n    height: auto;\n}\n\n.text{\n  display: flex\n}\n\n.filter {\n  width:100%;\n  min-height:10px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.dashboard {\n  width: 100%;\n  min-height: 300px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.chart {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  width: 100%;\n  min-height: 300px;\n}\n.demo-avatar {\n  width: 48px;\n  height: 48px;\n  border-radius: 24px;\n}\n.demo-layout .mdl-layout__header .mdl-layout__drawer-button {\n  color: rgba(0, 0, 0, 0.54);\n}\n.mdl-layout__drawer .avatar {\n  margin-bottom: 16px;\n}\n.demo-drawer {\n  border: none;\n}\n/* iOS Safari specific workaround */\n.demo-drawer .mdl-menu__container {\n  z-index: 1;\n}\n.demo-drawer .demo-navigation {\n  z-index: 1;\n}\n/* END iOS Safari specific workaround */\n.demo-drawer .mdl-menu .mdl-menu__item {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.demo-drawer-header {\n  box-sizing: border-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-justify-content: flex-end;\n      -ms-flex-pack: end;\n          justify-content: flex-end;\n  padding: 16px;\n  height: 58px;\n}\n.demo-avatar-dropdown {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n}\n\n.demo-navigation {\n  -webkit-flex-grow: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n.demo-layout .demo-navigation .mdl-navigation__link {\n  display: -webkit-flex !important;\n  display: -ms-flexbox !important;\n  display: flex !important;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  color: rgba(255, 255, 255, 0.56);\n  font-weight: 500;\n}\n.demo-layout .demo-navigation .mdl-navigation__link:hover {\n  background-color: #00BCD4;\n  color: #37474F;\n}\n.demo-navigation .mdl-navigation__link .material-icons {\n  font-size: 24px;\n  color: rgba(255, 255, 255, 0.56);\n  margin-right: 32px;\n}\n\n.demo-content {\n  max-width: 1080px;\n}\n\n.demo-charts {\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.demo-chart:nth-child(1) {\n  color: #ACEC00;\n}\n.demo-chart:nth-child(2) {\n  color: #00BBD6;\n}\n.demo-chart:nth-child(3) {\n  color: #BA65C9;\n}\n.demo-chart:nth-child(4) {\n  color: #EF3C79;\n}\n.demo-graphs {\n  padding: 16px 32px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch;\n}\n/* TODO: Find a proper solution to have the graphs\n * not float around outside their container in IE10/11.\n * Using a browserhacks.com solution for now.\n */\n_:-ms-input-placeholder, :root .demo-graphs {\n  min-height: 664px;\n}\n_:-ms-input-placeholder, :root .demo-graph {\n  max-height: 300px;\n}\n/* TODO end */\n.demo-graph:nth-child(1) {\n  color: #00b9d8;\n}\n.demo-graph:nth-child(2) {\n  color: #d9006e;\n}\n\n.demo-cards {\n  -webkit-align-items: flex-start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  -webkit-align-content: flex-start;\n      -ms-flex-line-pack: start;\n          align-content: flex-start;\n}\n.demo-cards .demo-separator {\n  height: 32px;\n}\n.demo-cards .mdl-card__title.mdl-card__title {\n  color: white;\n  font-size: 24px;\n  font-weight: 400;\n}\n.demo-cards ul {\n  padding: 0;\n}\n.demo-cards h3 {\n  font-size: 1em;\n}\n/*\n.demo-updates .mdl-card__title {\n  min-height: 200px;\n  background-image: url('images/dog.png');\n  background-position: 90% 100%;\n  background-repeat: no-repeat;\n}\n*/\n.demo-cards .mdl-card__actions a {\n  color: #00BCD4;\n  text-decoration: none;\n}\n\n.demo-options h3 {\n  margin: 0;\n}\n.demo-options .mdl-checkbox__box-outline {\n  border-color: rgba(255, 255, 255, 0.89);\n}\n.demo-options ul {\n  margin: 0;\n  list-style-type: none;\n}\n.demo-options li {\n  margin: 4px 0;\n}\n.demo-options .material-icons {\n  color: rgba(255, 255, 255, 0.89);\n}\n.demo-options .mdl-card__actions {\n  height: 64px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  box-sizing: border-box;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n", ""]);
+exports.push([module.i, "/**\n * Copyright 2015 Google Inc. All Rights Reserved.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\nhtml, body {\n  font-family: 'Roboto', 'Helvetica', sans-serif;\n}\n\nsvg{\n  width:100%;\n  height:100%;\n}\n.line {\n  fill: none;\n  stroke: steelblue;\n  stroke-width: 3px;\n}\n\nimg {\n    width: 100%;\n    height: auto;\n}\n.text{\n  display: flex;\n}\n\n.chart {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  width: 100%;\n  min-height: 300px;\n}\n.demo-avatar {\n  width: 48px;\n  height: 48px;\n  border-radius: 24px;\n}\n.demo-layout .mdl-layout__header .mdl-layout__drawer-button {\n  color: rgba(0, 0, 0, 0.54);\n}\n.mdl-layout__drawer .avatar {\n  margin-bottom: 16px;\n}\n.demo-drawer {\n  border: none;\n}\n/* iOS Safari specific workaround */\n.demo-drawer .mdl-menu__container {\n  z-index: 1;\n}\n.demo-drawer .demo-navigation {\n  z-index: 1;\n}\n/* END iOS Safari specific workaround */\n.demo-drawer .mdl-menu .mdl-menu__item {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.demo-drawer-header {\n  box-sizing: border-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-justify-content: flex-end;\n      -ms-flex-pack: end;\n          justify-content: flex-end;\n  padding: 16px;\n  height: 58px;\n}\n.demo-avatar-dropdown {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n}\n\n.demo-navigation {\n  -webkit-flex-grow: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n.demo-layout .demo-navigation .mdl-navigation__link {\n  display: -webkit-flex !important;\n  display: -ms-flexbox !important;\n  display: flex !important;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  color: rgba(255, 255, 255, 0.56);\n  font-weight: 500;\n}\n.demo-layout .demo-navigation .mdl-navigation__link:hover {\n  background-color: #00BCD4;\n  color: #37474F;\n}\n.demo-navigation .mdl-navigation__link .material-icons {\n  font-size: 24px;\n  color: rgba(255, 255, 255, 0.56);\n  margin-right: 32px;\n}\n\n.demo-content {\n  max-width: 1080px;\n}\n\n.demo-charts {\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.demo-chart:nth-child(1) {\n  color: #ACEC00;\n}\n.demo-chart:nth-child(2) {\n  color: #00BBD6;\n}\n.demo-chart:nth-child(3) {\n  color: #BA65C9;\n}\n.demo-chart:nth-child(4) {\n  color: #EF3C79;\n}\n.demo-graphs {\n  padding: 16px 32px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch;\n}\n/* TODO: Find a proper solution to have the graphs\n * not float around outside their container in IE10/11.\n * Using a browserhacks.com solution for now.\n */\n_:-ms-input-placeholder, :root .demo-graphs {\n  min-height: 664px;\n}\n_:-ms-input-placeholder, :root .demo-graph {\n  max-height: 300px;\n}\n/* TODO end */\n.demo-graph:nth-child(1) {\n  color: #00b9d8;\n}\n.demo-graph:nth-child(2) {\n  color: #d9006e;\n}\n\n.demo-cards {\n  -webkit-align-items: flex-start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  -webkit-align-content: flex-start;\n      -ms-flex-line-pack: start;\n          align-content: flex-start;\n}\n.demo-cards .demo-separator {\n  height: 32px;\n}\n.demo-cards .mdl-card__title.mdl-card__title {\n  color: white;\n  font-size: 24px;\n  font-weight: 400;\n}\n.demo-cards ul {\n  padding: 0;\n}\n.demo-cards h3 {\n  font-size: 1em;\n}\n/*\n.demo-updates .mdl-card__title {\n  min-height: 200px;\n  background-image: url('images/dog.png');\n  background-position: 90% 100%;\n  background-repeat: no-repeat;\n}\n*/\n.demo-cards .mdl-card__actions a {\n  color: #00BCD4;\n  text-decoration: none;\n}\n\n.demo-options h3 {\n  margin: 0;\n}\n.demo-options .mdl-checkbox__box-outline {\n  border-color: rgba(255, 255, 255, 0.89);\n}\n.demo-options ul {\n  margin: 0;\n  list-style-type: none;\n}\n.demo-options li {\n  margin: 4px 0;\n}\n.demo-options .material-icons {\n  color: rgba(255, 255, 255, 0.89);\n}\n.demo-options .mdl-card__actions {\n  height: 64px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  box-sizing: border-box;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n", ""]);
 
 // exports
 

@@ -1,5 +1,4 @@
 import React from 'react';
-
 export class Layout extends React.Component{
   render(){
     return(
@@ -50,9 +49,6 @@ export class Layout extends React.Component{
     )
   }
 }
-
-
-
 export class Header extends React.Component{
   render(){
     return(
@@ -71,7 +67,6 @@ export class Header extends React.Component{
     )
   }
 }
-
 export class Drawer extends React.Component{
   render(){
     return(
@@ -108,9 +103,8 @@ export class Table extends React.Component{
   render(){
     return(
       <div className="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-        <div>
+        <div style={{"overflowX":"auto"}}>
           <h4>{this.props.name}</h4>
-          <p>{this.props.content}</p>
           {this.props.children}
         </div>
       </div>
