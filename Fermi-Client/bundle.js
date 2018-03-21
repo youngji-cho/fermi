@@ -6172,8 +6172,8 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
     var _this4 = _possibleConstructorReturn(this, (RecChartA.__proto__ || Object.getPrototypeOf(RecChartA)).call(this, props));
 
     _this4.state = {
-      color: ["blue", "red", "yellow"],
-      legend: ["평균가(종가)", "최고가", "최저가"]
+      color: ["rgb(204,37,41)"],
+      legend: ["평균가(종가)"]
     };
     _this4.handleClick = _this4.handleClick.bind(_this4);
     _this4.chartdraw = _this4.chartdraw.bind(_this4);
@@ -6200,23 +6200,16 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
       }).y(function (d) {
         return yScale(d.average_price);
       });
-
-      var lowest_line = d3.line().defined(function (d) {
-        return d.lowest_price;
-      }).x(function (d) {
-        return xScale(d.date);
-      }).y(function (d) {
-        return yScale(d.lowest_price);
-      });
-
-      var highest_line = d3.line().defined(function (d) {
-        return d.highest_price;
-      }).x(function (d) {
-        return xScale(d.date);
-      }).y(function (d) {
-        return yScale(d.highest_price);
-      });
-
+      /*
+      let lowest_line=d3.line()
+        .defined(function(d) { return d.lowest_price; })
+        .x(function(d){return xScale(d.date)})
+        .y(function(d){return yScale(d.lowest_price)});
+       let highest_line=d3.line()
+        .defined(function(d) { return d.highest_price; })
+        .x(function(d){return xScale(d.date)})
+        .y(function(d){return yScale(d.highest_price)});
+        */
       var svg = d3.select("#RecChartA").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom));
 
       data.forEach(function (d) {
@@ -6226,47 +6219,98 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
         return d.date;
       }));
       yScale.domain([d3.min(data, function (d) {
-        return Math.min(d.lowest_price, d.average_price, d.highest_price) || Infinity;
+        return (/*Math.min(d.lowest_price,*/d.average_price /*,d.highest_price)*/ || Infinity
+        );
       }), d3.max(data, function (d) {
-        return Math.max(d.lowest_price, d.average_price, d.highest_price);
+        return (/*Math.max(d.lowest_price,*/d.average_price /*,d.highest_price)*/
+        );
       })]);
-
       svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[0]).attr("d", average_line);
-
-      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[1]).attr("d", highest_line);
-
-      svg.append("path").data([data]).attr("class", "line").style("stroke", this.state.color[2]).attr("d", lowest_line);
-
+      /*
+      svg.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke",this.state.color[1] )
+        .attr("d", highest_line);
+      svg.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke", this.state.color[2])
+        .attr("d", lowest_line);
+      */
       svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisTop(xScale).tickFormat(d3.timeFormat("%Y-%m-%d")));
-
       svg.append("g").call(d3.axisRight(yScale));
 
       svg.append("g").selectAll(".dot1").data(data.filter(function (d) {
         return d.average_price;
-      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", radius).style("fill", this.state.color[0]).on("mouseover", handleMouseOver1).on("mouseout", handleMouseOut);
+      })).enter().append("circle").attr("class", "dot").attr("cx", average_line.x()).attr("cy", average_line.y()).attr("r", radius).style("fill", this.state.color[0]).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut);
 
-      function handleMouseOver1(d, i) {
+      function handleMouseOver(d, i) {
         d3.select(this).attr("r", radius * 3);
-        notice(d.date, d.average_price, i);
+
+        var text = svg.append("g").attr("id", 'recdot-' + i);
+
+        text.append("rect").attr("width", 100).attr("height", 40).attr("style", "fill:white;stroke-width:3;stroke:black").attr("x", function () {
+          return xScale(d.date) - 35;
+        }).attr("y", function () {
+          return yScale(d.average_price) - 50;
+        });
+
+        text.append("text").attr("x", function () {
+          return xScale(d.date) - 30;
+        }).attr("y", function () {
+          return yScale(d.average_price) - 30;
+        }).text(function () {
+          return ' ' + d.date.getFullYear() + '-' + (d.date.getMonth() + 1) + '-' + d.date.getDate();
+        });
+
+        text.append("text").attr("x", function () {
+          return xScale(d.date) - 30;
+        }).attr("y", function () {
+          return yScale(d.average_price) - 15;
+        }).text(function () {
+          return d.average_price + '\uC6D0';
+        });
       }
 
-      svg.append("g").selectAll(".dot2").data(data.filter(function (d) {
-        return d.highest_price;
-      })).enter().append("circle").attr("class", "dot").attr("cx", highest_line.x()).attr("cy", highest_line.y()).attr("r", radius).style("fill", this.state.color[1]).on("mouseover", handleMouseOver2).on("mouseout", handleMouseOut);
-
-      function handleMouseOver2(d, i) {
-        d3.select(this).attr("r", radius * 3);
-        notice(d.date, d.highest_price, i);
+      function handleMouseOut(d, i) {
+        d3.select(this).attr("r", radius);
+        d3.select('#recdot-' + i).remove(); // Remove text location
       }
-
-      svg.append("g").selectAll(".dot3").data(data.filter(function (d) {
-        return d.lowest_price;
-      })).enter().append("circle").attr("class", "dot").attr("cx", lowest_line.x()).attr("cy", lowest_line.y()).attr("r", radius).style("fill", this.state.color[2]).on("mouseover", handleMouseOver3).on("mouseout", handleMouseOut);
-
-      function handleMouseOver3(d, i) {
-        d3.select(this).attr("r", radius * 3);
-        notice(d.date, d.lowest_price, i);
+      /*
+       svg.append("g")
+        .selectAll(".dot2")
+        .data(data.filter(function(d){return d.highest_price}))
+        .enter().append("circle")
+          .attr("class", "dot")
+          .attr("cx", highest_line.x())
+          .attr("cy", highest_line.y())
+          .attr("r", radius)
+          .style("fill",this.state.color[1])
+          .on("mouseover", handleMouseOver2)
+          .on("mouseout", handleMouseOut);
+       function handleMouseOver2(d,i) {
+        d3.select(this)
+          .attr("r",radius*3);
+        notice(d.date,d.highest_price,i)
       }
+        svg.append("g")
+        .selectAll(".dot3")
+        .data(data.filter(function(d){return d.lowest_price}))
+        .enter().append("circle")
+          .attr("class", "dot")
+          .attr("cx", lowest_line.x())
+          .attr("cy", lowest_line.y())
+          .attr("r", radius)
+          .style("fill",this.state.color[2])
+          .on("mouseover", handleMouseOver3)
+          .on("mouseout", handleMouseOut);
+       function handleMouseOver3(d,i) {
+        d3.select(this)
+          .attr("r",radius*3);
+        notice(d.date,d.lowest_price,i)
+      }
+      */
 
       function notice(x, y, i) {
         svg.append("text").attr("id", 'recdot-' + i).attr("x", function () {
@@ -6276,10 +6320,6 @@ var RecChartA = exports.RecChartA = function (_React$Component2) {
         }).text(function () {
           return '\uC2DC\uAE30: ' + x.getFullYear() + '-' + (x.getMonth() + 1) + '-' + x.getDate() + ', \uAC00\uACA9: ' + y;
         });
-      }
-      function handleMouseOut(d, i) {
-        d3.select(this).attr("r", radius);
-        d3.select('#recdot-' + i).remove(); // Remove text location
       }
 
       var legendbox = svg.append('g').selectAll().data(this.state.color).enter().append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {

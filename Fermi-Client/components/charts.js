@@ -1,11 +1,13 @@
 import React from 'react';
 d3=require('d3')
 
+//graph색깔 :http://ksrowell.com/blog-visualizing-data/2012/02/02/optimal-colors-for-graphs/
+
 export class SmpChartA extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      color:"steelblue",
+      color:"rgb(57,106,177)",
       legend:"SMP 월간가중평균가격"
     };
     this.handleClick=this.handleClick.bind(this);
@@ -97,7 +99,7 @@ export class SmpChartA extends React.Component{
         .attr("r",radius);
       d3.select(`#smpdot-${i}`).remove(); // Remove text location
     }
-    
+
     //Legend
     let legendbox=svg.append('g').selectAll()
         .data([this.state.color])
@@ -166,8 +168,8 @@ export class RecChartA extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      color:["blue","red","yellow"],
-      legend:["평균가(종가)","최고가","최저가"]
+      color:["rgb(204,37,41)"],
+      legend:["평균가(종가)"]
     };
     this.handleClick=this.handleClick.bind(this);
     this.chartdraw=this.chartdraw.bind(this)
@@ -188,7 +190,7 @@ export class RecChartA extends React.Component{
       .defined(function(d) { return d.average_price; })
       .x(function(d){return xScale(d.date)})
       .y(function(d){return yScale(d.average_price)});
-
+    /*
     let lowest_line=d3.line()
       .defined(function(d) { return d.lowest_price; })
       .x(function(d){return xScale(d.date)})
@@ -198,7 +200,7 @@ export class RecChartA extends React.Component{
       .defined(function(d) { return d.highest_price; })
       .x(function(d){return xScale(d.date)})
       .y(function(d){return yScale(d.highest_price)});
-
+      */
     let svg=d3.select("#RecChartA")
       .attr("width",width + margin.left + margin.right)
       .attr("height",height + margin.top + margin.bottom)
@@ -210,34 +212,31 @@ export class RecChartA extends React.Component{
       return d.date;
     }));
     yScale.domain([d3.min(data,function(d){
-      return Math.min(d.lowest_price,d.average_price,d.highest_price)|| Infinity;
+      return /*Math.min(d.lowest_price,*/d.average_price/*,d.highest_price)*/|| Infinity;
     }),d3.max(data,function(d){
-      return Math.max(d.lowest_price,d.average_price,d.highest_price);
+      return /*Math.max(d.lowest_price,*/d.average_price/*,d.highest_price)*/;
     })]);
-
     svg.append("path")
       .data([data])
       .attr("class", "line")
       .style("stroke",this.state.color[0])
       .attr("d", average_line);
-
+    /*
     svg.append("path")
       .data([data])
       .attr("class", "line")
       .style("stroke",this.state.color[1] )
       .attr("d", highest_line);
-
     svg.append("path")
       .data([data])
       .attr("class", "line")
       .style("stroke", this.state.color[2])
       .attr("d", lowest_line);
-
+    */
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisTop(xScale)
         .tickFormat(d3.timeFormat("%Y-%m-%d")));
-
     svg.append("g")
       .call(d3.axisRight(yScale));
 
@@ -250,14 +249,44 @@ export class RecChartA extends React.Component{
         .attr("cy", average_line.y())
         .attr("r", radius)
         .style("fill",this.state.color[0])
-        .on("mouseover", handleMouseOver1)
+        .on("mouseover", handleMouseOver)
         .on("mouseout", handleMouseOut);
 
-    function handleMouseOver1(d,i) {
+    function handleMouseOver(d,i) {
       d3.select(this)
         .attr("r",radius*3);
-      notice(d.date,d.average_price,i)
+
+      let text=svg.append("g")
+        .attr("id",`recdot-${i}`);
+
+      text.append("rect")
+        .attr("width",100)
+        .attr("height",40)
+        .attr("style","fill:white;stroke-width:3;stroke:black")
+        .attr("x",function(){return xScale(d.date) - 35; })
+        .attr("y",function(){return yScale(d.average_price)-50; })
+
+      text.append("text")
+        .attr("x",function(){return xScale(d.date) - 30; })
+        .attr("y",function(){return yScale(d.average_price) - 30; })
+        .text(function(){
+          return ( ` ${d.date.getFullYear()}-${d.date.getMonth()+1}-${d.date.getDate()}`)
+        })
+
+      text.append("text")
+        .attr("x",function(){return xScale(d.date) - 30; })
+        .attr("y",function(){return yScale(d.average_price) - 15; })
+        .text(function(){
+              return ( `${d.average_price}원`);
+        })
     }
+
+    function handleMouseOut(d, i) {
+      d3.select(this)
+        .attr("r",radius);
+      d3.select(`#recdot-${i}`).remove(); // Remove text location
+    }
+    /*
 
     svg.append("g")
       .selectAll(".dot2")
@@ -277,6 +306,7 @@ export class RecChartA extends React.Component{
       notice(d.date,d.highest_price,i)
     }
 
+
     svg.append("g")
       .selectAll(".dot3")
       .data(data.filter(function(d){return d.lowest_price}))
@@ -294,6 +324,7 @@ export class RecChartA extends React.Component{
         .attr("r",radius*3);
       notice(d.date,d.lowest_price,i)
     }
+    */
 
     function notice(x,y,i){
       svg.append("text")
@@ -303,11 +334,6 @@ export class RecChartA extends React.Component{
         .text(function(){
           return ( `시기: ${x.getFullYear()}-${x.getMonth()+1}-${x.getDate()}, 가격: ${y}`);
         })
-    }
-    function handleMouseOut(d, i) {
-        d3.select(this)
-          .attr("r",radius);
-        d3.select(`#recdot-${i}`).remove(); // Remove text location
     }
 
     let legendbox=svg.append('g').selectAll()
