@@ -39721,9 +39721,7 @@ var MainPage = exports.MainPage = function (_React$Component) {
           _react2.default.createElement(
             'p',
             null,
-            '\uC804\uB825\uB3C4\uB9E4\uC2DC\uC7A5 \uAC00\uACA9\uC778 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9(SMP, System Marginal Price)\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4. \uC544\uB798\uC758 \uADF8\uB798\uD504\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uBC1C\uC804\uC5D0\uC11C \uB9CE\uC774 \uC4F0\uB294 \uC6D4\uAC04\uAC00\uC911\uD3C9\uADE0 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC744 \uB098\uD0C0\uB0C5\uB2C8\uB2E4.(\uADF8\uB798\uD504\uC5D0 \uB9C8\uC6B0\uC2A4\uB85C \uC810\uC744 \uD074\uB9AD\uD558\uBA74 \uAC00\uACA9\uC744 \uC870\uD68C\uD560\uC218 \uC788\uC2B5\uB2C8\uB2E4) ',
-            _react2.default.createElement('br', null),
-            '\uB370\uC774\uD130 \uCD9C\uCC98: \uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uC6D0\uC2A4\uD2C9\uC815\uBCF4\uC11C\uBE44\uC2A4'
+            '\uC804\uB825\uB3C4\uB9E4\uC2DC\uC7A5 \uAC00\uACA9\uC778 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9(SMP, System Marginal Price)\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4. \uC544\uB798\uC758 \uADF8\uB798\uD504\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uBC1C\uC804\uC5D0\uC11C \uB9CE\uC774 \uC4F0\uB294 \uC6D4\uAC04\uAC00\uC911\uD3C9\uADE0 \uACC4\uD1B5\uD55C\uACC4\uAC00\uACA9\uC744 \uB098\uD0C0\uB0C5\uB2C8\uB2E4.(\uADF8\uB798\uD504\uC5D0 \uB9C8\uC6B0\uC2A4\uB85C \uC810\uC744 \uD074\uB9AD\uD558\uBA74 \uAC00\uACA9\uC744 \uC870\uD68C\uD560\uC218 \uC788\uC2B5\uB2C8\uB2E4)'
           ),
           _react2.default.createElement(_charts.SmpChartA, null),
           _react2.default.createElement(
@@ -39743,8 +39741,7 @@ var MainPage = exports.MainPage = function (_React$Component) {
             'p',
             null,
             ' \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uBC1C\uC804\uC758 \uB300\uAC00\uB85C \uC8FC\uC5B4\uC9C0\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0\uACF5\uAE09\uC778\uC99D\uC11C(REC, Renewable Energy Certificate)\uC758 \uAC00\uACA9\uC785\uB2C8\uB2E4. \uC81C\uC8FC,\uC721\uC9C0,\uC885\uD569\uC744 \uAE30\uC900\uC73C\uB85C \uBCFC\uC218 \uC788\uC2B5\uB2C8\uB2E4.(\uADF8\uB798\uD504\uC5D0 \uB9C8\uC6B0\uC2A4\uB85C \uC810\uC744 \uD074\uB9AD\uD558\uBA74 \uAC00\uACA9\uC744 \uC870\uD68C\uD560\uC218 \uC788\uC2B5\uB2C8\uB2E4) ',
-            _react2.default.createElement('br', null),
-            '\uB370\uC774\uD130 \uCD9C\uCC98: \uC2E0\uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uC6D0\uC2A4\uD2C9\uC815\uBCF4\uC11C\uBE44\uC2A4'
+            _react2.default.createElement('br', null)
           ),
           _react2.default.createElement(_charts.RecChartA, null),
           _react2.default.createElement(
@@ -61771,8 +61768,6 @@ var RecPage = exports.RecPage = function (_React$Component) {
                 null,
                 ' 17\uB144\uBD80\uD130 \uC2DC\uC791\uB41C SMP+REC\uACE0\uC815\uAC00\uACA9\uC2DC\uC7A5\uC758 \uC785\uCC30 \uACB0\uACFC\uC785\uB2C8\uB2E4.\uD3C9\uADE0\uAC00\uB97C \uC870\uD68C\uAC00\uB2A5\uD569\uB2C8\uB2E4.'
               ),
-              _react2.default.createElement('br', null),
-              _react2.default.createElement('br', null),
               _react2.default.createElement(
                 'div',
                 { className: 'table', style: { "overflowX": "auto" } },
@@ -61793,12 +61788,12 @@ var RecPage = exports.RecPage = function (_React$Component) {
                       _react2.default.createElement(
                         'th',
                         null,
-                        '\uC721\uC9C0\uC9C0\uC5ED'
+                        '\uD3C9\uADE0\uAC00(\uC721\uC9C0)'
                       ),
                       _react2.default.createElement(
                         'th',
                         null,
-                        '\uC81C\uC8FC\uC9C0\uC5ED'
+                        '\uD3C9\uADE0\uAC00(\uC81C\uC8FC)'
                       )
                     )
                   ),
