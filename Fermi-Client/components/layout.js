@@ -117,3 +117,12 @@ export class Table extends React.Component{
     )
   }
 }
+export class TimeButton extends React.Component{
+  render(){
+    return(
+      <button className="mdl-button mdl-js-button mdl-button--accent" value={this.props.buttonValue} onClick={this.props.onClick}>
+          {this.props.buttonName}
+      </button>
+    )
+  }
+}
