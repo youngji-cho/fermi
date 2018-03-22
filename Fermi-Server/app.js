@@ -47,6 +47,20 @@ app.get('/rec_data1/:price1/:price2/:price3/:land', (req, res) => {
    })
  });
 
+ app.get('/rec_data2', (req, res) => {
+   let sql = `select date,land_or_jeju,average_price,lowest_price,highest_price ,transaction_money,sell_deals,sell_amount,buy_deals,buy_amount,sucess_deals,success_amount from rec_price3 order by date desc`
+   ;
+   conn.query(sql,(err,rows,fields)=>{
+      if(err){
+        console.log('error');
+        res.status(500).send('Internal Sever Error')
+      } else {
+        console.log(rows);
+        res.json(rows);
+      }
+    })
+  });
+
 
 app.get('*', (req, res, next) => {
   const bundleUrl = /bundle.js/;

@@ -35,7 +35,11 @@ img {
 .text{
   display: flex;
 }
-
+.overflow {
+  overflow-x:auto;
+  overflow-y:auto;
+  max-height:2000px;
+}
 .chart {
   display: -webkit-flex;
   display: -ms-flexbox;

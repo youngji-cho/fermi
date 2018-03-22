@@ -99,11 +99,11 @@ export class Drawer extends React.Component{
   }
 }
 
-export class Table extends React.Component{
+export class Board extends React.Component{
   render(){
     return(
       <div className="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-        <div style={{"overflowX":"auto"}}>
+        <div className="overflow">
           <h4>{this.props.name}</h4>
           {this.props.children}
         </div>
