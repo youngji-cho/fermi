@@ -41,7 +41,7 @@ export class RecTableA extends React.Component{
     </tr>
     );
     return(
-      <div>
+      <div className="overflow">
         <TimeButton buttonName="통합" buttonValue="total" onClick={this.handleClick} />
         <TimeButton buttonName="육지" buttonValue="land" onClick={this.handleClick} />
         <TimeButton buttonName="제주" buttonValue="jeju" onClick={this.handleClick} />

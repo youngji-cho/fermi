@@ -16,7 +16,7 @@ export class SmpChartA extends React.Component{
     let parseTime = d3.timeParse("%Y-%m-%d");
     let margin ={top:50, right:50,bottom:50,left:50},
       width=1000,
-      height=1000;
+      height=700;
     let radius=5;
     let legend={bottom:100,left:50,width:20};
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);
@@ -174,7 +174,7 @@ export class SmpChartB extends React.Component{
     let parseTime = d3.timeParse("%Y-%m-%d");
     let margin ={top:50, right:50,bottom:50,left:50},
       width=1000,
-      height=1000;
+      height=700;
     let radius=5;
     let legend={bottom:100,left:50,width:20};
     let xScale=d3.scaleTime().range([margin.left,width-margin.right]);

@@ -38,7 +38,7 @@ img {
 .overflow {
   overflow-x:auto;
   overflow-y:auto;
-  max-height:2000px;
+  max-height:1000px;
 }
 .chart {
   display: -webkit-flex;

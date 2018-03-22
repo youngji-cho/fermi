@@ -1,10 +1,10 @@
 import React from 'react';
-import {Header,Drawer,Table} from '../components/layout'
+import {Header,Drawer,Board} from '../components/layout'
 import {SmpChartA,SmpChartB} from '../components/charts';
 
 export class SmpPage extends React.Component{
   constructor(props){
-    super(props)
+    super(props);
     this.state={}
   }
   render(){
@@ -14,7 +14,7 @@ export class SmpPage extends React.Component{
         <Drawer />
         <main className="mdl-layout__content mdl-color--grey-100">
           <div className="mdl-grid demo-content">
-            <Table name="SMP 가격">
+            <Board name="SMP 가격">
               <p>
               계통한계가격(SMP,Sytem Marginal Price)은 전력시장에서 거래되는 모든 발전소에 적용되는 기준가격입니다. 발전회사는 전력을 판매하고, 한국전력을 구매해야 합니다. 이때 중간에서 가격을 결정하고, 정산을 하는 기관이 한국전력거래소(KRX, Korea Power Exchange) 입니다. <br /><br />
               계통한계가격은 한국전력거래소에서 거래되는 전력의 시간대별 기준단가라고 쉽게 정의할 수 있습니다. 한국전력거래소는 전력시장을 총괄적으로 운영합니다. 24시간 전에 항상 다음 24시간의 전력수요를 예측해서 각 발전소마다 얼만큼 생산할지 지시를 합니다. 이를 급전(Dispatch)지시라고 합니다. 급전지시는 가장 가격이 싼 기준으로 순차적으로 지시됩니다. <br /><br />
@@ -24,14 +24,14 @@ export class SmpPage extends React.Component{
               <br /><br />
               재생에너지 경제성 분석에서 쓰이는 대부분의 수치인 월간가중평균가격이 조회가능합니다.(실시간 자료 추후 업데이트 예정)
               </p>
-            </Table>
-            <Table name="SMP 월간가중평균가격 그래프">
+            </Board>
+            <Board name="SMP 월간가중평균가격 그래프">
               <p>재생에너지 발전에서 가장 많이 쓰이는 월간 가중평균 가격입니다. </p>
               <SmpChartA />
-            </Table>
-            <Table name="SMP 월간가중평균가격 그래프(물가상승률보정)">
+            </Board>
+            <Board name="SMP 월간가중평균가격 그래프(물가상승률보정)">
               <p> 계통한계가격은 장기간에 걸쳐서 데이터가 존재하므로 물가상승률에 따라서 보정한 계통한계가격입니다 물가상승률은 소비자 물가상승률(CPI,Consumer Price Index)에 의거합니다 </p>
-            </Table>
+            </Board>
           </div>
         </main>
       </div>

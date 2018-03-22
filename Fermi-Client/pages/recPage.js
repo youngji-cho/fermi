@@ -17,10 +17,8 @@ export class RecPage extends React.Component{
           <div className="mdl-grid demo-content">
             <Board name="REC 가격">
               <p> 한국에서는 공급공급의무화제도(RPS,Renewable Eenergy Portfolio)를 채택함에 따라,발전자회사는 아래의 공급의무화비율에 따라 의무적으로 신재생에너지를 공급해야하고, 부족한 부분은 신재생에너지 공급인증서(REC,Renewable Energy Certificate)를 구입하여서 충당할수 있습니다. REC는 현물시장에서 구입하거나, 장기계약시장에서 거래가 가능합니다.
-                <br /><br />
               </p>
-              <div className="table" style={{"overflowX":"auto"}}>
-              <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+              <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp overflow" >
                 <thead>
                   <tr>
                     <th>2012년</th><th>2013년</th><th>2014년</th><th>2015년</th>
@@ -36,15 +34,12 @@ export class RecPage extends React.Component{
                   </tr>
                 </tbody>
               </table>
-              </div>
             </Board>
             <Board name="REC통합시장 양방향거래시장 그래프">
               <p> 현물시장에서 거래중인 REC가격 중 평균가(종가)기준입니다. 양방향 거래가 시작된 17년 3월 28일 이후 부터 조회가능합니다.</p>
-                <br /><br />
               <RecChartA />
             </Board>
             <Board name="REC통합시장 양방향거래시장표">
-              <p>REC 가격표입니다.</p>
               <RecTableA />
             </Board>
             <Board name="장기계약시장">
