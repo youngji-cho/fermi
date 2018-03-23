@@ -25,20 +25,20 @@ export class RecTableA extends React.Component{
   }
   render(){
     let data = this.state.data.filter(d=>d.land_or_jeju===this.state.selected);
-    let table= data.map(d=>
-    <tr>
-      <td>{d.date}</td>
-      <td>{d.land_or_jeju}</td>
-      <td>{d.average_price}</td>
-      <td>{d.lowest_price}</td>
-      <td>{d.highest_price}</td>
-      <td>{d.transaction_money}</td>
-      <td>{d.sell_deals}</td>
-      <td>{d.sell_amount}</td>
-      <td>{d.buy_deals}</td>
-      <td>{d.buy_amount}</td>
-      <td>{d.sucess_deals}</td>
-      <td>{d.success_amount}</td>
+    let table= data.map((d,i)=>
+    <tr key={`rec1${i}`}>
+      <td key={`date(${i})`}>{d.date}</td>
+      <td key={`land_or_jeju(${i})`}>{d.land_or_jeju}</td>
+      <td key={`average_price(${i})`}>{d.average_price}</td>
+      <td key={`lowest_price(${i})`}>{d.lowest_price}</td>
+      <td key={`highest_price(${i})`}>{d.highest_price}</td>
+      <td key={`transaction_money(${i})`}>{d.transaction_money}</td>
+      <td key={`sell_deals(${i})`}>{d.sell_deals}</td>
+      <td key={`sell_amount(${i})`}>{d.sell_amount}</td>
+      <td key={`buy_deals(${i})`}>{d.buy_deals}</td>
+      <td key={`buy_amount(${i})`}>{d.buy_amount}</td>
+      <td key={`sucess_deals(${i})`}>{d.sucess_deals}</td>
+      <td key={`sucess_amount(${i})`}>{d.success_amount}</td>
     </tr>
     );
     let excel=(
@@ -99,13 +99,12 @@ export class SmpTableA extends React.Component{
       }).then(jsonResponse =>this.setState({data:jsonResponse}));
   }
   render(){
-    console.log(this.state.data)
-    let table= this.state.data.map(d=>
-    <tr>
-      <td>{d.date}</td>
-      <td>{d.land_price}</td>
-      <td>{d.jeju_price}</td>
-      <td>{d.total_price}</td>
+    let table= this.state.data.map((d,i)=>
+    <tr key={`smp1${i}`}>
+      <td key={`data(${i})`}>{d.date}</td>
+      <td key={`land_price(${i})`}>{d.land_price}</td>
+      <td key={`jeju_price(${i})`}>{d.jeju_price}</td>
+      <td key={`total_price(${i})`}>{d.total_price}</td>
     </tr>
     );
     let excel=(

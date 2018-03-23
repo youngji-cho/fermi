@@ -20490,68 +20490,68 @@ var RecTableA = exports.RecTableA = function (_React$Component) {
       var data = this.state.data.filter(function (d) {
         return d.land_or_jeju === _this3.state.selected;
       });
-      var table = data.map(function (d) {
+      var table = data.map(function (d, i) {
         return _react2.default.createElement(
           'tr',
-          null,
+          { key: 'rec1' + i },
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'date(' + i + ')' },
             d.date
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'land_or_jeju(' + i + ')' },
             d.land_or_jeju
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'average_price(' + i + ')' },
             d.average_price
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'lowest_price(' + i + ')' },
             d.lowest_price
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'highest_price(' + i + ')' },
             d.highest_price
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'transaction_money(' + i + ')' },
             d.transaction_money
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'sell_deals(' + i + ')' },
             d.sell_deals
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'sell_amount(' + i + ')' },
             d.sell_amount
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'buy_deals(' + i + ')' },
             d.buy_deals
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'buy_amount(' + i + ')' },
             d.buy_amount
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'sucess_deals(' + i + ')' },
             d.sucess_deals
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'sucess_amount(' + i + ')' },
             d.success_amount
           )
         );
@@ -20698,29 +20698,28 @@ var SmpTableA = exports.SmpTableA = function (_React$Component2) {
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.state.data);
-      var table = this.state.data.map(function (d) {
+      var table = this.state.data.map(function (d, i) {
         return _react2.default.createElement(
           'tr',
-          null,
+          { key: 'smp1' + i },
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'data(' + i + ')' },
             d.date
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'land_price(' + i + ')' },
             d.land_price
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'jeju_price(' + i + ')' },
             d.jeju_price
           ),
           _react2.default.createElement(
             'td',
-            null,
+            { key: 'total_price(' + i + ')' },
             d.total_price
           )
         );
