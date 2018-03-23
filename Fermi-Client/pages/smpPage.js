@@ -1,6 +1,7 @@
 import React from 'react';
 import {Header,Drawer,Board} from '../components/layout'
-import {SmpChartA,SmpChartB} from '../components/charts';
+import {SmpChartA} from '../components/charts';
+import {SmpTableA} from '../components/table';
 
 export class SmpPage extends React.Component{
   constructor(props){
@@ -29,8 +30,8 @@ export class SmpPage extends React.Component{
               <p>재생에너지 발전에서 가장 많이 쓰이는 월간 가중평균 가격입니다. </p>
               <SmpChartA />
             </Board>
-            <Board name="SMP 월간가중평균가격 그래프(물가상승률보정)">
-              <p> 계통한계가격은 장기간에 걸쳐서 데이터가 존재하므로 물가상승률에 따라서 보정한 계통한계가격입니다 물가상승률은 소비자 물가상승률(CPI,Consumer Price Index)에 의거합니다 </p>
+            <Board name="SMP 월간가중평균가격">
+              <SmpTableA />
             </Board>
           </div>
         </main>

@@ -33,6 +33,19 @@ app.get('/smp_data/:price/:start_date/:end_date/', (req, res) => {
    })
  });
 
+ app.get('/smp_data1', (req, res) => {
+   let sql = `select date,land_price,jeju_price,total_price from smp_price1 order by date desc` ;
+   conn.query(sql,(err,rows,fields)=>{
+      if(err){
+        console.log('error');
+        res.status(500).send('Internal Sever Error')
+      } else {
+        console.log(rows);
+        res.json(rows);
+      }
+    })
+  });
+
 app.get('/rec_data1/:price1/:price2/:price3/:land', (req, res) => {
   let sql = `select date,${req.params.price1},${req.params.price2},${req.params.price3} from rec_price3 where land_or_jeju ='${req.params.land}' and average_price !=0 order by date`;
 
