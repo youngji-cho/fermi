@@ -20729,7 +20729,7 @@ var SmpTableA = exports.SmpTableA = function (_React$Component2) {
         null,
         _react2.default.createElement(
           _reactDataExport.ExcelSheet,
-          { data: this.state.data, name: 'REC' },
+          { data: this.state.data, name: 'SMP' },
           _react2.default.createElement(_reactDataExport.ExcelColumn, { label: '\uC2DC\uAE30', value: 'date' }),
           _react2.default.createElement(_reactDataExport.ExcelColumn, { label: '\uC721\uC9C0 SMP', value: 'land_price' }),
           _react2.default.createElement(_reactDataExport.ExcelColumn, { label: '\uC81C\uC8FC SMP', value: 'jeju_price' }),

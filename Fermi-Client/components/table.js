@@ -109,7 +109,7 @@ export class SmpTableA extends React.Component{
     );
     let excel=(
       <ExcelFile>
-      <ExcelSheet data={this.state.data} name="REC">
+      <ExcelSheet data={this.state.data} name="SMP">
        <ExcelColumn label="시기" value="date" />
        <ExcelColumn label="육지 SMP" value="land_price" />
        <ExcelColumn label="제주 SMP" value="jeju_price" />
