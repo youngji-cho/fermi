@@ -2,7 +2,7 @@
   "name": "fermi-project",
   "version": "1.0.0",
   "description": "Energy Portal for renewable energy",
-  "main": "./Fermi-Server/app.js",
+  "main": "./Fermi-Server/main.js",
   "directories": {
     "test": "test"
   },
@@ -11,8 +11,8 @@
     "url": "git+https://github.com/youngji-cho/fermi.git"
   },
   "scripts": {
-    "test": "webpack&& supervisor ./Fermi-Server/app.js",
-    "start": "node ./Fermi-Server/app.js"
+    "test": "webpack&& supervisor ./Fermi-Server/main.js",
+    "start": "node ./Fermi-Server/main.js"
   },
   "keywords": [
     "fermi"
