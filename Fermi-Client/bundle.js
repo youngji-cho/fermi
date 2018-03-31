@@ -2675,13 +2675,13 @@ var Layout = exports.Layout = function (_React$Component) {
             ),
             _react2.default.createElement(
               "a",
-              { href: "./media", className: "mdl-navigation__link" },
+              { href: "./economic", className: "mdl-navigation__link" },
               _react2.default.createElement(
                 "i",
                 { role: "presentation", className: "mdl-color-text--blue-grey-400 material-icons" },
                 "description"
               ),
-              "\uBBF8\uB514\uC5B4"
+              "\uACBD\uC81C\uC131\uBD84\uC11D"
             ),
             _react2.default.createElement(
               "a",
@@ -39566,7 +39566,7 @@ var _economicPage = __webpack_require__(949);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-__webpack_require__(950);
+__webpack_require__(951);
 
 _reactDom2.default.render(_react2.default.createElement(
   _reactRouterDom.BrowserRouter,
@@ -94092,6 +94092,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _layout = __webpack_require__(32);
 
+var _simulation = __webpack_require__(950);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94120,12 +94122,13 @@ var EconomicPage = exports.EconomicPage = function (_React$Component) {
         null,
         _react2.default.createElement(
           _layout.Board,
-          { name: 'FERMI' },
+          { name: '\uACBD\uC81C\uC131 \uBD84\uC11D \uC2DC\uBBAC\uB808\uC774\uC158' },
           _react2.default.createElement(
             'p',
             null,
-            'Fermi\uB294 \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uD3EC\uD138 \uD504\uB85C\uC81D\uD2B8\uC785\uB2C8\uB2E4. \uC7AC\uC0DD\uC5D0\uB108\uC9C0 \uC0AC\uC5C5\uAC80\uD1A0\uC5D0 \uD544\uC694\uD55C \uAC00\uACA9\uC815\uBCF4\uB97C \uC81C\uACF5\uD569\uB2C8\uB2E4.'
-          )
+            '\uACBD\uC81C\uC131\uBD84\uC11D \uC2DC\uB098\uB9AC\uC624\uC785\uB2C8\uB2E4. \uB2E4\uC74C\uAC12\uC744 \uC785\uB825\uD558\uC2DC\uBA74 \uC790\uB3D9\uC73C\uB85C \uC2DC\uBBAC\uB808\uC774\uC158\uC744 \uD574\uB4DC\uB9BD\uB2C8\uB2E4.'
+          ),
+          _react2.default.createElement(_simulation.Simulation, null)
         )
       );
     }
@@ -94138,8 +94141,112 @@ var EconomicPage = exports.EconomicPage = function (_React$Component) {
 /* 950 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-var content = __webpack_require__(951);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Simulation = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Simulation = exports.Simulation = function (_React$Component) {
+  _inherits(Simulation, _React$Component);
+
+  function Simulation(props) {
+    _classCallCheck(this, Simulation);
+
+    var _this = _possibleConstructorReturn(this, (Simulation.__proto__ || Object.getPrototypeOf(Simulation)).call(this, props));
+
+    _this.state = {
+      type: ["지상형", "옥상형", "지상형"],
+      value: { test: "test" }
+    };
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
+    return _this;
+  }
+
+  _createClass(Simulation, [{
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      e.preventDefault();
+      alert("submitted!");
+      fetch("http://localhost:8080/economic/result", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: e.target[0].value,
+          size: e.target[1].value,
+          type: e.target[2].value
+        })
+      }).then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Request failed!');
+      }, function (networkError) {
+        return console.log(networkError.message);
+      }).then(function (jsonResponse) {
+        console.log(jsonResponse);
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var type_table = this.state.type.map(function (d, i) {
+        return _react2.default.createElement(
+          "option",
+          { key: "" + i, value: d },
+          d
+        );
+      });
+      return _react2.default.createElement(
+        "form",
+        { method: "post", onSubmit: this.handleSubmit },
+        "\uC704\uCE58: ",
+        _react2.default.createElement("input", { type: "text", name: "location" }),
+        " ",
+        _react2.default.createElement("br", null),
+        "\uC6A9\uB7C9: ",
+        _react2.default.createElement("input", { type: "text", name: "size" }),
+        " ",
+        _react2.default.createElement("br", null),
+        "\uD615\uD0DC: ",
+        _react2.default.createElement(
+          "select",
+          { name: "selected" },
+          type_table
+        ),
+        _react2.default.createElement("br", null),
+        _react2.default.createElement("input", { type: "submit", value: "Submit" })
+      );
+    }
+  }]);
+
+  return Simulation;
+}(_react2.default.Component);
+
+/***/ }),
+/* 951 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(952);
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -94153,7 +94260,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(953)(content, options);
+var update = __webpack_require__(954)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -94185,10 +94292,10 @@ if(false) {
 }
 
 /***/ }),
-/* 951 */
+/* 952 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(952)(false);
+exports = module.exports = __webpack_require__(953)(false);
 // imports
 
 
@@ -94199,7 +94306,7 @@ exports.push([module.i, "/**\n * Copyright 2015 Google Inc. All Rights Reserved.
 
 
 /***/ }),
-/* 952 */
+/* 953 */
 /***/ (function(module, exports) {
 
 /*
@@ -94281,7 +94388,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 953 */
+/* 954 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -94347,7 +94454,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(954);
+var	fixUrls = __webpack_require__(955);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -94663,7 +94770,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 954 */
+/* 955 */
 /***/ (function(module, exports) {
 
 

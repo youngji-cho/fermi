@@ -31,9 +31,9 @@ export class Layout extends React.Component{
               <a href="./rec_price" className="mdl-navigation__link">
                 <i role="presentation" className="mdl-color-text--blue-grey-400 material-icons">monetization_on</i>
                 REC가격</a>
-              <a href="./media" className="mdl-navigation__link">
+              <a href="./economic" className="mdl-navigation__link">
                 <i role="presentation" className="mdl-color-text--blue-grey-400 material-icons">description</i>
-              미디어
+              경제성분석
               </a>
               <a href="" className="mdl-navigation__link">
               <i role="presentation" className="mdl-color-text--blue-grey-400 material-icons">help_outline</i>

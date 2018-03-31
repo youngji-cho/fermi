@@ -2,7 +2,7 @@ const express =require('express');
 const path =require('path');
 const app = express();
 const mysql = require('mysql');
-const bodyParser= require('body-parser');
+
 const economic=require('./router/economic');
 const energy_data=require('./router/energy_data');
 const cors= require('cors');
@@ -10,6 +10,8 @@ const cors= require('cors');
 app.use(cors());
 app.use('/economic',economic.router);
 app.use('/energy_data',energy_data.router);
+app.use('/test',express.static(path.resolve(__dirname, './../temp/public')));
+
 
 app.get('*', (req, res, next) => {
   const bundleUrl = /bundle.js/;
@@ -21,6 +23,7 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.resolve(__dirname, './../Fermi-Client/index.html'));
   }
 });
+
 
 if (module === require.main) {
   // [START server]
