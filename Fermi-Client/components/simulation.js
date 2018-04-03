@@ -12,7 +12,7 @@ export class Simulation extends React.Component{
   handleSubmit(e){
     e.preventDefault();
     alert("submitted!")
-    fetch("http://localhost:8080/economic/result",{
+    fetch("/economic/result",{
       method: 'POST',
       headers : {
         'Content-Type': 'application/json'

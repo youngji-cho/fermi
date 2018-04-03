@@ -3,6 +3,8 @@ const app = express();
 const mysql = require('mysql');
 const cors= require('cors');
 const bodyParser = require('body-parser');
+const AWS =require('aws-sdk');
+
 const router= express.Router();
 
 const conn =mysql.createConnection({
