@@ -1,18 +1,62 @@
-const spawn= require("child_process").spawn;
-const express = require('express')
-const app = express()
+const cp= require("child_process")
+const express = require('express');
+const app = express();
 
 app.get('/',(req,res)=>{
-  let cp=spawn("python",["../Fermi-Server/python/simulation.py"]);
-  cp.stdout.on('data',(data)=>{
-    console.log(data);
+  console.log("main url!");
+  let child=cp.spawn("python",["../Fermi-Server/python/simulation.py"]);
+  let sent_data= [1,2,3,4,5,6,7,8];
+  child.stdout.on('data',(data)=>{
+    console.log(data.toString());
+  });
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
   })
 })
-
 app.listen(4000,()=>console.log("app is running!"))
 
-/*
 
+
+
+
+
+
+/*
+app.get('/',(req,res)=>{
+  console.log("main url!");
+  let child=cp.spawn("python",["../Fermi-Server/python/simulation.py"]);
+  let sent_data= [1,2,3,4,5,6,7,8];
+  child.stdout.on('data',(data)=>{
+    console.log(data);
+    res.end(data)
+  });
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  })
+})
+app.listen(4000,()=>console.log("app is running!"))
+
+
+
+py= cp.spawn('python',['compute_input.py']);
+data = [1,2,3,4,5,6,7,8,9];
+dataString ='';
+
+py.stdin.write(JSON.stringify(data));
+py.stdout.on('data',(data)=>{
+  dataString +=data.toString()
+});
+py.stdout.on('end',()=>{
+  console.log('Sum of numbers=',dataString);
+});
+py.stdin.end();
+*/
+/*
+const progs ={
+  list:"ls",
+  copy:"cp",
+  folder:"mkdir"
+}
 
 cp.stdout.on("data",(data)=>{
   console.log(data.toString())
@@ -21,6 +65,23 @@ cp.on("close",()=>{
   console.log("child_process")
   process.exit()
 })
+
+
+
+app.get('/',(req,res)=>{
+  console.log("main url!")
+  let child=cp.spawn("python",["../Fermi-Server/python/simulation.py"]);
+  let sent_data= [1,2,3,4,5,6,7,8];
+  child.stdin.write(JSON.stringify(sent_data));
+  child.stdout.on('data',(data)=>{
+    console.log(`data is started${data}`)
+    res.json(data);
+  })
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  })
+})
+app.listen(4000,()=>console.log("app is running!"))
 
 setTimeout(()=>{
   cp.stdin.write("stop")

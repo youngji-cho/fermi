@@ -9,7 +9,7 @@ AWS.config.update({region:'ap-northeast-2'});
 const ddb=new AWS.DynamoDB({apiVersion: '2012-10-08'});
 
 const router= express.Router();
-const spawn= require("child_process").spawn;
+const cp= require("child_process")
 
 router.use(bodyParser.json())//"url ecodede는 action=form 형식의 url일때만사용한다. "
 router.use(cors());
@@ -39,27 +39,18 @@ router.post('/result',(req,res)=>{
   });
 });
 
-/*
-router.get('/result/:title',(req,res)=>{
-  let sql = `select * from economic where title=${req.params.title}`;
-  conn.query(sql, (err, rows, fields)=>{
-    if(err){
-      console.log('error');
-      res.status(500).send('Internal Sever Error')
-    }
-    else {
-      console.log(rows);
-      res.json(rows);
-    }
-  })
-});
-*/
-
 router.get('/test',(req,res)=>{
-  const cp=spawn("python",["../python/simulation.py"]);
-  cp.stdout.on('data',(data)=>{
-    console.log(data);
-  })
+  let child=cp.spawn("python",["./Fermi-Server/python/simulation.py"]);
+  let data=[1,2,3,4,5];
+
+  child.stdout.on('data',(data)=>{
+    console.log(`data is started ${data}`)
+    res.json(data);
+  });
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  });
+  child.stdin.write(JSON.stringify(data));
 })
 
 module.exports = {
