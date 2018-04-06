@@ -9,7 +9,7 @@ export class MainPage extends React.Component{
   }
   render(){
     return(
-      <Layout>
+      <div>
         <Board name="FERMI">
           <p>
             Fermi는 재생에너지 포털 프로젝트입니다. 재생에너지 사업검토에 필요한 가격정보를 제공합니다.
@@ -32,7 +32,7 @@ export class MainPage extends React.Component{
             <a className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/rec_price">상세보기</a>
           </div>
         </Board>
-      </Layout>
+      </div>
     )
   }
 }

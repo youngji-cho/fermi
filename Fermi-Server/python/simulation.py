@@ -29,21 +29,8 @@ data.oil_price=data.oil_price*data.us_producer
 data['date']= data.index
 
 def main(input):
-    lines =sys.stdin.readlines()
     export_data=input.to_json(orient='records',date_format="iso")
-    print(export_data,lines)
+    print(export_data)
 
 if __name__ == '__main__':
     main(data)
-
-'''
-def read_in():
-    lines =sys.stdin.readlines()
-    print(json.loads(lines[0]))
-
-def main():
-    lines =read_in()
-    np_lines=np.array(lines)
-    lines_sum=np.sum(np_lines)
-    return(lines_sum)
-'''

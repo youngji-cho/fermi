@@ -1,6 +1,11 @@
 import React from 'react';
 import {TimeButton} from './layout';
-import {default as ExcelFile,ExcelSheet,ExcelColumn} from "react-data-export";
+import ReactExport from "react-data-export";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
 
 export class RecTableA extends React.Component{
   constructor(props){
@@ -9,7 +14,7 @@ export class RecTableA extends React.Component{
     this.handleClick=this.handleClick.bind(this);
   }
   componentDidMount() {
-    fetch(`/rec_data2`).then(
+    fetch(`/energy_data/rec_price2`).then(
       response => {
        if (response.ok) {
          return response.json();
@@ -88,7 +93,7 @@ export class SmpTableA extends React.Component{
     this.state={data:[]};
   }
   componentDidMount() {
-    fetch(`/smp_data1`).then(
+    fetch(`/energy_data/smp_price1`).then(
       response => {
        if (response.ok) {
          return response.json();
@@ -100,7 +105,7 @@ export class SmpTableA extends React.Component{
   }
   render(){
     let table= this.state.data.map((d,i)=>
-    <tr key={`smp1${i}`}>
+    <tr key={`smp${i}`}>
       <td key={`data(${i})`}>{d.date}</td>
       <td key={`land_price(${i})`}>{d.land_price}</td>
       <td key={`jeju_price(${i})`}>{d.jeju_price}</td>

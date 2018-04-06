@@ -10,9 +10,6 @@ export class SmpPage extends React.Component{
   }
   render(){
     return(
-      <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-        <Header />
-        <Drawer />
         <main className="mdl-layout__content mdl-color--grey-100">
           <div className="mdl-grid demo-content">
             <Board name="SMP 가격">
@@ -35,7 +32,6 @@ export class SmpPage extends React.Component{
             </Board>
           </div>
         </main>
-      </div>
     )
   }
 }

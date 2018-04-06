@@ -13,7 +13,7 @@ router.use(bodyParser.json())//"url ecodede는 action=form 형식의 url일때�
 router.use(cors());
 
 router.post('/result',(req,res)=>{
-  console.log(`Post Data is ${req.body.title},${req.body.size},${req.body.type}`);
+  console.log(`Post Data is ${req.body.title},${req.body.location},${req.body.size},${req.body.weight},${req.body.type}`);
   let params = {
     TableName:'economic',
     Item: {
@@ -21,7 +21,9 @@ router.post('/result',(req,res)=>{
       'request':{
         "M":{
           'title':{"S":req.body.title},
+          'location':{"S":req.body.location},
           'size':{"N":req.body.size},
+          'weight':{"N":req.body.weight},
           'type':{"S":req.body.type}
         }
       }
@@ -36,8 +38,8 @@ router.post('/result',(req,res)=>{
   });
 });
 
-router.get('/test',(req,res)=>{
-  let child=cp.spawn("python",["./python/simulation.py"]);
+router.get('/result',(req,res)=>{
+  let child=cp.spawn("python",["./Fermi-Server/python/simulation.py"]);
   /*
   child.stdin.write(JSON.stringify({
     title:req.params.title,
@@ -48,7 +50,7 @@ router.get('/test',(req,res)=>{
     console.log(`error:${err}`)
   });
   child.stdout.on('data',(data)=>{
-    res.json(data.toString());
+    res.json(data.toString().trim());
   });
 })
 

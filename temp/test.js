@@ -7,7 +7,7 @@ app.get('/',(req,res)=>{
   let child=cp.spawn("python",["../Fermi-Server/python/simulation.py"]);
   let sent_data= [1,2,3,4,5,6,7,8];
   child.stdout.on('data',(data)=>{
-    console.log(data.toString());
+    console.log(data.toString().trim());
   });
   child.stderr.on('data',(err)=>{
     console.log(`error:${err}`)

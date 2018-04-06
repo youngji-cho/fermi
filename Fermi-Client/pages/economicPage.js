@@ -10,13 +10,12 @@ export class EconomicPage extends React.Component{
   }
   render(){
     return(
-      <Layout>
-        <Router>
-          <Switch>
-            <Route exact path='/economic' component={SimulationInput} />
-          </Switch>
-        </Router>
-      </Layout>
+      <Router>
+        <Switch>
+          <Route exact path='/economic' component={SimulationInput} />
+          <Route exact path='/economic/:title' component={SimulationOutput} />
+        </Switch>
+      </Router>
     )
   }
 }
