@@ -30,10 +30,11 @@ router.post('/result',(req,res)=>{
     }
   }
   ddb.putItem(params, function(err, data) {
-  if (err) {
-    console.log("Error", err);
-    } else {
-    console.log("Success", data);
+    if (err) {
+      console.log("Error", err);
+    }
+    else {
+      console.log("Success", data);
     }
   });
 });

@@ -3,23 +3,26 @@ import sys
 import numpy as np
 import pandas as pd
 import json
+import os
 
+config_path=os.path.abspath(os.path.join(__file__ ,"../../.."))
+config=json.load(open(os.path.join(config_path,'config.json')))
 conn =pymysql.connect(
-    host= "fermi-master.c4kp2nxu0eer.ap-northeast-2.rds.amazonaws.com",
-    user= "admin",
-    password="fermi1234",
-    db='energy_data2',
+    host=config['energy_data']['host'],
+    user=config['energy_data']['user'],
+    password=config['energy_data']['password'],
+    db=config['energy_data']['database'],
     charset='utf8'
 )
 curs=conn.cursor()
 sql="""
-select smp_price1.date, smp_price1.total_price as smp_price, oil_price.wti,elec_supply.supply,price_index.korea_producer, price_index.us_producer from smp_price1
+select smp_price.date, smp_price.total_price as smp_price, oil_price.wti,elec_supply.supply,price_index.korea_producer, price_index.us_producer from smp_price
     inner join oil_price
-		on smp_price1.date=oil_price.date
+		on smp_price.date=oil_price.date
 	inner join elec_supply
-		on smp_price1.date=elec_supply.date
+		on smp_price.date=elec_supply.date
 	inner join price_index
-		on smp_price1.date=price_index.date
+		on smp_price.date=price_index.date
         """
 curs.execute(sql)
 array=np.array(curs.fetchall())

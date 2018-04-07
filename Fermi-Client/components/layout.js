@@ -17,7 +17,6 @@ export class Layout extends React.Component{
         </header>
         <div className="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
             <header className="demo-drawer-header">
-              <p>서비스 목록</p>
             </header>
             <nav className="demo-navigation mdl-navigation mdl-color--blue-grey-800">
               <a href="./" className="mdl-navigation__link">
@@ -33,7 +32,7 @@ export class Layout extends React.Component{
                 REC가격</a>
               <a href="./economic" className="mdl-navigation__link">
                 <i role="presentation" className="mdl-color-text--blue-grey-400 material-icons">description</i>
-              경제성분석
+              경제성분석(테스트중)
               </a>
               <a href="" className="mdl-navigation__link">
               <i role="presentation" className="mdl-color-text--blue-grey-400 material-icons">help_outline</i>

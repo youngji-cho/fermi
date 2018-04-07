@@ -89,7 +89,7 @@ img {
       -ms-flex-pack: end;
           justify-content: flex-end;
   padding: 16px;
-  height: 58px;
+  height: 100px;
 }
 .demo-avatar-dropdown {
   display: -webkit-flex;

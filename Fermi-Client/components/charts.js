@@ -72,7 +72,7 @@ export class SmpChartA extends React.Component{
     }
 
     let last=data.length-1;
-    notice("SMP최신",data[last].date,data[last].total_price);
+    notice("SMP최신",data[0].date,data[0].total_price);
 
     function notice(subject,x,y,i){
       let text=svg.append("g")
@@ -221,7 +221,7 @@ export class RecChartA extends React.Component{
       notice("REC",d.date,d.average_price,i);
     }
     let last=(data.length-1);
-    notice("REC최신",data[last].date,data[last].average_price);
+    notice("REC최신",data[0].date,data[0].average_price);
 
     function notice(subject,x,y,i){
       let text=svg.append("g")
