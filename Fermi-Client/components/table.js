@@ -6,7 +6,6 @@ const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
-
 export class RecTableA extends React.Component{
   constructor(props){
     super(props)
@@ -14,7 +13,7 @@ export class RecTableA extends React.Component{
     this.handleClick=this.handleClick.bind(this);
   }
   componentDidMount() {
-    fetch(`/energy_data/rec_price2`).then(
+    fetch(`/energy_data/rec_price`).then(
       response => {
        if (response.ok) {
          return response.json();
@@ -93,7 +92,7 @@ export class SmpTableA extends React.Component{
     this.state={data:[]};
   }
   componentDidMount() {
-    fetch(`/energy_data/smp_price1`).then(
+    fetch(`/energy_data/smp_price`).then(
       response => {
        if (response.ok) {
          return response.json();

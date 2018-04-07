@@ -40,12 +40,6 @@ router.post('/result',(req,res)=>{
 
 router.get('/result',(req,res)=>{
   let child=cp.spawn("python",["./Fermi-Server/python/simulation.py"]);
-  /*
-  child.stdin.write(JSON.stringify({
-    title:req.params.title,
-    size:req.params.size
-  }));
-  */
   child.stderr.on('data',(err)=>{
     console.log(`error:${err}`)
   });

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Header,Drawer,Board} from '../components/layout';
-import {RecChartA,RecChartB,RecChartC} from '../components/charts';
+import {RecChartA} from '../components/charts';
 import {RecTableA} from '../components/table';
 
 export class RecPage extends React.Component{
