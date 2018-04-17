@@ -1,17 +1,19 @@
-import pymysql
 import sys
+import os
+module_config =os.path.abspath(os.path.join(__file__ ,"../"))
+sys.path.append(module_config)
+config_path=os.path.abspath(os.path.join(__file__ ,"../../.."))
+
+import pymysql
 import numpy as np
 import pandas as pd
 import json
-import os
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import datetime
 
 ## 아마존 EC2에 올라 갔을때 모듈 위치를 제대로 못잡을수 있으니 아래와 같은 조치를 함.
-module_config =os.path.abspath(os.path.join(__file__ ,"../"))
-sys.path.append(module_config)
-config_path=os.path.abspath(os.path.join(__file__ ,"../../.."))
+
 config=json.load(open(os.path.join(config_path,'config.json')))
 conn =pymysql.connect(
     host=config['energy_data']['host'],
