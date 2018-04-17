@@ -46,6 +46,17 @@ router.post('/result',(req,res)=>{
   });
 });
 
+router.get('/test',(req,res)=>{
+  let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  })
+  child.stdout.on('data',(data)=>{
+    let output=JSON.parse(data.toString());
+    res.json(output);
+  });
+});
+
 router.get('/result/:id',(req,res)=>{
   let params = {
     TableName : 'economics',
