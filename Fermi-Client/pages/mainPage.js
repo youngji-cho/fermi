@@ -10,7 +10,7 @@ export class MainPage extends React.Component{
   render(){
     return(
       <div>
-        <Board name="FERMI">
+        <Board name="페르미 프로젝트">
           <p>
             Fermi는 재생에너지 포털 프로젝트입니다. 재생에너지 사업검토에 필요한 가격정보를 제공합니다.
           </p>

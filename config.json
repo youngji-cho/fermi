@@ -5,5 +5,10 @@
     "password": "fermi1234",
     "database" : "energy_data",
     "dateStrings" : "true"
+  },
+  "aws_sdk":{
+    "accessKeyId":"AKIAIPZX6P22A23Y4JNA",
+    "secretAccessKey":"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",
+    "region":"ap-northeast-2"
   }
 }

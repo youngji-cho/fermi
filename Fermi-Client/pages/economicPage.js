@@ -13,7 +13,7 @@ export class EconomicPage extends React.Component{
       <Router>
         <Switch>
           <Route exact path='/economic' component={SimulationInput} />
-          <Route exact path='/economic/:title' component={SimulationOutput} />
+          <Route exact path='/economic/:id' component={SimulationOutput} />
         </Switch>
       </Router>
     )

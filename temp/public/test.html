@@ -50,10 +50,15 @@
           <button id ="smpThreemonth" onclick="smpGraph(this.id)" class="mdl-button mdl-js-button mdl-button--accent">3개월</button>
         </div>
         <div  class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-          <form method="post" action="/economic/result">
-            위치: <input type="text" name="title"/> <br />
-            용량: <input type="text" name="size"/> <br />
-              <input type="submit" value="Submit" />
+          <form action="/test" method="post">
+            아이디: <input type="text" name="id">
+            비밀번호: <input type="password" name="pwd" >
+            <select name="select">
+              <option>붉은색</option>
+              <option>파랑색</option>
+              <option>노란색</option>
+            </select>
+            <input type="submit">
           </form>
         </div>
         </div>

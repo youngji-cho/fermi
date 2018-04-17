@@ -10,29 +10,19 @@ const cors= require('cors');
 app.use(cors());
 app.use('/economic',economic.router);
 app.use('/energy_data',energy_data.router);
-app.use('/test',express.static(path.resolve(__dirname, './../temp/public')));
-
+app.use('/',express.static(path.resolve(__dirname, './../Fermi-Client')));
 
 app.get('*', (req, res, next) => {
-  const bundleUrl = /bundle.js/;
-  if(bundleUrl.test(req.url)){
-    console.log(`bundle url is ${req.url}`);
-    res.sendFile(path.resolve(__dirname, './../Fermi-Client/bundle.js'));
-  } else {
-    console.log(`other url is ${req.url}`);
-    res.sendFile(path.resolve(__dirname, './../Fermi-Client/index.html'));
-  }
+  res.sendFile(path.resolve(__dirname, './../Fermi-Client/index.html'));
 });
-
 
 if (module === require.main) {
   // [START server]
   // Start the server
-  const server = app.listen(process.env.PORT || 8080, () => {
+  const server = app.listen(process.env.PORT || 8081, () => {
     const port = server.address().port;
     console.log(`App listening on port ${port}`);
   });
   // [END server]
 }
-
 module.exports = app;

@@ -1,7 +1,69 @@
 const cp= require("child_process")
 const express = require('express');
 const app = express();
+const path=require("path")
 
+app.use('/',express.static(path.resolve(__dirname, './public')));
+app.get('/',(req,res)=>{
+  res.send("thest")
+});
+
+app.get('/python',(req,res)=>{
+  console.log("python url!")
+  let child=cp.spawn("python",[path.resolve(__dirname,"./python/simulation.py")]);
+  let sent_data= [1,2,3,4,5,6,7,8];
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  })
+  child.stdin.write(JSON.stringify(sent_data));
+  child.stdin.end();
+  child.stdout.pipe();
+  /*
+  child.stdout.on('data',(data)=>{
+    console.log(data.toString())
+    res.setHeader('Content-Type', 'application/json');
+    res.json(JSON.parse(data.toString()))
+  })
+  */
+})
+
+app.get('/node',(req,res)=>{
+  console.log("node url!")
+  let child=cp.spawn("node",[path.resolve(__dirname,"./ask.js")]);
+  res.setHeader('Content-Type', 'application/json');
+  child.stdout.pipe(res);
+  /*
+  child.stdout.on('data',(data)=>{
+    let input=data.toString();
+    let parsed=JSON.parse(input);
+    console.log(parsed);
+    res.json(parsed);
+  })
+  */
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  })
+})
+
+app.get('/config',(req,res)=>{
+  console.log("python url!")
+  let child=cp.spawn("python",[path.resolve(__dirname,"../Fermi-Server/python/test.py")]);
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  });
+  child.stdout.on('data',(data)=>{
+    console.log(data.toString());
+  });
+});
+
+app.post('/test',(req,res)=>{
+  console.log("submitted")
+  console.log(req.query);
+  res.redirect("/")
+})
+app.listen(3000,()=>console.log("app is running!"))
+
+/*
 app.get('/',(req,res)=>{
   console.log("main url!");
   let child=cp.spawn("python",["../Fermi-Server/python/simulation.py"]);
@@ -13,15 +75,6 @@ app.get('/',(req,res)=>{
     console.log(`error:${err}`)
   })
 })
-app.listen(4000,()=>console.log("app is running!"))
-
-
-
-
-
-
-
-/*
 app.get('/',(req,res)=>{
   console.log("main url!");
   let child=cp.spawn("python",["../Fermi-Server/python/simulation.py"]);

@@ -2,53 +2,92 @@ const express =require('express');
 const bodyParser= require('body-parser');
 const mysql = require('mysql');
 const cors= require('cors');
-const AWS =require('aws-sdk');
 const cp= require("child_process");
-
-AWS.config.update({region:'ap-northeast-2'});
-const ddb=new AWS.DynamoDB({apiVersion: '2012-10-08'});
-
+const path=require("path");
+const fs = require('fs');
+const AWS =require('aws-sdk');
+config=JSON.parse(fs.readFileSync(path.join(__dirname,'../../config.json'), 'UTF-8'));
+AWS.config.update(config.aws_sdk);
+const ddb= new AWS.DynamoDB.DocumentClient();
 const router= express.Router();
 router.use(bodyParser.json())//"url ecodede는 action=form 형식의 url일때만사용한다. "
 router.use(cors());
 
 router.post('/result',(req,res)=>{
   console.log(`Post Data is ${req.body.title},${req.body.location},${req.body.size},${req.body.weight},${req.body.type}`);
+  let request={
+    'date':(new Date()).toString(),
+    'title':req.body.title,
+    'location':req.body.location,
+    'size':req.body.size,
+    'weight': req.body.weight,
+    'type':req.body.type
+  }
   let params = {
-    TableName:'economic',
+    TableName:'economics',
     Item: {
-      'id':{"N": new Date().getTime().toString()},
-      'request':{
-        "M":{
-          'title':{"S":req.body.title},
-          'location':{"S":req.body.location},
-          'size':{"N":req.body.size},
-          'weight':{"N":req.body.weight},
-          'type':{"S":req.body.type}
-        }
-      }
+      id:new Date().getTime().toString()
     }
   }
-  ddb.putItem(params, function(err, data) {
-    if (err) {
-      console.log("Error", err);
-    }
-    else {
-      console.log("Success", data);
-    }
+  params.Item.request=request;
+  let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  })
+  child.stdin.write(JSON.stringify(request));
+  child.stdin.end();
+  child.stdout.on('data',(data)=>{
+    let response=JSON.parse(data.toString());
+    params.Item.response=response;
+    ddb.put(params, (err, data)=>{
+      if (err) console.log(err);
+      else console.log(data);
+    })
   });
 });
 
-router.get('/result',(req,res)=>{
-  let child=cp.spawn("python",["./Fermi-Server/python/simulation.py"]);
-  child.stderr.on('data',(err)=>{
-    console.log(`error:${err}`)
+router.get('/result/:id',(req,res)=>{
+  let params = {
+    TableName : 'economics',
+    Key: {
+      id: req.params.id
+    }
+  };
+  ddb.get(params, (err, data)=> {
+    if (err) console.log(err);
+    else res.json(data);
   });
-  child.stdout.on('data',(data)=>{
-    res.json(data.toString().trim());
-  });
-})
+});
 
 module.exports = {
   router:router
 }
+/*
+ddb.getItem(params, function(err, data) {
+  if (err) {
+    console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
+  } else {
+    console.log("GetItem succeeded:", );
+    res.json(JSON.stringify(data, null, 2));
+  }
+})
+child.stderr.on('data',(err)=>{
+  console.log(`error:${err}`)
+});
+child.stdout.on('data',(data)=>{
+  res.json(data.toString().trim());
+});
+let sent_data= [1,2,3,4,5,6,7,8];
+let dataString = '';
+child.stdout.on('data',(data)=>{
+  dataString += data.toString();
+})
+child.stdout.on('data',(data)=>{
+  console.log(`Sum of Data is ${dataString}, Can you see?`);
+})
+child.stderr.on('data',(err)=>{
+  console.log(`error:${err}`)
+})
+child.stdin.write(JSON.stringify(sent_data));
+child.stdin.end();
+*/

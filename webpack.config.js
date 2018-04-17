@@ -39,5 +39,6 @@ module.exports = {
       {
         './cptable': 'var cptable'
       }
-    ]
+    ],
+    watch:true
 };
