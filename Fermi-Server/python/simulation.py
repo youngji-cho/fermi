@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 import sys
 import os
 module_config =os.path.abspath(os.path.join(__file__ ,"../../../lib/python3.6/site-packages"))
 config_path=os.path.abspath(os.path.join(__file__ ,"../../.."))
 sys.path.append(module_config)
+## 아마존 EC2에 올라 갔을때 모듈 위치를 제대로 못잡을수 있으니 아래와 같은 조치를 함.
 
 import pymysql
 import numpy as np
@@ -13,8 +14,6 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import datetime
 
-## 아마존 EC2에 올라 갔을때 모듈 위치를 제대로 못잡을수 있으니 아래와 같은 조치를 함.
-
 config=json.load(open(os.path.join(config_path,'config.json')))
 conn =pymysql.connect(
     host=config['energy_data']['host'],
@@ -23,7 +22,6 @@ conn =pymysql.connect(
     db=config['energy_data']['database'],
     charset='utf8'
 )
-
 curs=conn.cursor()
 sql="""
 select smp_price.date, smp_price.total_price as smp_price, oil_price.wti,elec_supply.supply,price_index.korea_producer, price_index.us_producer from smp_price
