@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import sys
 import os
 module_config =os.path.abspath(os.path.join(__file__ ,"../../../lib/python3.6/site-packages"))
