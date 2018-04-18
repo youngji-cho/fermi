@@ -1,8 +1,8 @@
 import sys
 import os
-module_config =os.path.abspath(os.path.join(__file__ ,"../"))
-sys.path.append(module_config)
+module_config =os.path.abspath(os.path.join(__file__ ,"../../../lib/python3.6/site-packages"))
 config_path=os.path.abspath(os.path.join(__file__ ,"../../.."))
+sys.path.append(module_config)
 
 import pymysql
 import numpy as np
@@ -87,3 +87,4 @@ def main(data):
 
 if __name__ == '__main__':
     main(pred)
+    print(sys.path)
