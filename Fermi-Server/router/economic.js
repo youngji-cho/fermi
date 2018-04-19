@@ -52,7 +52,8 @@ router.get('/test',(req,res)=>{
     console.log(`error:${err}`)
   })
   child.stdout.on('data',(data)=>{
-    let output=JSON.parse(data.toString());
+    console.log(data.toString().trim());
+    let output=JSON.parse(data.toString().trim());
     res.json(output);
   });
 });

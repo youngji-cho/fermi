@@ -10,5 +10,9 @@
     "accessKeyId":"AKIAIPZX6P22A23Y4JNA",
     "secretAccessKey":"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",
     "region":"ap-northeast-2"
+  },
+  "aws_codecommit":{
+    "id":"yj.cho+1-at-454188672631",
+    "password":"/K8O3xPQrdfUBoH8Sn4VRPL71ERoRMyez1uhesmWAIc="
   }
 }

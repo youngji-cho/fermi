@@ -23,7 +23,6 @@ router.get('/smp_price', (req, res) => {
     console.log('error');
     res.status(500).send('Internal Sever Error')
   } else {
-    console.log(rows);
     res.json(rows);
     }
   })
@@ -36,7 +35,6 @@ router.get('/rec_price', (req, res) => {
        console.log('error');
        res.status(500).send('Internal Sever Error')
      } else {
-       console.log(rows);
        res.json(rows);
      }
    })

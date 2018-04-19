@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
+import json
+import datetime
+
 module_config =os.path.abspath(os.path.join(__file__ ,"../../../lib/python3.6/site-packages"))
 config_path=os.path.abspath(os.path.join(__file__ ,"../../.."))
-#sys.path.append(module_config)
+sys.path.append(module_config)
 ## 아마존 EC2에 올라 갔을때 모듈 위치를 제대로 못잡을수 있으니 아래와 같은 조치를 함.
-
-import pymysql
 import numpy as np
 import pandas as pd
-import json
+import pymysql
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
-import datetime
 
 config=json.load(open(os.path.join(config_path,'config.json')))
 conn =pymysql.connect(

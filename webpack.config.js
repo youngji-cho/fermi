@@ -9,7 +9,7 @@ module.exports = {
 
     devServer: {
         inline: true,
-        port: 8081,
+        port: 4000,
         contentBase: __dirname + '/Fermi-Client',
         historyApiFallback: true
     },
