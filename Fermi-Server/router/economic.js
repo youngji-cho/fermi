@@ -48,19 +48,19 @@ router.post('/result',(req,res)=>{
 
 router.get('/test',(req,res)=>{
   let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
+  let body=''
   child.stderr.on('data',(err)=>{
     console.log(`error:${err}`)
   })
   child.stdout.on('data',(data)=>{
-    console.log(data)
-    console.log(data.length);
-    console.log(data[5001].toString());
-    /*
-    let output=JSON.parse(data.toString().trim());
-    res.json(output);
-    */
-    res.send("end")
+   body+=data
+   console.log(body)
+   console.log(body.length);
   });
+  child.stdout.on('end',()=>{
+   let output=JSON.parse(body.toString().trim());
+   res.json(output);
+  })
 });
 
 router.get('/result/:id',(req,res)=>{
