@@ -31,13 +31,17 @@ router.post('/result',(req,res)=>{
   }
   params.Item.request=request;
   let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
+  let body ='';
   child.stderr.on('data',(err)=>{
     console.log(`error:${err}`)
   })
   child.stdin.write(JSON.stringify(request));
   child.stdin.end();
-  child.stdout.on('end',(data)=>{
-    let response=JSON.parse(data.toString());
+  child.stdout.on('data',(data)=>{
+    body+=data
+  });
+  child.stdout.on('end',()=>{
+    let response=JSON.parse(body.toString().trim());
     params.Item.response=response;
     ddb.put(params, (err, data)=>{
       if (err) console.log(err);
