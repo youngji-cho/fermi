@@ -36,7 +36,7 @@ router.post('/result',(req,res)=>{
   })
   child.stdin.write(JSON.stringify(request));
   child.stdin.end();
-  child.stdout.on('data',(data)=>{
+  child.stdout.on('end',(data)=>{
     let response=JSON.parse(data.toString());
     params.Item.response=response;
     ddb.put(params, (err, data)=>{
@@ -52,9 +52,14 @@ router.get('/test',(req,res)=>{
     console.log(`error:${err}`)
   })
   child.stdout.on('data',(data)=>{
-    console.log(data.toString().trim());
+    console.log(data)
+    console.log(data.length);
+    console.log(data[5001].toString());
+    /*
     let output=JSON.parse(data.toString().trim());
     res.json(output);
+    */
+    res.send("end")
   });
 });
 
