@@ -7,11 +7,17 @@ const economic=require('./router/economic');
 const energy_data=require('./router/energy_data');
 const cors= require('cors');
 
+if(process.env.NODE_ENV=='production'){
+  console.log("Production Mode")
+  process.env.PORT=3000
+} else if(process.env.NODE_ENV=='development'){
+  console.log("Development Mode")
+  process.env.PORT=4000
+}
 app.use(cors());
 app.use('/economic',economic.router);
 app.use('/energy_data',energy_data.router);
 app.use('/',express.static(path.resolve(__dirname, './../Fermi-Client')));
-console.log(process.env);
 app.get('*', (req, res, next) => {
   res.sendFile(path.resolve(__dirname, './../Fermi-Client/index.html'));
 });

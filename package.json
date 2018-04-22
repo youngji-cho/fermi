@@ -11,8 +11,8 @@
     "url": "git+https://github.com/youngji-cho/fermi.git"
   },
   "scripts": {
-    "test": "supervisor ./Fermi-Server/main.js",
-    "start": "node ./Fermi-Server/main.js"
+    "test": "export NODE_ENV=development && supervisor ./Fermi-Server/main.js",
+    "start": "export NODE_ENV=production && node ./Fermi-Server/main.js"
   },
   "keywords": [
     "fermi"
