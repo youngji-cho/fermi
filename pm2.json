@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "name": "fermi-dev",
+            "script": "npm",
+            "args" : "start"
+        }
+    ]
+}
