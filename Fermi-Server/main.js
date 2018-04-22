@@ -11,7 +11,7 @@ app.use(cors());
 app.use('/economic',economic.router);
 app.use('/energy_data',energy_data.router);
 app.use('/',express.static(path.resolve(__dirname, './../Fermi-Client')));
-
+console.log(process.env);
 app.get('*', (req, res, next) => {
   res.sendFile(path.resolve(__dirname, './../Fermi-Client/index.html'));
 });
