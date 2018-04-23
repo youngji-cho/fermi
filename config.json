@@ -1,6 +1,6 @@
 {
   "energy_data":{
-    "host": "aa7ocpfgxjk451.c4kp2nxu0eer.ap-northeast-2.rds.amazonaws.com",
+    "host": "fermi-master.c4kp2nxu0eer.ap-northeast-2.rds.amazonaws.com",
     "user": "admin",
     "password": "fermi1234",
     "database" : "energy_data",
