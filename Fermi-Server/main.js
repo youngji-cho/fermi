@@ -9,7 +9,7 @@ const cors= require('cors');
 
 if(process.env.NODE_ENV=='production'){
   console.log("Production Mode")
-  process.env.PORT=3000
+  process.env.PORT=80
 } else if(process.env.NODE_ENV=='development'){
   console.log("Development Mode")
   process.env.PORT=4000

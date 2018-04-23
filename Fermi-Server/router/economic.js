@@ -58,8 +58,6 @@ router.get('/test',(req,res)=>{
   })
   child.stdout.on('data',(data)=>{
    body+=data
-   console.log(body)
-   console.log(body.length);
   });
   child.stdout.on('end',()=>{
    let output=JSON.parse(body.toString().trim());
