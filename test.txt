@@ -10,3 +10,10 @@ AAAA
 2001:4860:4802:32::15
 2001:4860:4802:36::15
 2001:4860:4802:38::15
+
+A
+ALIAS fermi-env.ap-northeast-2.elasticbeanstalk.com. (z3je5oi70twkcp)
+No
+-
+
+1524385844518
