@@ -10,12 +10,11 @@ const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS
 if(process.env.NODE_ENV=='production'){
   console.log("Production Mode")
   process.env.PORT=3000
+  app.use(redirectToHTTPS());
 } else if(process.env.NODE_ENV=='development'){
   console.log("Development Mode")
   process.env.PORT=4000
 }
-
-app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
 
 app.use(cors());
 app.use('/economic',economic.router);
