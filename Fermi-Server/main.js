@@ -2,18 +2,21 @@ const express =require('express');
 const path =require('path');
 const app = express();
 const mysql = require('mysql');
-
 const economic=require('./router/economic');
 const energy_data=require('./router/energy_data');
 const cors= require('cors');
+const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS
 
 if(process.env.NODE_ENV=='production'){
   console.log("Production Mode")
-  process.env.PORT=80
+  process.env.PORT=3000
 } else if(process.env.NODE_ENV=='development'){
   console.log("Development Mode")
   process.env.PORT=4000
 }
+
+app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
+
 app.use(cors());
 app.use('/economic',economic.router);
 app.use('/energy_data',energy_data.router);
