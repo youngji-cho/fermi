@@ -12,7 +12,6 @@ const ddb= new AWS.DynamoDB.DocumentClient();
 const router= express.Router();
 router.use(bodyParser.json())//"url ecodede는 action=form 형식의 url일때만사용한다. "
 router.use(cors());
-
 router.post('/result',(req,res)=>{
   console.log(`Post Data is ${req.body.title},${req.body.location},${req.body.size},${req.body.weight},${req.body.type}`);
   let request={
@@ -26,7 +25,7 @@ router.post('/result',(req,res)=>{
   let params = {
     TableName:'economics',
     Item: {
-      id:new Date().getTime().toString()
+      id:req.body.id
     }
   }
   params.Item.request=request;
@@ -44,25 +43,14 @@ router.post('/result',(req,res)=>{
     let response=JSON.parse(body.toString().trim());
     params.Item.response=response;
     ddb.put(params, (err, data)=>{
-      if (err) console.log(err);
-      else console.log(data);
+      if (err) {
+        console.log(err);
+      } else {
+        res.json({success:true})
+        console.log(data);
+      }
     })
   });
-});
-
-router.get('/test',(req,res)=>{
-  let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
-  let body=''
-  child.stderr.on('data',(err)=>{
-    console.log(`error:${err}`)
-  })
-  child.stdout.on('data',(data)=>{
-   body+=data
-  });
-  child.stdout.on('end',()=>{
-   let output=JSON.parse(body.toString().trim());
-   res.json(output);
-  })
 });
 
 router.get('/result/:id',(req,res)=>{
@@ -77,6 +65,11 @@ router.get('/result/:id',(req,res)=>{
     else res.json(data);
   });
 });
+
+router.get('/test',(req,res)=>{
+  res.json({test:"test"});
+});
+
 
 module.exports = {
   router:router

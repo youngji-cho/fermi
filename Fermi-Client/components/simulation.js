@@ -7,13 +7,16 @@ export class SimulationInput extends React.Component{
     super(props);
     this.state={
       type:["지상형","옥상형","지상형"],
-      scene:["긍정","보통","부정"]
+      scene:["긍정","보통","부정"],
+      success:false,
+      loading:false
     };
     this.handleSubmit=this.handleSubmit.bind(this)
   }
   handleSubmit(e){
+    this.setState({loading:true});
+    console.log("the initial loading is",this.state.loading);
     e.preventDefault();
-    console.log(e.target[5].value)
     let id =new Date().getTime().toString();
     fetch("/economic/result",{
       method: 'POST',
@@ -31,38 +34,45 @@ export class SimulationInput extends React.Component{
         scene:e.target[5].value})
       })
       .then(response=>{
-      if (response.ok){
+        console.log("the second loading is",this.state);
+        if (response.ok){
           return response.json();
         }
         throw new Error('Request failed!');
       }, networkError=> console.log(networkError.message))
-      .then(
-      jsonResponse=>{
-      console.log(jsonResponse)
+      .then(jsonResponse=>{
+        let {success} = jsonResponse;
+        this.setState({success});
+        console.log(this.state);
+        {this.state.success &&this.props.history.push(`/economic/${id}`)};
     });
-    this.props.history.push(`/economic/${id}`);
   }
   render(){
+    let content=<div></div>
     let type_table= this.state.type.map((d,i)=>
       <option key={`${i}`}value={d}>{d}</option>
     );
     let scene_table= this.state.scene.map((d,i)=>
       <option key={`${i}`}value={d}>{d}</option>
     );
+    if (this.state.loading) {
+      content=(<h1>Loading...</h1>);
+    } else {
+      content=<form method="post" onSubmit={this.handleSubmit}>
+        제목: <input type="text" /> <br />
+        위치: <input type="text" /> <br />
+        용량: <input type="text" /> <br />
+        가중치: <input type="text" /> <br />
+        형태: <select name="selected">{type_table}</select><br />
+        시나리오: <select name="selected">{scene_table}</select><br />
+        <input type="submit" value="Submit" />
+      </form>
+    }
     return(
-      <Board name="경제성 분석 시뮬레이션">
-        <p>경제성분석 시나리오입니다. 다음값을 입력하시면 자동으로 시뮬레이션을 해드립니다.</p>
-        <form method="post" onSubmit={this.handleSubmit}>
-          제목: <input type="text" /> <br />
-          위치: <input type="text" /> <br />
-          용량: <input type="text" /> <br />
-          가중치: <input type="text" /> <br />
-          형태: <select name="selected">{type_table}</select><br />
-          시나리오: <select name="selected">{scene_table}</select><br />
-          <input type="submit" value="Submit" />
-        </form>
-      </Board>
-    )
+    <Board name="경제성 분석 시뮬레이션">
+      <p>경제성분석 시나리오입니다. 다음값을 입력하시면 자동으로 시뮬레이션을 해드립니다.</p>
+      {content}
+    </Board>)
   }
 }
 

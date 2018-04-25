@@ -14,5 +14,8 @@
   "aws_codecommit":{
     "id":"yj.cho+1-at-454188672631",
     "password":"/K8O3xPQrdfUBoH8Sn4VRPL71ERoRMyez1uhesmWAIc="
+  },
+  "DynamoDB":{
+
   }
 }

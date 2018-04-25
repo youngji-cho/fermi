@@ -17,3 +17,18 @@ No
 -
 
 1524385844518
+
+
+A 216.239.32.21
+A 216.239.34.21
+A 216.239.36.21
+A 216.239.38.21
+AAAA 2001:4860:4802:32::15
+AAAA 2001:4860:4802:34::15
+AAAA 2001:4860:4802:36::15
+AAAA 2001:4860:4802:38::15
+MX 10 aspmx2.googlemail.com
+MX 10 aspmx3.googlemail.com
+MX 1 aspmx.l.google.com
+MX 5 alt1.aspmx.l.google.com
+MX 5 alt2.aspmx.l.google.com
