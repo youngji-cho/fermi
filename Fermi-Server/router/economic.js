@@ -11,7 +11,14 @@ AWS.config.update(config.aws_sdk);
 const ddb= new AWS.DynamoDB.DocumentClient();
 const router= express.Router();
 router.use(bodyParser.json())//"url ecodede는 action=form 형식의 url일때만사용한다. "
-router.use(cors());
+
+let db_name=""
+if(process.env.NODE_ENV=='production'){
+  db_name='economics'
+} else if(process.env.NODE_ENV=='development'){
+  db_name='economics_test'
+}
+let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
 router.post('/result',(req,res)=>{
   console.log(`Post Data is ${req.body.title},${req.body.location},${req.body.size},${req.body.weight},${req.body.type}`);
   let request={
@@ -20,16 +27,17 @@ router.post('/result',(req,res)=>{
     'location':req.body.location,
     'size':req.body.size,
     'weight': req.body.weight,
-    'type':req.body.type
+    'type':req.body.type,
+    'year':15,
+    'average_time':3.4
   }
   let params = {
-    TableName:'economics',
+    TableName:db_name,
     Item: {
       id:req.body.id
     }
   }
   params.Item.request=request;
-  let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
   let body ='';
   child.stderr.on('data',(err)=>{
     console.log(`error:${err}`)
@@ -55,19 +63,28 @@ router.post('/result',(req,res)=>{
 
 router.get('/result/:id',(req,res)=>{
   let params = {
-    TableName : 'economics',
+    TableName : db_name,
     Key: {
       id: req.params.id
     }
   };
   ddb.get(params, (err, data)=> {
-    if (err) console.log(err);
-    else res.json(data);
+    if (err) {
+     console.log(err);
+    }else {
+     res.json(data);
+    }
   });
 });
 
 router.get('/test',(req,res)=>{
-  res.json({test:"test"});
+  child.stdout.on('end',()=>{
+    let response=body.toString().trim();
+    console.log(response);
+  });
+  child.stderr.on('data',(err)=>{
+    console.log(`error:${err}`)
+  })
 });
 
 

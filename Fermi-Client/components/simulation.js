@@ -15,7 +15,6 @@ export class SimulationInput extends React.Component{
   }
   handleSubmit(e){
     this.setState({loading:true});
-    console.log("the initial loading is",this.state.loading);
     e.preventDefault();
     let id =new Date().getTime().toString();
     fetch("/economic/result",{
@@ -34,7 +33,6 @@ export class SimulationInput extends React.Component{
         scene:e.target[5].value})
       })
       .then(response=>{
-        console.log("the second loading is",this.state);
         if (response.ok){
           return response.json();
         }
@@ -43,7 +41,6 @@ export class SimulationInput extends React.Component{
       .then(jsonResponse=>{
         let {success} = jsonResponse;
         this.setState({success});
-        console.log(this.state);
         {this.state.success &&this.props.history.push(`/economic/${id}`)};
     });
   }
@@ -80,7 +77,8 @@ export class SimulationOutput extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      data:[]
+      data:[],
+      loading:true
     };
   }
   componentDidMount(){
@@ -94,13 +92,38 @@ export class SimulationOutput extends React.Component{
         console.log(networkError.message);
       }).then(jsonResponse =>{
         this.setState({data:jsonResponse})
-        console.log(jsonResponse)
+        this.setState({loading:false})
+        console.log("after",this.state.data.Item.response)
       })
   }
   render(){
+    console.log("before",this.state)
+    let table=""
+    if (this.state.loading) {
+      table=(<h1>Loading...</h1>);
+    } else {
+      let data = this.state.data.Item.response;
+      table= data.map((d,i)=>
+      <tr key={`simul${i}`}>
+        <td key={`rec_price(${i})`}>{d.rec_price}</td>
+        <td key={`smp_price(${i})`}>{d.smp_price}</td>
+        <td key={`rec_revenue(${i})`}>{d.rec_revenue}</td>
+        <td key={`smp_revenue(${i})`}>{d.smp_revenue}</td>
+      </tr>)
+    }
     return(
       <Board name="경제성 분석 시뮬레이션">
         <p>{this.props.match.params.id}</p>
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+        <thead>
+          <tr>
+            <th>REC가격</th><th>SMP가격</th><th>REC수입</th><th>SMP수입</th>
+          </tr>
+        </thead>
+        <tbody>
+          {table}
+        </tbody>
+        </table>
       </Board>
     )
   }

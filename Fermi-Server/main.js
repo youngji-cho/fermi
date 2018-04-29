@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const economic=require('./router/economic');
 const energy_data=require('./router/energy_data');
 const cors= require('cors');
-const output={test:"test"}
+
 if(process.env.NODE_ENV=='production'){
   console.log("Production Mode");
   process.env.PORT=3000;
