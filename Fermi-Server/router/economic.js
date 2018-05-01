@@ -21,16 +21,15 @@ if(process.env.NODE_ENV=='production'){
 
 router.post('/result',(req,res)=>{
   let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
-  console.log(`Post Data is ${req.body.title},${req.body.location},${req.body.size},${req.body.weight},${req.body.type}`);
+  console.log(`Post Data is ${req.body.startdate},${req.body.year},${req.body.size},${req.body.weight},${req.body.averagetime}`);
   let request={
-    'date':(new Date()).toString(),
-    'title':req.body.title,
-    'location':req.body.location,
+    'startdate':req.body.startdate,
+    'year':req.body.year,
     'size':req.body.size,
-    'weight': req.body.weight,
-    'type':req.body.type,
-    'year':15,
-    'average_time':3.4
+    'weight':req.body.weight,
+    'averagetime':req.body.averagetime,
+    'scenario':req.body.scenario,
+    'type':req.body.type
   }
   let params = {
     TableName:db_name,

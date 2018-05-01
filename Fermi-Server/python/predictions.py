@@ -38,6 +38,8 @@ data.smp_price=data.smp_price*data.korea_producer
 data.oil_price=data.oil_price*data.us_producer
 data=data.astype(float)
 
+lm_model=smf.ols(formula = 'smp_price~oil_price+elec_supply', data = data).fit()
+
 # 회귀분석 모델 만들기
 def find_fields(tables):
     sql="SELECT * FROM information_schema.columns WHERE Table_Name=%s"
@@ -51,11 +53,11 @@ def find_fields(tables):
         fields.append(i[3])
     return fields
 
-def fetch_forecast(scenes):
+def fetch_forecast(scenes,startdate):
     fields=find_fields(['elec_forecast'])
-    sql="select * from energy_data.elec_forecast"
+    sql="select * from energy_data.elec_forecast where date >=%s"
     curs=conn.cursor()
-    curs.execute(sql)
+    curs.execute(sql,startdate)
     result=pd.DataFrame(data=np.array(curs.fetchall()),columns=fields)
     result.index=result.date
     final_result=result.loc[:,scenes]
@@ -68,14 +70,15 @@ def make_scenario(model,forecast):
     output=output.astype(int)
     return(output)
 
-lm_model=smf.ols(formula = 'smp_price~oil_price+elec_supply', data = data).fit()
-forecast=fetch_forecast(["WEO_450","supply7"])
-forecast=forecast.rename(columns={"WEO_450":"oil_price","supply7":"elec_supply"})
-lm_pred=make_scenario(lm_model,forecast)
-
-def main(data):
-    output=data.to_json(orient='records',date_format="iso")
-    print(output)
+def predict(model,startdate):
+    if model=="lm_model":
+        forecast=fetch_forecast(["WEO_450","supply7"],startdate)
+        forecast=forecast.rename(columns={"WEO_450":"oil_price","supply7":"elec_supply"})
+        pred_model=make_scenario(lm_model,forecast)
+        return pred_model
+    else:
+        return 'error'
 
 if __name__ == '__main__':
-    main(lm_pred)
+    result=predict("lm_model","2020-06-01")
+    print(result)

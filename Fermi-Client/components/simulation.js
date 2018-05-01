@@ -6,8 +6,8 @@ export class SimulationInput extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      type:["지상형","옥상형","지상형"],
-      scene:["긍정","보통","부정"],
+      type:[{in:"month",out:"월간"}],
+      scene:[{in:"lm_model",out:"보통"}],
       success:false,
       loading:false
     };
@@ -16,6 +16,7 @@ export class SimulationInput extends React.Component{
   handleSubmit(e){
     this.setState({loading:true});
     e.preventDefault();
+    console.log(e.target[5].value,e.target[6].value)
     let id =new Date().getTime().toString();
     fetch("/economic/result",{
       method: 'POST',
@@ -24,20 +25,25 @@ export class SimulationInput extends React.Component{
       },
       body: JSON.stringify({
         id: id,
-        time:String(new Date()),
-        title:e.target[0].value,
-        location:e.target[1].value,
+        startdate:e.target[0].value,
+        year:e.target[1].value,
         size:e.target[2].value,
         weight: e.target[3].value,
-        type:e.target[4].value,
-        scene:e.target[5].value})
+        averagetime: e.target[4].value,
+        scenario:e.target[5].value,
+        type:e.target[6].value
+        })
       })
       .then(response=>{
         if (response.ok){
           return response.json();
         }
         throw new Error('Request failed!');
-      }, networkError=> console.log(networkError.message))
+      }, networkError=> {
+        alert("네트워크에 문제가 있었습니다.")
+        this.setState({loading:false});
+        console.log(networkError.message)
+      })
       .then(jsonResponse=>{
         let {success} = jsonResponse;
         this.setState({success});
@@ -47,23 +53,33 @@ export class SimulationInput extends React.Component{
   render(){
     let content=<div></div>
     let type_table= this.state.type.map((d,i)=>
-      <option key={`${i}`}value={d}>{d}</option>
+      <option key={`${i}`} value={d.in}>{d.out}</option>
     );
     let scene_table= this.state.scene.map((d,i)=>
-      <option key={`${i}`}value={d}>{d}</option>
+      <option key={`${i}`} value={d.in}>{d.out}</option>
     );
     if (this.state.loading) {
       content=(<h1>Loading...</h1>);
     } else {
-      content=<form method="post" onSubmit={this.handleSubmit}>
-        제목: <input type="text" /> <br />
-        위치: <input type="text" /> <br />
-        용량: <input type="text" /> <br />
-        가중치: <input type="text" /> <br />
-        형태: <select name="selected">{type_table}</select><br />
+      let sample={
+        startdate:`${(new Date()).getFullYear()}-${(new Date()).getMonth()+1}-${(new Date()).getDate()}`,
+        year:15,
+        size:99,
+        weight:1.2,
+        average_time:3.4
+      }
+      content=(
+      <form method="post" onSubmit={this.handleSubmit}>
+        발전소 운영시작 시기: <input type="textarea" value={sample.startdate} /> <br />
+        재무예측기간: <input type="text" value={sample.year} /> <br />
+        발전소 크기(kw): <input type="text" value={sample.size} /> <br />
+        REC 가중: <input type="text" value={sample.weight} /> <br />
+        평균발전시간: <input type="text" value={sample.average_time} /> <br />
         시나리오: <select name="selected">{scene_table}</select><br />
-        <input type="submit" value="Submit" />
+        재무분석결과방식: <select name="selected" value="">{type_table}</select><br /><br />
+        <input type="submit" value="분석시작" /><input type="reset" value="다시입력" />
       </form>
+    )
     }
     return(
     <Board name="경제성 분석 시뮬레이션">
@@ -117,7 +133,7 @@ export class SimulationOutput extends React.Component{
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
         <thead>
           <tr>
-            <th>REC가격</th><th>SMP가격</th><th>REC수입</th><th>SMP수입</th>
+            <th>REC가격</th><th>SMP가격</th><th>REC수입</th><th>SMP수익</th>
           </tr>
         </thead>
         <tbody>

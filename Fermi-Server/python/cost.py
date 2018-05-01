@@ -12,7 +12,7 @@ def machine_cost_calc(data):
         index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
     else:
         index="error"
-    table=pd.Series(index=[index], data=1*data["size"],name="machine_cost")
+    table=pd.Series(index=index, data=1*data["size"],name="machine_cost")
     table=table.astype(int)
     return table
 #모니터링 비용
@@ -23,7 +23,7 @@ def monitoring_cost_calc(data):
         index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
     else:
         index="error"
-    table=pd.Series(index=[index], data=6*data["size"],name="monitoring_cost")
+    table=pd.Series(index=index, data=6*data["size"],name="monitoring_cost")
     table=table.astype(int)
     return table
 #보험료 계산
@@ -34,7 +34,7 @@ def insurance_cost_calc(data):
         index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
     else:
         index="error"
-    table=pd.Series(index=[index], data=6*data["size"],name="insurance_cost")
+    table=pd.Series(index=index, data=6*data["size"],name="insurance_cost")
     table=table.astype(int)
     return table
 #보험료 계산
@@ -45,7 +45,7 @@ def reserve_cost_calc(data):
         index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
     else:
         index="error"
-    table=pd.Series(index=[index], data=3*data["size"], name="reserve_cost")
+    table=pd.Series(index=index, data=3*data["size"], name="reserve_cost")
     table=table.astype(int)
     return table
 #전기안전관리자
@@ -72,7 +72,7 @@ def elec_safety_cost_calc(data):
         index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
     else:
         index="error"
-    table=pd.Series(index=[index], data=unitcost*data["size"], name="elec_safety_cost")
+    table=pd.Series(index=index, data=unitcost*data["size"], name="elec_safety_cost")
     table=table.astype(int)
     return table
 #기타관리운영비 계산
@@ -111,7 +111,7 @@ def operation_cost_calc(data):
         index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
     else:
         index="error"
-    table=pd.Series(index=[index], data=unitcost*data["size"], name="operation_cost")
+    table=pd.Series(index=index, data=unitcost*data["size"], name="operation_cost")
     table=table.astype(int)
     return table
 #기장비
@@ -150,7 +150,7 @@ def account_cost_calc(data):
         index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
     else:
         index="error"
-    table=pd.Series(index=[index], data=unitcost*data["size"],name="account_cost")
+    table=pd.Series(index=index, data=unitcost*data["size"],name="account_cost")
     table=table.astype(int)
     return table
 #기타 사무위탁비
@@ -191,7 +191,7 @@ def office_cost_calc(data):
         index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
     else:
         index="error"
-    table=pd.Series(index=[index], data=unitcost*data["size"],name="office_cost")
+    table=pd.Series(index=index, data=unitcost*data["size"],name="office_cost")
     table=table.astype(int)
     return table
 #통합비용계산
@@ -208,7 +208,15 @@ def total_cost_calc(data):
     #total_cost=pd.DataFrame({"machine_cost":machine_cost,"elec_safety_cost":elec_safety_cost,"monitoring_cost":monitoring_cost,"nsurance_cost":insurance_cost})
     return total_cost
 
+def read_in():
+    if sys.stdin.isatty()== True:
+        return({'startdate':'2018-04-23','year':15,'size':99.5,'weight':1.5,'averagetime':3.4,"scenario":"lm_model","type":"month"})
+    if sys.stdin.isatty()== False:
+        lines=sys.stdin.readlines()
+        parsed=json.loads(lines[0])
+        return(parsed)
+
 if __name__ == '__main__':
-    data={'startdate':datetime.date.today(),'year':15,'type':'month','size':99,'weight':1.5,'average_time':3.4}
+    data=read_in()
     result=total_cost_calc(data)
     print(result)
