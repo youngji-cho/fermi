@@ -26,7 +26,6 @@ revenue=pr.predict(params['scenario'],params['startdate'])
 revenue['rec_price']=100
 revenue['smp_revenue']=revenue['smp_price']*30*params['weight']*params['size']*params['averagetime']
 revenue['rec_revenue']=revenue['rec_price']*30*params['weight']*params['size']*params['averagetime']
-revenue=round(revenue,0)
 revenue.index=pd.period_range(start=revenue.index[0],periods=revenue.shape[0],freq="m")
 result=pd.concat([revenue,cost],axis=1,join="outer")
 
