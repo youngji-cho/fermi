@@ -18,8 +18,9 @@ if(process.env.NODE_ENV=='production'){
 } else if(process.env.NODE_ENV=='development'){
   db_name='economics_test'
 }
-let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
+
 router.post('/result',(req,res)=>{
+  let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
   console.log(`Post Data is ${req.body.title},${req.body.location},${req.body.size},${req.body.weight},${req.body.type}`);
   let request={
     'date':(new Date()).toString(),
@@ -54,8 +55,8 @@ router.post('/result',(req,res)=>{
       if (err) {
         console.log(err);
       } else {
-        res.json({success:true})
         console.log(data);
+        res.json({success:true})
       }
     })
   });

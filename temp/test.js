@@ -54,6 +54,9 @@ app.get('/config',(req,res)=>{
   child.stdout.on('data',(data)=>{
     console.log(data.toString());
   });
+  child.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
 });
 
 app.post('/test',(req,res)=>{

@@ -26,6 +26,7 @@ app.use('/energy_data',energy_data.router);
 app.use('/',express.static(path.resolve(__dirname, './../Fermi-Client')));
 app.get('*', (req, res, next) => {
   res.sendFile(path.resolve(__dirname, './../Fermi-Client/index.html'));
+  console.log(process.argv)
 });
 
 if (module === require.main) {
