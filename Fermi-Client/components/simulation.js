@@ -70,14 +70,14 @@ export class SimulationInput extends React.Component{
       }
       content=(
       <form method="post" onSubmit={this.handleSubmit}>
-        발전소 운영시작 시기: <input type="textarea" value={sample.startdate} /> <br />
-        재무예측기간: <input type="text" value={sample.year} /> <br />
-        발전소 크기(kw): <input type="text" value={sample.size} /> <br />
-        REC 가중: <input type="text" value={sample.weight} /> <br />
-        평균발전시간: <input type="text" value={sample.average_time} /> <br />
+        발전소 운영시작 시기: <input type="textarea" defaultValue={sample.startdate} /> <br />
+        재무예측기간: <input type="text" defaultValue={sample.year} /> <br />
+        발전소 크기(kw): <input type="text" defaultValue={sample.size} /> <br />
+        REC 가중: <input type="text" defaultValue={sample.weight} /> <br />
+        평균발전시간: <input type="text"  defaultValue={sample.average_time} /> <br />
         시나리오: <select name="selected">{scene_table}</select><br />
         재무분석결과방식: <select name="selected" value="">{type_table}</select><br /><br />
-        <input type="submit" value="분석시작" /><input type="reset" value="다시입력" />
+        <input type="submit" defaultValue="분석시작" /><input type="reset" defaultValue="다시입력" />
       </form>
     )
     }
@@ -112,7 +112,7 @@ export class SimulationOutput extends React.Component{
       })
   }
   render(){
-    let table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";
+    let table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";let total_cost="";
     if(this.state.loading) {
       table=(<h1>Loading...</h1>)
     } else {
@@ -135,6 +135,9 @@ export class SimulationOutput extends React.Component{
       )
       rec_revenue=data.map((d,i)=>
         <td key={`rec_revenue(${i})`}>{d.rec_revenue}</td>
+      )
+      total_cost=data.map((d,i)=>
+        <td key={`total_cost(${i})`}>{d.total_cost}</td>
       )
       days=data.map((d,i)=>
         <td key={`days(${i})`}>{d.days}</td>
@@ -163,6 +166,10 @@ export class SimulationOutput extends React.Component{
           <tr>
             <td>예상 REC 수입</td>
             {rec_revenue}
+          </tr>
+          <tr>
+            <td>운영비용</td>
+            {total_cost}
           </tr>
           <tr>
             <td>운영기간</td>

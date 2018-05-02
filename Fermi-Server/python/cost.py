@@ -205,7 +205,7 @@ def total_cost_calc(data):
     account_cost=account_cost_calc(data)
     office_cost=office_cost_calc(data)
     total_cost=pd.concat([machine_cost,monitoring_cost,insurance_cost,reserve_cost,elec_safety_cost,operation_cost,account_cost,office_cost],axis=1)
-    #total_cost=pd.DataFrame({"machine_cost":machine_cost,"elec_safety_cost":elec_safety_cost,"monitoring_cost":monitoring_cost,"nsurance_cost":insurance_cost})
+    total_cost["total_cost"]=machine_cost+monitoring_cost+insurance_cost+reserve_cost+elec_safety_cost+operation_cost+account_cost+office_cost
     return total_cost
 
 def read_in():
