@@ -113,33 +113,59 @@ export class SimulationOutput extends React.Component{
       })
   }
   render(){
-    console.log("before",this.state)
-    let table=""
-    if (this.state.loading) {
-      table=(<h1>Loading...</h1>);
+    let table="test";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";
+    if(this.state.loading) {
+      table=(<h1>Loading...</h1>)
     } else {
+      console.log("before",this.state)
       let data = this.state.data.Item.response;
-      table= data.map((d,i)=>
-      <tr key={`simul${i}`}>
-        <td key={`rec_price(${i})`}>{d.rec_price}</td>
-        <td key={`smp_price(${i})`}>{d.smp_price}</td>
-        <td key={`rec_revenue(${i})`}>{d.rec_revenue}</td>
+      column=data.map((d,i)=>
+          <th key={`date(${i})`}>{d.date.start_time}</th>
+      )
+      smp_price= data.map((d,i)=>
+          <td key={`smp_price(${i})`}>{d.smp_price}</td>
+      )
+      rec_price= data.map((d,i)=>
+        <td key={`rec_price(${i})`}>{d.smp_price}</td>
+      )
+      smp_revenue=data.map((d,i)=>
         <td key={`smp_revenue(${i})`}>{d.smp_revenue}</td>
-      </tr>)
-    }
-    return(
-      <Board name="경제성 분석 시뮬레이션">
-        <p>{this.props.match.params.id}</p>
+      )
+      rec_revenue=data.map((d,i)=>
+        <td key={`rec_revenue(${i})`}>{d.rec_revenue}</td>
+      )
+      table=(
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
         <thead>
           <tr>
-            <th>REC가격</th><th>SMP가격</th><th>REC수입</th><th>SMP수익</th>
+            <th>기간</th>
+            {column}
           </tr>
         </thead>
         <tbody>
-          {table}
+          <tr>
+            <td>예상 SMP 가격</td>
+            {smp_price}
+          </tr>
+          <tr>
+            <td>예상 REC 가격</td>
+            {rec_price}
+          </tr>
+          <tr>
+            <td>예상 SMP 수입</td>
+            {smp_revenue}
+          </tr>
+          <tr>
+            <td>예상 REC 수입</td>
+            {rec_revenue}
+          </tr>
         </tbody>
         </table>
+      )
+    }
+    return(
+      <Board name="경제성 분석 시뮬레이션">
+        {table}
       </Board>
     )
   }

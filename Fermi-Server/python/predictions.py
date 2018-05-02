@@ -53,14 +53,15 @@ def find_fields(tables):
         fields.append(i[3])
     return fields
 
-def fetch_forecast(scenes,startdate):
+def fetch_forecast(scenes,startdate,year):
     fields=find_fields(['elec_forecast'])
     sql="select * from energy_data.elec_forecast where date >=%s"
     curs=conn.cursor()
     curs.execute(sql,startdate)
     result=pd.DataFrame(data=np.array(curs.fetchall()),columns=fields)
     result.index=result.date
-    final_result=result.loc[:,scenes]
+    result=result.loc[:,scenes]
+    final_result=result.iloc[0:year*12]
     final_result=final_result.astype(float)
     return(final_result)
 
@@ -70,9 +71,9 @@ def make_scenario(model,forecast):
     output=output.astype(int)
     return(output)
 
-def predict(model,startdate):
+def predict(model,startdate,year):
     if model=="lm_model":
-        forecast=fetch_forecast(["WEO_450","supply7"],startdate)
+        forecast=fetch_forecast(["WEO_450","supply7"],startdate,year)
         forecast=forecast.rename(columns={"WEO_450":"oil_price","supply7":"elec_supply"})
         pred_model=make_scenario(lm_model,forecast)
         return pred_model
@@ -80,5 +81,5 @@ def predict(model,startdate):
         return 'error'
 
 if __name__ == '__main__':
-    result=predict("lm_model","2020-06-01")
+    result=predict("lm_model","2020-06-01",10)
     print(result)
