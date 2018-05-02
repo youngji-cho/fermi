@@ -23,10 +23,11 @@ params=read_in()
 params['year']=int(params['year']);params['size']=float(params['size']);params['weight']=float(params['weight']);params['averagetime']=float(params['averagetime']);
 cost=cost.total_cost_calc(params)
 revenue=pr.predict(params['scenario'],params['startdate'],params['year'])
-revenue['rec_price']=100
-revenue['smp_revenue']=revenue['smp_price']*30*params['weight']*params['size']*params['averagetime']
-revenue['rec_revenue']=revenue['rec_price']*30*params['weight']*params['size']*params['averagetime']
 revenue.index=pd.period_range(start=revenue.index[0],periods=revenue.shape[0],freq="m")
+revenue['days']=revenue.index.day
+revenue['rec_price']=100
+revenue['smp_revenue']=revenue['smp_price']*revenue['days']*params['weight']*params['size']*params['averagetime']
+revenue['rec_revenue']=revenue['rec_price']*revenue['days']*params['weight']*params['size']*params['averagetime']
 result=pd.concat([revenue,cost],axis=1)
 result["date"]=result.index
 result["smp_revenue"]=result["smp_revenue"].astype(int)

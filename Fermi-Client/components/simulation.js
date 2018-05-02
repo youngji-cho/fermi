@@ -1,7 +1,7 @@
 import React from 'react';
 import {Layout,Header,Drawer,Board} from '../components/layout';
 import {withRouter} from "react-router-dom";
-import {datechange} from "../../util";
+import {datechange,datechangeMonth} from "../../util";
 
 export class SimulationInput extends React.Component{
   constructor(props){
@@ -17,7 +17,6 @@ export class SimulationInput extends React.Component{
   handleSubmit(e){
     this.setState({loading:true});
     e.preventDefault();
-    console.log(e.target[5].value,e.target[6].value)
     let id =new Date().getTime().toString();
     fetch("/economic/result",{
       method: 'POST',
@@ -52,8 +51,6 @@ export class SimulationInput extends React.Component{
     });
   }
   render(){
-    let test=datechange("2018-05-01T00:00:00.000Z")
-    console.log("test is",test)
     let content=<div></div>
     let type_table= this.state.type.map((d,i)=>
       <option key={`${i}`} value={d.in}>{d.out}</option>
@@ -115,20 +112,17 @@ export class SimulationOutput extends React.Component{
       })
   }
   render(){
-    let table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";
+    let table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";
     if(this.state.loading) {
       table=(<h1>Loading...</h1>)
     } else {
       let data = this.state.data.Item.response;
       data.map((d,i)=>{
-        data[i].time=datechange(d.date.start_time)
+        data[i].time=datechangeMonth(d.date.start_time)
        }
       )
       column=data.map((d,i)=>
         <th key={`date(${i})`}>{d.time}</th>
-      )
-      data.map((d,i)=>
-        console.log("time",d.time)
       )
       smp_price= data.map((d,i)=>
         <td key={`smp_price(${i})`}>{d.smp_price}</td>
@@ -141,6 +135,9 @@ export class SimulationOutput extends React.Component{
       )
       rec_revenue=data.map((d,i)=>
         <td key={`rec_revenue(${i})`}>{d.rec_revenue}</td>
+      )
+      days=data.map((d,i)=>
+        <td key={`days(${i})`}>{d.days}</td>
       )
       table=(
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
@@ -166,6 +163,10 @@ export class SimulationOutput extends React.Component{
           <tr>
             <td>예상 REC 수입</td>
             {rec_revenue}
+          </tr>
+          <tr>
+            <td>운영기간</td>
+            {days}
           </tr>
         </tbody>
         </table>
