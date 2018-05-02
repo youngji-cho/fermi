@@ -29,6 +29,8 @@ revenue['rec_revenue']=revenue['rec_price']*30*params['weight']*params['size']*p
 revenue.index=pd.period_range(start=revenue.index[0],periods=revenue.shape[0],freq="m")
 result=pd.concat([revenue,cost],axis=1)
 result["date"]=result.index
+result["smp_revenue"]=result["smp_revenue"].astype(int)
+result["rec_revenue"]=result["rec_revenue"].astype(int)
 
 if __name__ == '__main__':
     print(result.to_json(orient='records',date_format="iso"))

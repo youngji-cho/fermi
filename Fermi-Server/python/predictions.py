@@ -55,12 +55,13 @@ def find_fields(tables):
 
 def fetch_forecast(scenes,startdate,year):
     fields=find_fields(['elec_forecast'])
-    sql="select * from energy_data.elec_forecast where date >=%s"
+    sql="select * from energy_data.elec_forecast"
     curs=conn.cursor()
-    curs.execute(sql,startdate)
+    curs.execute(sql)
     result=pd.DataFrame(data=np.array(curs.fetchall()),columns=fields)
-    result.index=result.date
+    result.index=pd.period_range(start=result.date[0],periods=result.shape[0],freq="m")
     result=result.loc[:,scenes]
+    result=result.loc[result.index>=pd.Period(startdate,"M"),:]
     final_result=result.iloc[0:year*12]
     final_result=final_result.astype(float)
     return(final_result)

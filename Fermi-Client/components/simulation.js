@@ -1,6 +1,7 @@
 import React from 'react';
 import {Layout,Header,Drawer,Board} from '../components/layout';
 import {withRouter} from "react-router-dom";
+import {datechange} from "../../util";
 
 export class SimulationInput extends React.Component{
   constructor(props){
@@ -51,6 +52,8 @@ export class SimulationInput extends React.Component{
     });
   }
   render(){
+    let test=datechange("2018-05-01T00:00:00.000Z")
+    console.log("test is",test)
     let content=<div></div>
     let type_table= this.state.type.map((d,i)=>
       <option key={`${i}`} value={d.in}>{d.out}</option>
@@ -62,7 +65,7 @@ export class SimulationInput extends React.Component{
       content=(<h1>Loading...</h1>);
     } else {
       let sample={
-        startdate:`${(new Date()).getFullYear()}-${(new Date()).getMonth()+1}-${(new Date()).getDate()}`,
+        startdate:datechange(new Date()),
         year:15,
         size:99,
         weight:1.2,
@@ -109,21 +112,26 @@ export class SimulationOutput extends React.Component{
       }).then(jsonResponse =>{
         this.setState({data:jsonResponse})
         this.setState({loading:false})
-        console.log("after",this.state.data.Item.response)
       })
   }
   render(){
-    let table="test";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";
+    let table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";
     if(this.state.loading) {
       table=(<h1>Loading...</h1>)
     } else {
-      console.log("before",this.state)
       let data = this.state.data.Item.response;
+      data.map((d,i)=>{
+        data[i].time=datechange(d.date.start_time)
+       }
+      )
       column=data.map((d,i)=>
-          <th key={`date(${i})`}>{d.date.start_time}</th>
+        <th key={`date(${i})`}>{d.time}</th>
+      )
+      data.map((d,i)=>
+        console.log("time",d.time)
       )
       smp_price= data.map((d,i)=>
-          <td key={`smp_price(${i})`}>{d.smp_price}</td>
+        <td key={`smp_price(${i})`}>{d.smp_price}</td>
       )
       rec_price= data.map((d,i)=>
         <td key={`rec_price(${i})`}>{d.smp_price}</td>
