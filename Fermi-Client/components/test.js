@@ -132,8 +132,8 @@ export class TestForm extends React.Component{
         재무예측기간: <input type="text" onChange={this.handleYearChange} value={this.state.year} /> <br />
         발전소 크기(kw): <input type="text" onChange={this.handleSizeChange} value={this.state.size} /> <br />
         REC 가중: <input type="text" onChange={this.handleWeightChange} value={this.state.weight} /> <br />
-        평균발전시간: <input type="text" onChange={this.handleAverageTimeChange} value={this.state.average_time} /> <br />
-        시나리오: <select name="selected" onChange={this.handleSceneChange}>{scene_table}</select><br />
+        평균발전시간: <input type="text" onChange={this.handleAverageTimeChange} value={this.state.average_time} /> <br /><br />
+        시나리오: <select name="selected" onChange={this.handleSceneChange}>{scene_table}</select>
         재무분석결과방식: <select name="selected" onChange={this.handleTypeChange}>{type_table}</select><br /><br />
         <input type="submit" defaultValue="분석시작" />
       </form>

@@ -6,3 +6,8 @@ export function datechangeMonth(date){
   let x=new Date(date)
   return `${x.getFullYear()}년 ${x.getMonth()+1}월`;
 }
+
+export function datechangeDate(date){
+  let x=new Date(date)
+  return `${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}월`;
+}

@@ -32,7 +32,7 @@ export class Layout extends React.Component{
                 REC가격</a>
               <a href="./economic" className="mdl-navigation__link">
                 <i role="presentation" className="mdl-color-text--blue-grey-400 material-icons">description</i>
-              경제성분석(테스트중)
+              시뮬레이션(테스트 중)
               </a>
               <a href="" className="mdl-navigation__link">
               <i role="presentation" className="mdl-color-text--blue-grey-400 material-icons">help_outline</i>

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Layout,Header,Drawer,Board} from '../components/layout';
+import {Layout,Header,Drawer,Board,TimeButton} from './layout';
 import {withRouter} from "react-router-dom";
-import {datechange,datechangeMonth} from "../../util";
+import {datechange,datechangeMonth,datechangeDate} from "../../util";
 import Calendar from 'react-calendar';
 
 export class SimulationInput extends React.Component{
@@ -18,8 +18,10 @@ export class SimulationInput extends React.Component{
       average_time:3.4,
       type:"month",
       scene:"lm_model",
+      plant:"solar",
       typelist:[{in:"month",out:"월간"}],
-      scenelist:[{in:"lm_model",out:"보통"}]
+      scenelist:[{in:"lm_model",out:"보통"}],
+      plantlist:[{in:"solar",out:"태양광"}]
     };
     this.handleSubmit=this.handleSubmit.bind(this);
     this.handleDateChange=this.handleDateChange.bind(this);
@@ -29,6 +31,7 @@ export class SimulationInput extends React.Component{
     this.handleAverageTimeChange=this.handleAverageTimeChange.bind(this);
     this.handleSceneChange=this.handleSceneChange.bind(this);
     this.handleTypeChange=this.handleTypeChange.bind(this);
+    this.handlePlantChange=this.handlePlantChange.bind(this);
   }
   handleSubmit(){
     if (5<=this.state.year && this.state.year <=40 && 0<this.state.size && 0.5<=this.state.weight && this.state.weight<=5 && 0<this.state.average_time && this.state.average_time<=24){
@@ -107,6 +110,10 @@ export class SimulationInput extends React.Component{
   handleTypeChange(e){
     this.setState({type:e.target.value})
   }
+  handlePlantChange(e){
+    this.setState({plant:e.target.value})
+
+  }
   render(){
     let content=<div></div>
     let type_table= this.state.typelist.map((d,i)=>
@@ -115,26 +122,30 @@ export class SimulationInput extends React.Component{
     let scene_table= this.state.scenelist.map((d,i)=>
       <option key={`${i}`} value={d.in}>{d.out}</option>
     );
+    let plant_table= this.state.plantlist.map((d,i)=>
+      <option key={`${i}`} value={d.in}>{d.out}</option>
+    );
     if (this.state.loading) {
       content=(<h1>Loading...</h1>);
     } else {
       content=(
         <div>
-        발전소 운영시작 시기: {datechangeMonth(this.state.startdate)} <br />
-        <Calendar onChange={this.handleDateChange} value={this.state.startdate} />
-        재무예측기간: <input type="text" onChange={this.handleYearChange} value={this.state.year} /> <br />
-        발전소 크기(kw): <input type="text" onChange={this.handleSizeChange} value={this.state.size} /> <br />
-        REC 가중: <input type="text" onChange={this.handleWeightChange} value={this.state.weight} /> <br />
-        평균발전시간: <input type="text" onChange={this.handleAverageTimeChange} value={this.state.average_time} /> <br />
-        시나리오: <select name="selected" onChange={this.handleSceneChange}>{scene_table}</select><br />
-        재무분석결과방식: <select name="selected" onChange={this.handleTypeChange}>{type_table}</select><br /><br />
-        <button onClick={this.handleSubmit}>분석시작</button>
+        재무예측기간: <input className="simul_form" type="text" onChange={this.handleYearChange} value={this.state.year} />
+        발전소 크기(kw): <input className="simul_form" type="text" onChange={this.handleSizeChange} value={this.state.size} />
+        REC 가중: <input className="simul_form" type="text" className="simul_form" onChange={this.handleWeightChange} value={this.state.weight} />
+        평균발전시간: <input className="simul_form" type="text" onChange={this.handleAverageTimeChange} value={this.state.average_time} />
+        시나리오: <select className="simul_form" name="selected" onChange={this.handleSceneChange}>{scene_table}</select>
+        재무분석결과방식: <select className="simul_form" name="selected" onChange={this.handleTypeChange}>{type_table}</select>
+        발전방식: <select className="simul_form" name="selected" onChange={this.handlePlantChange}>{plant_table}</select> <br />
+        발전소 운영시작 시기: {datechangeDate(this.state.startdate)} <br /> <br />
+        <Calendar onChange={this.handleDateChange} value={this.state.startdate} /><br />
+        <button onClick={this.handleSubmit} className="mdl-button mdl-js-button mdl-button--raised">분석시작</button>
         </div>
       )
     }
     return(
-    <Board name="경제성 분석 시뮬레이션">
-      <p>경제성분석 시나리오입니다. 다음값을 입력하시면 자동으로 시뮬레이션을 해드립니다.</p>
+    <Board name="시뮬레이션 입력">
+      <p> 발전소 시뮬레이션입니다. 다음값을 입력하시면 자동으로 시뮬레이션을 해드립니다.</p>
       {content}
     </Board>)
   }
@@ -231,7 +242,7 @@ export class SimulationOutput extends React.Component{
       )
     }
     return(
-      <Board name="경제성 분석 시뮬레이션">
+      <Board name="시뮬레이션 결과">
         {table}
       </Board>
     )
