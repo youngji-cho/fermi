@@ -41,6 +41,7 @@
     "mysql": "^2.15.0",
     "path": "^0.12.7",
     "react": "^16.2.0",
+    "react-calendar": "^2.14.0",
     "react-data-export": "^0.3.7",
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
