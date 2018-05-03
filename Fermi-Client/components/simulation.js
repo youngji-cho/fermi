@@ -130,15 +130,15 @@ export class SimulationInput extends React.Component{
     } else {
       content=(
         <div>
-        재무예측기간: <input className="simul_form" type="text" onChange={this.handleYearChange} value={this.state.year} />
-        발전소 크기(kw): <input className="simul_form" type="text" onChange={this.handleSizeChange} value={this.state.size} />
-        REC 가중: <input className="simul_form" type="text" className="simul_form" onChange={this.handleWeightChange} value={this.state.weight} />
-        평균발전시간: <input className="simul_form" type="text" onChange={this.handleAverageTimeChange} value={this.state.average_time} />
-        시나리오: <select className="simul_form" name="selected" onChange={this.handleSceneChange}>{scene_table}</select>
-        재무분석결과방식: <select className="simul_form" name="selected" onChange={this.handleTypeChange}>{type_table}</select>
-        발전방식: <select className="simul_form" name="selected" onChange={this.handlePlantChange}>{plant_table}</select> <br />
-        발전소 운영시작 시기: {datechangeDate(this.state.startdate)} <br /> <br />
-        <Calendar onChange={this.handleDateChange} value={this.state.startdate} /><br />
+        <div className="simul_form" >재무예측기간: <input  type="text" onChange={this.handleYearChange} value={this.state.year} /></div>
+        <div className="simul_form" >발전소 크기(kw): <input type="text" onChange={this.handleSizeChange} value={this.state.size} /> </div>
+        <div className="simul_form"> REC 가중: <input type="text" className="simul_form" onChange={this.handleWeightChange} value={this.state.weight} /></div>
+        <div className="simul_form">평균발전시간: <input type="text" onChange={this.handleAverageTimeChange} value={this.state.average_time} /></div>
+        <div className="simul_form"> 시나리오: <select name="selected" onChange={this.handleSceneChange}>{scene_table}</select></div>
+        <div className="simul_form"> 재무분석결과방식: <select name="selected" onChange={this.handleTypeChange}>{type_table}</select></div>
+        <div className="simul_form"> 발전방식: <select name="selected" onChange={this.handlePlantChange}>{plant_table}</select></div>
+        <div className="simul_form"> 발전소 운영시작 시기: {datechangeDate(this.state.startdate)} </div>
+        <div><Calendar onChange={this.handleDateChange} value={this.state.startdate} /></div>
         <button onClick={this.handleSubmit} className="mdl-button mdl-js-button mdl-button--raised">분석시작</button>
         </div>
       )
