@@ -21,7 +21,7 @@ html, body {
   margin-right: 40px;
   margin-top: 5px;
 }
-.mdl-button{
+.mdl-button--raised{
   background-color:#00BCD4;
   color:white;
 }
