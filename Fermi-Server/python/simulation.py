@@ -13,7 +13,7 @@ import cost
 
 def read_in():
     if sys.stdin.isatty()== True:
-        return({'startdate':'2018-05-01','year':15,'size':99.5,'weight':1.5,'averagetime':3.4,"scenario":"lm_model","type":"month"})
+        return({'startdate':'2018-05-01','year':5,'size':99.5,'weight':1.5,'averagetime':3.4,"scenario":"lm_model","type":"month"})
     if sys.stdin.isatty()== False:
         lines=sys.stdin.readlines()
         parsed=json.loads(lines[0])
