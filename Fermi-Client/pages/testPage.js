@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from "react-router-dom";
 import {Layout,Header,Drawer,Board} from '../components/layout';
-import {TestForm} from '../components/test';
+import {SimulationOutput} from '../components/test';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {datechange,datechangeMonth} from "../../util";
 import Calendar from 'react-calendar';
@@ -14,7 +14,7 @@ export class TestPage extends React.Component{
     return(
       <Router>
         <Switch>
-          <Route exact path='/test' component={TestForm} />
+          <Route exact path='/test' component={SimulationOutput} />
         </Switch>
       </Router>
     )

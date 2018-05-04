@@ -7,9 +7,9 @@ import pandas as pd
 #장비 수리비
 def machine_cost_calc(data):
     if data['type']=='quarter':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*4,freq="q")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*4+1,freq="q")
     elif data['type']=='month':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*12+1,freq="m")
     else:
         index="error"
     table=pd.Series(index=index, data=1*data["size"],name="machine_cost")
@@ -18,9 +18,9 @@ def machine_cost_calc(data):
 #모니터링 비용
 def monitoring_cost_calc(data):
     if data['type']=='quarter':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*4,freq="q")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*4+1,freq="q")
     elif data['type']=='month':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*12+1,freq="m")
     else:
         index="error"
     table=pd.Series(index=index, data=6*data["size"],name="monitoring_cost")
@@ -29,9 +29,9 @@ def monitoring_cost_calc(data):
 #보험료 계산
 def insurance_cost_calc(data):
     if data['type']=='quarter':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*4,freq="q")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*4+1,freq="q")
     elif data['type']=='month':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*12+1,freq="m")
     else:
         index="error"
     table=pd.Series(index=index, data=6*data["size"],name="insurance_cost")
@@ -40,9 +40,9 @@ def insurance_cost_calc(data):
 #보험료 계산
 def reserve_cost_calc(data):
     if data['type']=='quarter':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*4,freq="q")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*4+1,freq="q")
     elif data['type']=='month':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*12+1,freq="m")
     else:
         index="error"
     table=pd.Series(index=index, data=3*data["size"], name="reserve_cost")
@@ -67,9 +67,9 @@ def elec_safety_cost_calc(data):
     else:
         unitcost= "error"
     if data['type']=='quarter':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*4,freq="q")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*4+1,freq="q")
     elif data['type']=='month':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*12+1,freq="m")
     else:
         index="error"
     table=pd.Series(index=index, data=unitcost*data["size"], name="elec_safety_cost")
@@ -106,9 +106,9 @@ def operation_cost_calc(data):
     else:
         unitcost= "error"
     if data['type']=='quarter':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*4,freq="q")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*4+1,freq="q")
     elif data['type']=='month':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*12+1,freq="m")
     else:
         index="error"
     table=pd.Series(index=index, data=unitcost*data["size"], name="operation_cost")
@@ -145,9 +145,9 @@ def account_cost_calc(data):
     else:
         unitcost= "error"
     if data['type']=='quarter':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*4,freq="q")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*4+1,freq="q")
     elif data['type']=='month':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*12+1,freq="m")
     else:
         index="error"
     table=pd.Series(index=index, data=unitcost*data["size"],name="account_cost")
@@ -186,9 +186,9 @@ def office_cost_calc(data):
     else:
         unitcost= "error"
     if data['type']=='quarter':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*4,freq="q")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*4+1,freq="q")
     elif data['type']=='month':
-        index=pd.period_range(start=data['startdate'],periods=data['year']*12,freq="m")
+        index=pd.period_range(start=data['startdate'],periods=data['year']*12+1,freq="m")
     else:
         index="error"
     table=pd.Series(index=index, data=unitcost*data["size"],name="office_cost")

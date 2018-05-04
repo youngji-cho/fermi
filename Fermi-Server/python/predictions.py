@@ -62,7 +62,7 @@ def fetch_forecast(scenes,startdate,year):
     result.index=pd.period_range(start=result.date[0],periods=result.shape[0],freq="m")
     result=result.loc[:,scenes]
     result=result.loc[result.index>=pd.Period(startdate,"M"),:]
-    final_result=result.iloc[0:year*12]
+    final_result=result.iloc[0:year*12+1]
     final_result=final_result.astype(float)
     return(final_result)
 

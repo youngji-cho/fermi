@@ -1,7 +1,7 @@
 use energy_data;
 
 truncate smp_price;
-load data local infile '/Users/youngji/github/data/smp.csv' into table smp_price fields terminated by ','   lines terminated by '\n' ignore 1 lines (
+load data local infile '/Users/youngji/github/data/smp_price.csv' into table smp_price fields terminated by ','   lines terminated by '\n' ignore 1 lines (
 	`date` ,@land,@jeju,@total
 ) set `land_price`=nullif(@land,''), `jeju_price`=nullif(@jeju,''),`total_price`=nullif(@total,'');
 

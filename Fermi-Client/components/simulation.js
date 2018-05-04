@@ -156,7 +156,8 @@ export class SimulationOutput extends React.Component{
     super(props);
     this.state={
       data:[],
-      loading:true
+      loading:true,
+      type:'month'
     };
   }
   componentDidMount(){
@@ -174,35 +175,25 @@ export class SimulationOutput extends React.Component{
       })
   }
   render(){
+    console.log("JSON is",this.state.data)
     let table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";let total_cost="";
+
     if(this.state.loading) {
       table=(<h1>Loading...</h1>)
     } else {
-      let data = this.state.data.Item.response;
-      data.map((d,i)=>{
-        data[i].time=datechangeMonth(d.date.start_time)
+      let price_forecast= this.state.data.Item.response.price_forecast;
+      price_forecast.map((d,i)=>{
+        price_forecast[i].time=datechangeMonth(d.date.start_time)
        }
       )
-      column=data.map((d,i)=>
+      column=price_forecast.map((d,i)=>
         <th key={`date(${i})`}>{d.time}</th>
       )
-      smp_price= data.map((d,i)=>
+      smp_price= price_forecast.map((d,i)=>
         <td key={`smp_price(${i})`}>{d.smp_price}</td>
       )
-      rec_price= data.map((d,i)=>
+      rec_price= price_forecast.map((d,i)=>
         <td key={`rec_price(${i})`}>{d.smp_price}</td>
-      )
-      smp_revenue=data.map((d,i)=>
-        <td key={`smp_revenue(${i})`}>{d.smp_revenue}</td>
-      )
-      rec_revenue=data.map((d,i)=>
-        <td key={`rec_revenue(${i})`}>{d.rec_revenue}</td>
-      )
-      total_cost=data.map((d,i)=>
-        <td key={`total_cost(${i})`}>{d.total_cost}</td>
-      )
-      days=data.map((d,i)=>
-        <td key={`days(${i})`}>{d.days}</td>
       )
       table=(
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
@@ -220,22 +211,6 @@ export class SimulationOutput extends React.Component{
           <tr>
             <td>예상 REC 가격</td>
             {rec_price}
-          </tr>
-          <tr>
-            <td>예상 SMP 수입</td>
-            {smp_revenue}
-          </tr>
-          <tr>
-            <td>예상 REC 수입</td>
-            {rec_revenue}
-          </tr>
-          <tr>
-            <td>운영비용</td>
-            {total_cost}
-          </tr>
-          <tr>
-            <td>운영기간</td>
-            {days}
           </tr>
         </tbody>
         </table>

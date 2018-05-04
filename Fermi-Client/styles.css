@@ -22,6 +22,11 @@ html, body {
   margin-top: 5px;
   display: inline-block;
 }
+.mdl-checkbox .mdl-js-checkbox .mdl-js-ripple-effect{
+  margin-right: 40px;
+  margin-top: 5px;
+  display: inline-block;
+}
 .mdl-button--raised{
   background-color:#00BCD4;
   color:white;
