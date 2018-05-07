@@ -83,7 +83,7 @@ result_year['date']=index_year
 final_result={
     "price_forecast":json.loads(price_forecast.to_json(orient='records',date_format="iso")),
     "result_month":json.loads(result.to_json(orient='records',date_format="iso")),
-    "result_quarter":json.loads(result_year.to_json(orient='records',date_format="iso")),
+    "result_quarter":json.loads(result_quarter.to_json(orient='records',date_format="iso")),
     "result_year":json.loads(result_year.to_json(orient='records',date_format="iso"))
 }
 
