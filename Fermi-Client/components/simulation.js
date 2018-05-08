@@ -470,7 +470,7 @@ export class SimulationOutput extends React.Component{
           onChange={this.handleMonthlyForecastChange}/>
           <span className="mdl-checkbox__label">월별예측결과</span>
         </label>
-        {(this.state.price_forecast)?{table}:<div></div>}
+        {(this.state.price_forecast)?<div>{table}</div>:<div></div>}
       </Board>
       {(this.state.yearly_forecast)?<Board name="연간재무예측">{yearly_table}</Board>:<div></div>}
       {(this.state.quarterly_forecast)?<Board name="분기별 재무예측">{quarterly_table}</Board>:<div></div>}
