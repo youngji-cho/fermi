@@ -33,12 +33,14 @@ router.post('/result',(req,res)=>{
     'plant':req.body.plant,
     //두번째
     'construction':req.body.construction,
+    'othercost':req.body.othercost,
     'investment':req.body.investment,
     'debt':req.body.debt,
     'interest':req.body.interest,
     'unredeemed':req.body.unredeemed,
-    'repayment_method':req.body.repayment_method,
     'duration':req.body.duration,
+    'repayment_method':req.body.repayment_method,
+    'repayment_term':req.body.repayment_term,
     //세번째
     'scene':req.body.scene
   }

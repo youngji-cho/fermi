@@ -24,15 +24,18 @@ export class SimulationInput extends React.Component{
       plant:"solar",
       //두번째
       construction:0,
+      othercost:0,
       investment:0,
       debt:0,
       interest:5,
       unredeemed:3,
       duration:12,
       repayment_list:[{in:"IOL",out:"만기일시상환"},{in:"CAM",out:"원금균등분할"},{in:"CPM",out:"원리금균등분할상환"}],
-      repayment_method:"원리금균등상환",
+      repayment_method:"CPM",
+      repayment_term_list:[{in:"M",out:"분기"},{in:"Q",out:"분기"},{in:"Y",out:"연간"}],
+      repayment_term:"Qr",
       //
-      scenelist:[{in:"lm_model",out:"보통"}],
+      scenelist:[{in:"lm_model",out:"회귀분석"}],
       scene:"lm_model"
     };
     this.handleFirstClick=this.handleFirstClick.bind(this);
@@ -47,12 +50,14 @@ export class SimulationInput extends React.Component{
     this.handlePlantChange=this.handlePlantChange.bind(this);
     //두번째
     this.handleConstructionChange=this.handleConstructionChange.bind(this);
+    this.handleOthercostChange=this.handleOthercostChange.bind(this);
     this.handleInvestmentChange=this.handleInvestmentChange.bind(this);
     this.handleDebtChange=this.handleDebtChange.bind(this);
     this.handleInterestChange=this.handleInterestChange.bind(this);
     this.handleUnredeemedChange=this.handleUnredeemedChange.bind(this);
     this.handleDurationChange=this.handleDurationChange.bind(this);
     this.handleRepaymentMethodChange=this.handleRepaymentMethodChange.bind(this);
+    this.handleRepaymentTermChange=this.handleRepaymentTermChange.bind(this);
     //세번째
     this.handleSceneChange=this.handleSceneChange.bind(this);
   }
@@ -83,12 +88,14 @@ export class SimulationInput extends React.Component{
           startdate:this.state.startdate,
           //두번째 입력창
           construction:this.state.construction,
+          ohtercost:this.state.othercost,
           investment:this.state.investment,
           debt:this.state.debt,
           interest:this.state.interest,
           unredeemed:this.state.unredeemed,
           duration:this.state.duration,
           repayment_method:this.state.repayment_method,
+          repayment_method:this.state.repayment_term,
           //세번째 입력창
           scene:this.state.scene
           })
@@ -150,6 +157,9 @@ export class SimulationInput extends React.Component{
   handleConstructionChange(e){
     this.setState({construction:e.target.value})
   }
+  handleOthercostChange(e){
+    this.setState({othercost:e.target.value})
+  }
   handleInvestmentChange(e){
     this.setState({investment:e.target.value});
   }
@@ -168,12 +178,14 @@ export class SimulationInput extends React.Component{
   handleRepaymentMethodChange(e){
     this.setState({repayment_method:e.target.value});
   }
+  handleRepaymentTermChange(e){
+    this.setState({repayment_term:e.target.value});
+  }
   //세번째
   handleSceneChange(e){
     this.setState({scene:e.target.value})
   }
   render(){
-    console.log(this.state)
     let first_content=<div></div>;
     let second_content=<div></div>;
     let third_content=<div></div>;
@@ -184,6 +196,9 @@ export class SimulationInput extends React.Component{
       <option key={`${i}`} value={d.in}>{d.out}</option>
     );
     let repayment_table=this.state.repayment_list.map((d,i)=>
+      <option key={`${i}`} value={d.in}>{d.out}</option>
+    );
+    let repayment_term_table=this.state.repayment_term_list.map((d,i)=>
       <option key={`${i}`} value={d.in}>{d.out}</option>
     );
     if (this.state.loading) {
@@ -204,12 +219,14 @@ export class SimulationInput extends React.Component{
       )
       second_content=(<div>
         <div className="simul_form">총건설비: <input type="number" onChange={this.handleConstructionChange} value={this.state.construction} /> </div>
+        <div className="simul_form">기타비용(건설비를 제외한 모든비용, 총투자비-(총건설비+기타비용)): <input type="number" onChange={this.handleOthercostChange} value={this.state.othercost} /> </div>
         <div className="simul_form">총투자비: <input type="number" onChange={this.handleInvestmentChange} value={this.state.investement} /> </div>
         <div className="simul_form">대출금: <input type="number" onChange={this.handleDebtChange} value={this.state.debt} /> </div>
         <div className="simul_form">대출금리(%): <input type="number" onChange={this.handleInterestChange} value={this.state.interest} /> </div>
         <div className="simul_form">거치기간(개월): <input type="number" onChange={this.handleUnredeemedChange} value={this.state.unredeemed} /> </div>
         <div className="simul_form">만기: <input type="number" onChange={this.handleDurationChange} value={this.state.duration} /> </div>
         <div className="simul_form">상환방법: <select name="selected" onChange={this.handleRepaymentMethodChange}>{repayment_table}</select></div>
+        <div className="simul_form">이자상환주기 <select name="selected" onChange={this.handleRepaymentTermChange}>{repayment_term_table}</select></div>
         <br />
         <br />
         <button onClick={this.handleSecondClick} className="mdl-button mdl-js-button mdl-button--raised">다음</button></div>)
@@ -453,86 +470,12 @@ export class SimulationOutput extends React.Component{
           onChange={this.handleMonthlyForecastChange}/>
           <span className="mdl-checkbox__label">월별예측결과</span>
         </label>
-        {(this.state.price_forecast)?<Board name="가격예측">{table}</Board>:<div></div>}
+        {(this.state.price_forecast)?{table}:<div></div>}
       </Board>
       {(this.state.yearly_forecast)?<Board name="연간재무예측">{yearly_table}</Board>:<div></div>}
       {(this.state.quarterly_forecast)?<Board name="분기별 재무예측">{quarterly_table}</Board>:<div></div>}
       {(this.state.monthly_forecast)?<Board name="월별재무예측">{monthly_table}</Board>:<div></div>}
     </div>
-    )
-  }
-}
-
-
-export class SimulationOutputTest extends React.Component{
-  constructor(props){
-    super(props);
-    this.state={
-      data:[],
-      loading:true,
-      type:'month'
-    };
-  }
-  componentDidMount(){
-    fetch(`/economic/result/${this.props.match.params.id}`).then(
-      response => {
-       if (response.ok) {
-         return response.json();
-        }
-        throw new Error('Request failed!');
-      }, networkError => {
-        console.log(networkError.message);
-      }).then(jsonResponse =>{
-        this.setState({data:jsonResponse})
-        this.setState({loading:false})
-      })
-  }
-  render(){
-    console.log("JSON is",this.state.data)
-    let table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";let total_cost="";
-
-    if(this.state.loading) {
-      table=(<h1>Loading...</h1>)
-    } else {
-      let price_forecast= this.state.data.Item.response.price_forecast;
-      price_forecast.map((d,i)=>{
-        price_forecast[i].time=datechangeMonth(d.date.start_time)
-       }
-      )
-      column=price_forecast.map((d,i)=>
-        <th key={`date(${i})`}>{d.time}</th>
-      )
-      smp_price= price_forecast.map((d,i)=>
-        <td key={`smp_price(${i})`}>{d.smp_price}</td>
-      )
-      rec_price= price_forecast.map((d,i)=>
-        <td key={`rec_price(${i})`}>{d.smp_price}</td>
-      )
-      table=(
-        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
-        <thead>
-          <tr>
-            <th>기간</th>
-            {column}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>예상 SMP 가격</td>
-            {smp_price}
-          </tr>
-          <tr>
-            <td>예상 REC 가격</td>
-            {rec_price}
-          </tr>
-        </tbody>
-        </table>
-      )
-    }
-    return(
-      <Board name="시뮬레이션 결과">
-        {table}
-      </Board>
     )
   }
 }
