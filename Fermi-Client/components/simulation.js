@@ -219,7 +219,7 @@ export class SimulationInput extends React.Component{
       )
       second_content=(<div>
         <div className="simul_form">총건설비: <input type="number" onChange={this.handleConstructionChange} value={this.state.construction} /> </div>
-        <div className="simul_form">기타비용(건설비를 제외한 모든비용, 총투자비-(총건설비+기타비용)): <input type="number" onChange={this.handleOthercostChange} value={this.state.othercost} /> </div>
+        <div className="simul_form">기타비용(건설비를 제외한 모든비용, 총투자비-(총건설비+기타비용)=운영초기여유현금): <input type="number" onChange={this.handleOthercostChange} value={this.state.othercost} /> </div>
         <div className="simul_form">총투자비: <input type="number" onChange={this.handleInvestmentChange} value={this.state.investement} /> </div>
         <div className="simul_form">대출금: <input type="number" onChange={this.handleDebtChange} value={this.state.debt} /> </div>
         <div className="simul_form">대출금리(%): <input type="number" onChange={this.handleInterestChange} value={this.state.interest} /> </div>
