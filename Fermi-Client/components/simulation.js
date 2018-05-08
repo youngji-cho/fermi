@@ -11,27 +11,56 @@ export class SimulationInput extends React.Component{
     this.state={
       success:false,
       loading:false,
-      startdate:new Date(today.setMonth(today.getMonth()+2)),
+      second:false,
+      third:false,
+      type:"month",
+      //첫번째
       year:15,
       size:99,
       weight:1.2,
       average_time:3.4,
-      type:"month",
-      scene:"lm_model",
+      startdate:new Date(today.setMonth(today.getMonth()+2)),
+      plantlist:[{in:"solar",out:"태양광"}],
       plant:"solar",
-      typelist:[{in:"month",out:"월간"}],
+      //두번째
+      construction:0,
+      investment:0,
+      debt:0,
+      interest:5,
+      unredeemed:3,
+      duration:12,
+      repayment_list:[{in:"IOL",out:"만기일시상환"},{in:"CAM",out:"원금균등분할"},{in:"CPM",out:"원리금균등분할상환"}],
+      repayment_method:"원리금균등상환",
+      //
       scenelist:[{in:"lm_model",out:"보통"}],
-      plantlist:[{in:"solar",out:"태양광"}]
+      scene:"lm_model"
     };
+    this.handleFirstClick=this.handleFirstClick.bind(this);
+    this.handleSecondClick=this.handleSecondClick.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
+    //첫번째
     this.handleDateChange=this.handleDateChange.bind(this);
     this.handleYearChange=this.handleYearChange.bind(this);
     this.handleSizeChange=this.handleSizeChange.bind(this);
     this.handleWeightChange=this.handleWeightChange.bind(this);
     this.handleAverageTimeChange=this.handleAverageTimeChange.bind(this);
-    this.handleSceneChange=this.handleSceneChange.bind(this);
-    this.handleTypeChange=this.handleTypeChange.bind(this);
     this.handlePlantChange=this.handlePlantChange.bind(this);
+    //두번째
+    this.handleConstructionChange=this.handleConstructionChange.bind(this);
+    this.handleInvestmentChange=this.handleInvestmentChange.bind(this);
+    this.handleDebtChange=this.handleDebtChange.bind(this);
+    this.handleInterestChange=this.handleInterestChange.bind(this);
+    this.handleUnredeemedChange=this.handleUnredeemedChange.bind(this);
+    this.handleDurationChange=this.handleDurationChange.bind(this);
+    this.handleRepaymentMethodChange=this.handleRepaymentMethodChange.bind(this);
+    //세번째
+    this.handleSceneChange=this.handleSceneChange.bind(this);
+  }
+  handleFirstClick(){
+    this.setState({second:true})
+  }
+  handleSecondClick(){
+    this.setState({third:true})
   }
   handleSubmit(){
     if (5<=this.state.year && this.state.year <=40 && 0<this.state.size && 0.5<=this.state.weight && this.state.weight<=5 && 0<this.state.average_time && this.state.average_time<=24){
@@ -45,13 +74,23 @@ export class SimulationInput extends React.Component{
         },
         body: JSON.stringify({
           id: id,
-          startdate:this.state.startdate,
+          type:this.state.type,
+          //첫번째 입력창
           year:this.state.year,
           size:this.state.size,
           weight: this.state.weight,
           averagetime: this.state.average_time,
-          scenario:this.state.scene,
-          type:this.state.type
+          startdate:this.state.startdate,
+          //두번째 입력창
+          construction:this.state.construction,
+          investment:this.state.investment,
+          debt:this.state.debt,
+          interest:this.state.interest,
+          unredeemed:this.state.unredeemed,
+          duration:this.state.duration,
+          repayment_method:this.state.repayment_method,
+          //세번째 입력창
+          scene:this.state.scene
           })
         })
         .then(response=>{
@@ -89,9 +128,6 @@ export class SimulationInput extends React.Component{
       alert("입력오류입니다.(예: 숫자입력부분에 문자입력, 음수 입력, 0입력)")
     }
   }
-  handleDateChange(e){
-    this.setState({startdate:e})
-  }
   handleYearChange(e){
     this.setState({year:e.target.value})
   }
@@ -104,50 +140,98 @@ export class SimulationInput extends React.Component{
   handleAverageTimeChange(e){
     this.setState({average_time:e.target.value})
   }
-  handleSceneChange(e){
-    this.setState({scene:e.target.value})
-  }
-  handleTypeChange(e){
-    this.setState({type:e.target.value})
+  handleDateChange(e){
+    this.setState({startdate:e})
   }
   handlePlantChange(e){
     this.setState({plant:e.target.value})
-
+  }
+  //두번째
+  handleConstructionChange(e){
+    this.setState({construction:e.target.value})
+  }
+  handleInvestmentChange(e){
+    this.setState({investment:e.target.value});
+  }
+  handleDebtChange(e){
+    this.setState({debt:e.target.value});
+  }
+  handleInterestChange(e){
+    this.setState({interest:e.target.value});
+  }
+  handleUnredeemedChange(e){
+    this.setState({unredeemed:e.target.value});
+  }
+  handleDurationChange(e){
+    this.setState({duration:e.target.value});
+  }
+  handleRepaymentMethodChange(e){
+    this.setState({repayment_method:e.target.value});
+  }
+  //세번째
+  handleSceneChange(e){
+    this.setState({scene:e.target.value})
   }
   render(){
-    let content=<div></div>
-    let type_table= this.state.typelist.map((d,i)=>
-      <option key={`${i}`} value={d.in}>{d.out}</option>
-    );
+    console.log(this.state)
+    let first_content=<div></div>;
+    let second_content=<div></div>;
+    let third_content=<div></div>;
     let scene_table= this.state.scenelist.map((d,i)=>
       <option key={`${i}`} value={d.in}>{d.out}</option>
     );
     let plant_table= this.state.plantlist.map((d,i)=>
       <option key={`${i}`} value={d.in}>{d.out}</option>
     );
+    let repayment_table=this.state.repayment_list.map((d,i)=>
+      <option key={`${i}`} value={d.in}>{d.out}</option>
+    );
     if (this.state.loading) {
-      content=(<h1>Loading...</h1>);
+      first_content=(<h1>Loading...</h1>);
+      second_content=(<h1>Loading...</h1>);
+      third_content=(<h1>Loading...</h1>);
     } else {
-      content=(
+      first_content=(
         <div>
-        <div className="simul_form" >재무예측기간: <input  type="text" onChange={this.handleYearChange} value={this.state.year} /></div>
-        <div className="simul_form" >발전소 크기(kw): <input type="text" onChange={this.handleSizeChange} value={this.state.size} /> </div>
-        <div className="simul_form"> REC 가중: <input type="text" className="simul_form" onChange={this.handleWeightChange} value={this.state.weight} /></div>
-        <div className="simul_form">평균발전시간: <input type="text" onChange={this.handleAverageTimeChange} value={this.state.average_time} /></div>
-        <div className="simul_form"> 시나리오: <select name="selected" onChange={this.handleSceneChange}>{scene_table}</select></div>
-        <div className="simul_form"> 재무분석결과방식: <select name="selected" onChange={this.handleTypeChange}>{type_table}</select></div>
+        <div className="simul_form" >재무예측기간: <input  type="number" onChange={this.handleYearChange} value={this.state.year} /></div>
+        <div className="simul_form">발전소 크기(kw): <input type="number" onChange={this.handleSizeChange} value={this.state.size} /> </div>
+        <div className="simul_form"> REC 가중: <input type="number" className="simul_form" onChange={this.handleWeightChange} value={this.state.weight} /></div>
+        <div className="simul_form">평균발전시간: <input type="number" onChange={this.handleAverageTimeChange} value={this.state.average_time} /></div>
         <div className="simul_form"> 발전방식: <select name="selected" onChange={this.handlePlantChange}>{plant_table}</select></div>
-        <div className="simul_form"> 발전소 운영시작 시기: {datechangeDate(this.state.startdate)} </div>
-        <div><Calendar onChange={this.handleDateChange} value={this.state.startdate} /></div>
-        <button onClick={this.handleSubmit} className="mdl-button mdl-js-button mdl-button--raised">분석시작</button>
-        </div>
+        <div>발전소 운영시작 시기: {datechangeDate(this.state.startdate)}<Calendar onChange={this.handleDateChange} value={this.state.startdate} /></div>
+        <br />
+        <button onClick={this.handleFirstClick} className="mdl-button mdl-js-button mdl-button--raised">다음</button>     </div>
       )
+      second_content=(<div>
+        <div className="simul_form">총건설비: <input type="number" onChange={this.handleConstructionChange} value={this.state.construction} /> </div>
+        <div className="simul_form">총투자비: <input type="number" onChange={this.handleInvestmentChange} value={this.state.investement} /> </div>
+        <div className="simul_form">대출금: <input type="number" onChange={this.handleDebtChange} value={this.state.debt} /> </div>
+        <div className="simul_form">대출금리(%): <input type="number" onChange={this.handleInterestChange} value={this.state.interest} /> </div>
+        <div className="simul_form">거치기간(개월): <input type="number" onChange={this.handleUnredeemedChange} value={this.state.unredeemed} /> </div>
+        <div className="simul_form">만기: <input type="number" onChange={this.handleDurationChange} value={this.state.duration} /> </div>
+        <div className="simul_form">상환방법: <select name="selected" onChange={this.handleRepaymentMethodChange}>{repayment_table}</select></div>
+        <br />
+        <br />
+        <button onClick={this.handleSecondClick} className="mdl-button mdl-js-button mdl-button--raised">다음</button></div>)
+      third_content=(
+      <div>
+        <div className="simul_form"> 시나리오: <select name="selected" onChange={this.handleSceneChange}>{scene_table}</select></div>
+        <br />
+        <br />
+        <button onClick={this.handleSubmit} className="mdl-button mdl-js-button mdl-button--raised">분석시작</button>
+      </div>
+    )
     }
     return(
-    <Board name="시뮬레이션 입력">
+    <div className="overflow">
+    <Board name="기초정보 입력">
       <p> 발전소 시뮬레이션입니다. 다음값을 입력하시면 자동으로 시뮬레이션을 해드립니다.</p>
-      {content}
-    </Board>)
+      {first_content}
+    </Board>
+    {(this.state.second==true)?<Board name="금융조건 ">{second_content}</Board>:<div></div>}
+    {(this.state.third==true)?<Board name="시나리오 입력 ">{third_content}</Board>:<div></div>}
+    </div>
+    )
   }
 }
 export class SimulationOutput extends React.Component{

@@ -13,7 +13,7 @@ import cost
 
 def read_in():
     if sys.stdin.isatty()== True:
-        return({'startdate':'2018-05-10','year':10,'size':99.5,'weight':1.5,'averagetime':3.4,"scenario":"lm_model","type":"month"})
+        return({'startdate':'2018-05-10','year':10,'size':99.5,'weight':1.5,'averagetime':3.4,"scene":"lm_model","type":"month"})
     if sys.stdin.isatty()== False:
         lines=sys.stdin.readlines()
         parsed=json.loads(lines[0])
@@ -28,7 +28,7 @@ index_year=pd.period_range(start=params["startdate"],periods=params["year"]+1,fr
 
 #초기 예측치 만들기
 cost=cost.total_cost_calc(params)
-revenue=pr.predict(params['scenario'],params['startdate'],params['year'])
+revenue=pr.predict(params['scene'],params['startdate'],params['year'])
 revenue.index=index_month;
 revenue['days']=revenue.index.day
 revenue['rec_price']=100
@@ -36,7 +36,6 @@ revenue['smp_revenue']=revenue['smp_price']*30*params['weight']*params['size']*p
 revenue['rec_revenue']=revenue['rec_price']*30*params['weight']*params['size']*params['averagetime']
 revenue.index=index_month
 result=pd.concat([revenue,cost],axis=1)
-
 
 start=pd.to_datetime(params["startdate"], format='%Y-%m-%d', errors='ignore')#초기 기간 설정
 startday=start.date().timetuple()
