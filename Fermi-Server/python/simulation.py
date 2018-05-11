@@ -9,18 +9,23 @@ import pymysql
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import predictions as pr
+import finance as fr
 import cost
 
 def read_in():
     if sys.stdin.isatty()== True:
-        return({'startdate':'2018-05-10','year':10,'size':99.5,'weight':1.5,'averagetime':3.4,"scene":"lm_model","type":"month"})
+        return({'startdate':'2018-05-10','year':15,'size':99.5,'weight':1.5,'averagetime':3.4,"scene":"lm_model","type":"month"
+        ,"plant":"solar", "construction":150000000,"investment":180000000,"othercost":25000000,"debt":120000000,"interest":0.05,
+        "unredeemed":12321321123,"duration":12,"repayment_method":"cpm","repayment_term":"m"})
     if sys.stdin.isatty()== False:
         lines=sys.stdin.readlines()
         parsed=json.loads(lines[0])
         return(parsed)
 
 params=read_in()
-params['year']=int(params['year']);params['size']=float(params['size']);params['weight']=float(params['weight']);params['averagetime']=float(params['averagetime']);
+params['year']=int(params['year']);params['size']=float(params['size']);params['weight']=float(params['weight']);params['averagetime']=float(params['averagetime']);params['construction']=int(params['construction']);params['investment']=int(params['investment']);
+params['othercost']=int(params['othercost']);
+params['duration']=int(params['duration']);
 
 index_month=pd.period_range(start=params["startdate"],periods=params["year"]*12+1,freq="m")
 index_quarter=pd.period_range(start=params["startdate"],periods=params["year"]*4+1,freq="q")
@@ -51,8 +56,14 @@ price_forecast=result.loc[:,['smp_price','rec_price']]
 price_forecast.index=index_month
 price_forecast['date']=index_month
 
+payback_schedule=fr.date_calc(params["startdate"],params["debt"],params["year"],params["repayment_term"])
+finance_schedule=fr.CAM_calc(payback_schedule,params['debt'],params['interest'],params["repayment_term"],params["year"],params["duration"])
+finance_schedule=finance_schedule.drop("days",axis=1)
+result=pd.concat([result,finance_schedule],axis=1)
+
 #월,분기,년별로 만들기
-result_sample=result.drop(['rec_price','smp_price'],axis=1)
+result_sample=result.drop(['rec_price','smp_price','remained_debt'],axis=1)
+
 #월간 표
 result_month=result_sample
 result_month.index=index_month
@@ -79,11 +90,27 @@ result_year=result_year.groupby(result_year.index).sum()
 result_year.index=index_year
 result_year['date']=index_year
 
+#현금흐름표 만들기
+cash_start=params["investment"]-params["construction"]-params["othercost"]
+def makeCashFlow(data,start):
+    data["start_cash"]=0;data["end_cash"]=0;
+    length=data.days.count()-1;
+    data.start_cash.iloc[0]=start
+    for i in range(0,length-1):
+        data.end_cash.iloc[i]=data.start_cash.iloc[i]+data.smp_revenue.iloc[i]+data.rec_revenue.iloc[i]-data.total_cost.iloc[i];
+        data.start_cash.iloc[i+1]=data.end_cash.iloc[i];
+        data.end_cash.iloc[length]=data.start_cash.iloc[length]+data.smp_revenue.iloc[length]+data.rec_revenue.iloc[length]-data.total_cost.iloc[length];
+    return data
+
+result_month_cash=makeCashFlow(result_month,cash_start)
+result_quarter_cash=makeCashFlow(result_quarter,cash_start)
+result_year_cash=makeCashFlow(result_year,cash_start)
+
 final_result={
     "price_forecast":json.loads(price_forecast.to_json(orient='records',date_format="iso")),
-    "result_month":json.loads(result.to_json(orient='records',date_format="iso")),
-    "result_quarter":json.loads(result_quarter.to_json(orient='records',date_format="iso")),
-    "result_year":json.loads(result_year.to_json(orient='records',date_format="iso"))
+    "result_month_cash":json.loads(result_month_cash.to_json(orient='records',date_format="iso")),
+    "result_quarter_cash":json.loads(result_quarter_cash.to_json(orient='records',date_format="iso")),
+    "result_year_cash":json.loads(result_year_cash.to_json(orient='records',date_format="iso"))
 }
 
 if __name__ == '__main__':

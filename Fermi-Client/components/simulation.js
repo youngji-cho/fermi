@@ -23,17 +23,17 @@ export class SimulationInput extends React.Component{
       plantlist:[{in:"solar",out:"태양광"}],
       plant:"solar",
       //두번째
-      construction:0,
-      othercost:0,
-      investment:0,
-      debt:0,
+      construction:150000000,
+      othercost:20000000,
+      investment:180000000,
+      debt:120000000,
       interest:5,
       unredeemed:3,
       duration:12,
       repayment_list:[{in:"IOL",out:"만기일시상환"},{in:"CAM",out:"원금균등분할"},{in:"CPM",out:"원리금균등분할상환"}],
       repayment_method:"CPM",
-      repayment_term_list:[{in:"M",out:"분기"},{in:"Q",out:"분기"},{in:"Y",out:"연간"}],
-      repayment_term:"Qr",
+      repayment_term_list:[{in:"m",out:"월간"}],
+      repayment_term:"m",
       //
       scenelist:[{in:"lm_model",out:"회귀분석"}],
       scene:"lm_model"
@@ -88,14 +88,14 @@ export class SimulationInput extends React.Component{
           startdate:this.state.startdate,
           //두번째 입력창
           construction:this.state.construction,
-          ohtercost:this.state.othercost,
+          othercost:this.state.othercost,
           investment:this.state.investment,
           debt:this.state.debt,
           interest:this.state.interest,
           unredeemed:this.state.unredeemed,
           duration:this.state.duration,
           repayment_method:this.state.repayment_method,
-          repayment_method:this.state.repayment_term,
+          repayment_term:this.state.repayment_term,
           //세번째 입력창
           scene:this.state.scene
           })
@@ -220,7 +220,7 @@ export class SimulationInput extends React.Component{
       second_content=(<div>
         <div className="simul_form">총건설비: <input type="number" onChange={this.handleConstructionChange} value={this.state.construction} /> </div>
         <div className="simul_form">기타비용(건설비를 제외한 모든비용, 총투자비-(총건설비+기타비용)=운영초기여유현금): <input type="number" onChange={this.handleOthercostChange} value={this.state.othercost} /> </div>
-        <div className="simul_form">총투자비: <input type="number" onChange={this.handleInvestmentChange} value={this.state.investement} /> </div>
+        <div className="simul_form">총투자비: <input type="number" onChange={this.handleInvestmentChange} value={this.state.investment} /> </div>
         <div className="simul_form">대출금: <input type="number" onChange={this.handleDebtChange} value={this.state.debt} /> </div>
         <div className="simul_form">대출금리(%): <input type="number" onChange={this.handleInterestChange} value={this.state.interest} /> </div>
         <div className="simul_form">거치기간(개월): <input type="number" onChange={this.handleUnredeemedChange} value={this.state.unredeemed} /> </div>
@@ -258,14 +258,14 @@ export class SimulationOutput extends React.Component{
       data:[],
       loading:true,
       price_forecast:true,
-      yearly_forecast:false,
-      quarterly_forecast:false,
-      monthly_forecast:false
+      yearly_cash:false,
+      quarterly_cash:false,
+      monthly_cash:false
     };
     this.handlePriceForecastChange=this.handlePriceForecastChange.bind(this);
-    this.handleYearlyForecastChange=this.handleYearlyForecastChange.bind(this);
-    this.handleQuarterlyForecastChange=this.handleQuarterlyForecastChange.bind(this);
-    this.handleMonthlyForecastChange=this.handleMonthlyForecastChange.bind(this);
+    this.handleYearlyCashChange=this.handleYearlyCashChange.bind(this);
+    this.handleQuarterlyCashChange=this.handleQuarterlyCashChange.bind(this);
+    this.handleMonthlyCashChange=this.handleMonthlyCashChange.bind(this);
   }
   componentDidMount(){
     fetch(`/economic/result/${this.props.match.params.id}`).then(
@@ -286,32 +286,29 @@ export class SimulationOutput extends React.Component{
     const change = this.state.price_forecast == true ? false : true;
     this.setState({ price_forecast: change });
   }
-  handleYearlyForecastChange(){
-    const change = this.state.yearly_forecast == true ? false : true;
-    this.setState({ yearly_forecast: change });
+  handleYearlyCashChange(){
+    const change = this.state.yearly_cash == true ? false : true;
+    this.setState({ yearly_cash: change });
   }
-  handleQuarterlyForecastChange(){
-    const change = this.state.quaterly_forecast == true ? false : true;
-    this.setState({quarterly_forecast: change });
+  handleQuarterlyCashChange(){
+    const change = this.state.quaterly_cash == true ? false : true;
+    this.setState({quarterly_cash: change });
   }
-  handleMonthlyForecastChange(){
-    const change = this.state.monthly_forecast == true ? false : true;
-    this.setState({monthly_forecast: change });
+  handleMonthlyCashChange(){
+    const change = this.state.monthly_cash == true ? false : true;
+    this.setState({monthly_cash: change });
   }
   render(){
-    let table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";let total_cost="";
+    let price_table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";let total_cost="";
 
-    let yearly_table="";let yearly_column="";
-    let yearly_smp_revenue="";let yearly_rec_revenue="";
+    let yearly_cash_table="";let yearly_column="";let yearly_smp_revenue="";let yearly_rec_revenue="";let yearly_total_cost="";let yearly_start_cash="";let yearly_end_cash="";
 
-    let quarterly_table="";let quarterly_column="";
-    let quarterly_smp_revenue="";let quarterly_rec_revenue="";
+    let quarterly_cash_table="";let quarterly_column="";let quarterly_smp_revenue="";let quarterly_rec_revenue="";let quarterly_total_cost="";let quarterly_start_cash="";let quarterly_end_cash="";
 
-    let monthly_table=""; let monthly_column="";
-    let monthly_smp_revenue="";let monthly_rec_revenue="";
+    let monthly_cash_table=""; let monthly_column="";let monthly_smp_revenue="";let monthly_rec_revenue="";let monthly_total_cost="";let monthly_start_cash="";let monthly_end_cash="";
 
     if(this.state.loading) {
-      table=(<h1>Loading...</h1>)
+      price_table=(<h1>Loading...</h1>)
     } else {
       let price_forecast= this.state.data.Item.response.price_forecast;
       price_forecast.map((d,i)=>{
@@ -327,7 +324,7 @@ export class SimulationOutput extends React.Component{
       rec_price= price_forecast.map((d,i)=>
         <td key={`rec_price(${i})`}>{d.smp_price}</td>
       )
-      table=(
+      price_table=(
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
         <thead>
           <tr>
@@ -347,21 +344,30 @@ export class SimulationOutput extends React.Component{
         </tbody>
         </table>
       )
-      let yearly_forecast=this.state.data.Item.response.result_year
-      yearly_forecast.map((d,i)=>{
-        yearly_forecast[i].time=datechangeYear(d.date.start_time)
+      let yearly_cash=this.state.data.Item.response.result_year_cash
+      yearly_cash.map((d,i)=>{
+        yearly_cash[i].time=datechangeYear(d.date.start_time)
        }
       )
-      yearly_column=yearly_forecast.map((d,i)=>
+      yearly_column=yearly_cash.map((d,i)=>
         <th key={`yearly_date(${i})`}>{d.time}</th>
       )
-      yearly_smp_revenue= yearly_forecast.map((d,i)=>
+      yearly_smp_revenue= yearly_cash.map((d,i)=>
         <td key={`yearly_smp_revenue(${i})`}>{d.smp_revenue}</td>
       )
-      yearly_rec_revenue= yearly_forecast.map((d,i)=>
+      yearly_rec_revenue= yearly_cash.map((d,i)=>
         <td key={`yearly_rec_revenue(${i})`}>{d.rec_revenue}</td>
       )
-      yearly_table=(
+      yearly_total_cost=yearly_cash.map((d,i)=>
+        <td key={`yearly_total_cost(${i})`}>{d.total_cost}</td>
+      )
+      yearly_start_cash=yearly_cash.map((d,i)=>
+        <td key={`yearly_start_cash(${i})`}>{d.start_cash}</td>
+      )
+      yearly_end_cash=yearly_cash.map((d,i)=>
+        <td key={`yearly_end_cash(${i})`}>{d.end_cash}</td>
+      )
+      yearly_cash_table=(
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
         <thead>
           <tr>
@@ -371,6 +377,10 @@ export class SimulationOutput extends React.Component{
         </thead>
         <tbody>
           <tr>
+            <td>기초현금</td>
+            {yearly_start_cash}
+          </tr>
+          <tr>
             <td>예상 SMP 수입</td>
             {yearly_smp_revenue}
           </tr>
@@ -378,24 +388,41 @@ export class SimulationOutput extends React.Component{
             <td>예상 REC 수입</td>
             {yearly_rec_revenue}
           </tr>
+          <tr>
+            <td>운영비</td>
+            {yearly_total_cost}
+          </tr>
+          <tr>
+            <td>기말현금</td>
+            {yearly_end_cash}
+          </tr>
         </tbody>
         </table>
       )
-      let quarterly_forecast=this.state.data.Item.response.result_quarter
-      quarterly_forecast.map((d,i)=>{
-        quarterly_forecast[i].time=datechangeQuarter(d.date.start_time)
+      let quarterly_cash=this.state.data.Item.response.result_quarter_cash
+      quarterly_cash.map((d,i)=>{
+        quarterly_cash[i].time=datechangeQuarter(d.date.start_time)
        }
       )
-      quarterly_column=quarterly_forecast.map((d,i)=>
+      quarterly_column=quarterly_cash.map((d,i)=>
         <th key={`quarterly_date(${i})`}>{d.time}</th>
       )
-      quarterly_smp_revenue= quarterly_forecast.map((d,i)=>
+      quarterly_smp_revenue= quarterly_cash.map((d,i)=>
         <td key={`quarterly_smp_revenue(${i})`}>{d.smp_revenue}</td>
       )
-      quarterly_rec_revenue= quarterly_forecast.map((d,i)=>
+      quarterly_rec_revenue= quarterly_cash.map((d,i)=>
         <td key={`quarterly_rec_revenue(${i})`}>{d.rec_revenue}</td>
       )
-      quarterly_table=(
+      quarterly_total_cost=quarterly_cash.map((d,i)=>
+        <td key={`quarterly_total_cost(${i})`}>{d.total_cost}</td>
+      )
+      quarterly_start_cash=quarterly_cash.map((d,i)=>
+        <td key={`quarterly_start_cash(${i})`}>{d.start_cash}</td>
+      )
+      quarterly_end_cash=quarterly_cash.map((d,i)=>
+        <td key={`quarterly_end_cash(${i})`}>{d.end_cash}</td>
+      )
+      quarterly_cash_table=(
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
         <thead>
           <tr>
@@ -405,6 +432,10 @@ export class SimulationOutput extends React.Component{
         </thead>
         <tbody>
           <tr>
+            <td>기초현금</td>
+            {quarterly_start_cash}
+          </tr>
+          <tr>
             <td>예상 SMP 수입</td>
             {quarterly_smp_revenue}
           </tr>
@@ -412,24 +443,41 @@ export class SimulationOutput extends React.Component{
             <td>예상 REC 수입</td>
             {quarterly_rec_revenue}
           </tr>
+          <tr>
+            <td>운영비</td>
+            {quarterly_total_cost}
+          </tr>
+          <tr>
+            <td>기말현금</td>
+            {quarterly_end_cash}
+          </tr>
         </tbody>
         </table>
       )
-      let monthly_forecast=this.state.data.Item.response.result_month
-      monthly_forecast.map((d,i)=>{
-        monthly_forecast[i].time=datechangeMonth(d.date.start_time)
+      let monthly_cash=this.state.data.Item.response.result_month_cash
+      monthly_cash.map((d,i)=>{
+        monthly_cash[i].time=datechangeMonth(d.date.start_time)
        }
       )
-      monthly_column=monthly_forecast.map((d,i)=>
+      monthly_column=monthly_cash.map((d,i)=>
         <th key={`monthly_date(${i})`}>{d.time}</th>
       )
-      monthly_smp_revenue= monthly_forecast.map((d,i)=>
+      monthly_smp_revenue= monthly_cash.map((d,i)=>
         <td key={`monthly_smp_revenue(${i})`}>{d.smp_revenue}</td>
       )
-      monthly_rec_revenue= monthly_forecast.map((d,i)=>
+      monthly_rec_revenue= monthly_cash.map((d,i)=>
         <td key={`monthly_rec_revenue(${i})`}>{d.rec_revenue}</td>
       )
-      monthly_table=(
+      monthly_total_cost=monthly_cash.map((d,i)=>
+        <td key={`monthly_total_cost(${i})`}>{d.total_cost}</td>
+      )
+      monthly_start_cash=monthly_cash.map((d,i)=>
+        <td key={`monthly_start_cash(${i})`}>{d.start_cash}</td>
+      )
+      monthly_end_cash=monthly_cash.map((d,i)=>
+        <td key={`monthly_end_cash(${i})`}>{d.end_cash}</td>
+      )
+      monthly_cash_table=(
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
         <thead>
           <tr>
@@ -446,6 +494,14 @@ export class SimulationOutput extends React.Component{
             <td>예상 REC 수입</td>
             {monthly_rec_revenue}
           </tr>
+          <tr>
+            <td>운영비</td>
+            {monthly_total_cost}
+          </tr>
+          <tr>
+            <td>기말현금</td>
+            {monthly_end_cash}
+          </tr>
         </tbody>
         </table>
       )
@@ -458,23 +514,23 @@ export class SimulationOutput extends React.Component{
           <span className="mdl-checkbox__label">가격예측</span>
         </label>
         <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-          <input type="checkbox" className="mdl-checkbox__input" checked={ this.state.yearly_forecast} onChange={this.handleYearlyForecastChange} />
-          <span className="mdl-checkbox__label">연별예측결과</span>
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.yearly_cash} onChange={this.handleYearlyCashChange} />
+          <span className="mdl-checkbox__label">연간예상현금흐름표</span>
         </label>
         <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.quarterly_forecast} onChange={this.handleQuarterlyForecastChange}/>
-          <span className="mdl-checkbox__label">분기별예측결과</span>
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.quarterly_cash} onChange={this.handleQuarterlyCashChange}/>
+          <span className="mdl-checkbox__label">분기별예상현금흐름표</span>
         </label>
         <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.monthly_forecast}
-          onChange={this.handleMonthlyForecastChange}/>
-          <span className="mdl-checkbox__label">월별예측결과</span>
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.monthly_cash}
+          onChange={this.handleMonthlyCashChange}/>
+          <span className="mdl-checkbox__label">월별예상현금흐름표</span>
         </label>
-        {(this.state.price_forecast)?<div>{table}</div>:<div></div>}
+        {(this.state.price_forecast)?<div>{price_table}</div>:<div></div>}
       </Board>
-      {(this.state.yearly_forecast)?<Board name="연간재무예측">{yearly_table}</Board>:<div></div>}
-      {(this.state.quarterly_forecast)?<Board name="분기별 재무예측">{quarterly_table}</Board>:<div></div>}
-      {(this.state.monthly_forecast)?<Board name="월별재무예측">{monthly_table}</Board>:<div></div>}
+      {(this.state.yearly_cash)?<Board name="연간현금흐름표">{yearly_cash_table}</Board>:<div></div>}
+      {(this.state.quarterly_cash)?<Board name="분기별현금흐름표">{quarterly_cash_table}</Board>:<div></div>}
+      {(this.state.monthly_cash)?<Board name="월별현금흐름표">{monthly_cash_table}</Board>:<div></div>}
     </div>
     )
   }

@@ -21,7 +21,7 @@ if(process.env.NODE_ENV=='production'){
 
 router.post('/result',(req,res)=>{
   let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
-  console.log(`Post Data is ${req.body}`);
+  console.log(`Post Data is ${req.body.repayment_term}`);
   let request={
     'type':req.body.type,
     //첫번째
