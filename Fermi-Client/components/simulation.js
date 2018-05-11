@@ -291,7 +291,7 @@ export class SimulationOutput extends React.Component{
     this.setState({ yearly_cash: change });
   }
   handleQuarterlyCashChange(){
-    const change = this.state.quaterly_cash == true ? false : true;
+    const change = this.state.quarterly_cash == true ? false : true;
     this.setState({quarterly_cash: change });
   }
   handleMonthlyCashChange(){
@@ -299,6 +299,7 @@ export class SimulationOutput extends React.Component{
     this.setState({monthly_cash: change });
   }
   render(){
+    console.log(this.state)
     let price_table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";let total_cost="";
 
     let yearly_cash_table="";let yearly_column="";let yearly_smp_revenue="";let yearly_rec_revenue="";let yearly_total_cost="";let yearly_start_cash="";let yearly_end_cash="";
