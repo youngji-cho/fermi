@@ -487,6 +487,10 @@ export class SimulationOutput extends React.Component{
         </thead>
         <tbody>
           <tr>
+            <td>기초현금</td>
+            {monthly_start_cash}
+          </tr>
+          <tr>
             <td>예상 SMP 수입</td>
             {monthly_smp_revenue}
           </tr>
