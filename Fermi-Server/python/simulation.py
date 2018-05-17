@@ -16,7 +16,7 @@ def read_in():
     if sys.stdin.isatty()== True:
         return({'startdate':'2018-05-10','year':15,'size':99.5,'weight':1.5,'averagetime':3.4,"scene":"lm_model","type":"month"
         ,"plant":"solar", "construction":150000000,"investment":180000000,"othercost":25000000,"debt":120000000,"interest":0.05,
-        "unredeemed":12321321123,"duration":12,"repayment_method":"cpm","repayment_term":"m"})
+        "unredeemed":12321321123,"duration":12,"repayment_method":"cpm","repayment_term":"m","price_index":0.02,"solar_index":-0.08})
     if sys.stdin.isatty()== False:
         lines=sys.stdin.readlines()
         parsed=json.loads(lines[0])

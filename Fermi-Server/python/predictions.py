@@ -2,7 +2,7 @@
 import sys
 import os
 import json
-import datetime
+from datetime import datetime
 module_config =os.path.abspath(os.path.join(__file__ ,"../../../lib/python3.6/site-packages"))
 config_path=os.path.abspath(os.path.join(__file__ ,"../../.."))
 sys.path.append(module_config)
@@ -21,6 +21,7 @@ conn =pymysql.connect(
     db=config['energy_data']['database'],
     charset='utf8'
 )
+params={'startdate':'2018-05-10','year':15,'size':99.5,'weight':1.5,'averagetime':3.4,"scene":"lm_model","type":"month","plant":"solar","contruction":150000000,"investment":180000000,"othercost":25000000,"debt":120000000,"interest":0.05,"unredeemed":12321321123,"duration":12,"repayment_method":"cpm","repayment_term":"m"}
 curs=conn.cursor()
 sql="""
 select smp_price.date, smp_price.total_price as smp_price, oil_price.wti,elec_supply.supply,price_index.korea_producer, price_index.us_producer from smp_price
@@ -33,11 +34,11 @@ select smp_price.date, smp_price.total_price as smp_price, oil_price.wti,elec_su
         """
 curs.execute(sql)
 array=np.array(curs.fetchall())
+curs.close()
 data=pd.DataFrame(data=array[:,1:6],index=array[:,0],columns=["smp_price","oil_price","elec_supply","korea_producer","us_producer"])
 data.smp_price=data.smp_price*data.korea_producer
 data.oil_price=data.oil_price*data.us_producer
 data=data.astype(float)
-
 lm_model=smf.ols(formula = 'smp_price~oil_price+elec_supply', data = data).fit()
 
 # 회귀분석 모델 만들기
@@ -59,9 +60,10 @@ def fetch_forecast(scenes,startdate,year):
     curs=conn.cursor()
     curs.execute(sql)
     result=pd.DataFrame(data=np.array(curs.fetchall()),columns=fields)
-    result.index=pd.period_range(start=result.date[0],periods=result.shape[0],freq="m")
+    result.index=pd.date_range(start=result.date[0],periods=result.shape[0],freq="m")
     result=result.loc[:,scenes]
-    result=result.loc[result.index>=pd.Period(startdate,"M"),:]
+    start=datetime.strptime(startdate,'%Y-%m-%d')
+    result=result.loc[result.index>=start,:]
     final_result=result.iloc[0:year*12+1]
     final_result=final_result.astype(float)
     return(final_result)
@@ -81,6 +83,13 @@ def predict(model,startdate,year):
     else:
         return 'error'
 
+def index_predict(startdate,year,index):
+    data=pd.Series(index=pd.date_range(start=startdate,periods=year*12+1,freq="m"))
+    for i in range(0,year):
+        data[::12][i]=(1+index)**i
+    data=data.interpolate()
+    return data
+
 if __name__ == '__main__':
-    result=predict("lm_model","2020-06-01",10)
+    result=predict(params['scene'],params['startdate'],params['year'])
     print(result)
