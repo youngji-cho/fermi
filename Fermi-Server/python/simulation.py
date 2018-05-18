@@ -27,90 +27,136 @@ params['year']=int(params['year']);params['size']=float(params['size']);params['
 params['othercost']=int(params['othercost']);
 params['duration']=int(params['duration']);
 
-index_month=pd.period_range(start=params["startdate"],periods=params["year"]*12+1,freq="m")
-index_quarter=pd.period_range(start=params["startdate"],periods=params["year"]*4+1,freq="q")
-index_year=pd.period_range(start=params["startdate"],periods=params["year"]+1,freq="y")
+params={'startdate':'2018-10-10','year':25,'size':99.5,'weight':1.5,'averagetime':3.4,
+        "scene":"lm_model","type":"month","plant":"solar",
+        "construction":150000000,"investment":180000000,"othercost":25000000,
+        "principal":120000000,"equity":60000000,"interest":0.05, "unredeemed":12321321123,"duration":12,
+        "repayment_method":"cpm","repayment_term":"m","interest_repayment_term":"q",
+        "finance_startdate":"2018-06-13","price_index":0.01,"solar_index":-0.08}
 
-#초기 예측치 만들기
-cost=cost.total_cost_calc(params)
-revenue=pr.predict(params['scene'],params['startdate'],params['year'])
-revenue.index=index_month;
-revenue['days']=revenue.index.day
-revenue['rec_price']=100
-revenue['smp_revenue']=revenue['smp_price']*30*params['weight']*params['size']*params['averagetime']
-revenue['rec_revenue']=revenue['rec_price']*30*params['weight']*params['size']*params['averagetime']
-revenue.index=index_month
-result=pd.concat([revenue,cost],axis=1)
+#물가 예상
+price_index=pr.index_predict(params["startdate"],params["year"],params["price_index"]);price_index.name="price_index";
+solar_index=pr.index_predict(params["startdate"],params["year"],params["solar_index"]);solar_index.name="solar_index";
 
+#수입예상 및 전체적인 지표구성
+revenue=pr.predict(params["scene"],params["startdate"],params["year"])
+revenue["rec_price"]=100;
+revenue["days"]=revenue.index.day
 start=pd.to_datetime(params["startdate"], format='%Y-%m-%d', errors='ignore')#초기 기간 설정
 startday=start.date().timetuple()
+revenue.days[0]=revenue.days[0]-startday.tm_mday
+revenue.days[revenue.shape[0]-1]=startday.tm_mday
 
-result.days[0]=result.days[0]-startday.tm_mday
-result.days[result.shape[0]-1]=startday.tm_mday
-result["date"]=index_month
-result["smp_revenue"]=result["smp_revenue"].astype(int)
-result["rec_revenue"]=result["rec_revenue"].astype(int)
+revenue=pd.concat([revenue,price_index,solar_index],axis=1)
+revenue["generation"]=revenue['days']*params['size']*params['averagetime']*revenue["solar_index"]
+revenue['smp_revenue']=revenue['smp_price']*revenue['generation']
+revenue['rec_revenue']=revenue['rec_price']*revenue['generation']*params['weight']
+revenue["smp_revenue"]=revenue["smp_revenue"].astype(int); revenue["rec_revenue"]=revenue["rec_revenue"].astype(int)
 
-#가격 만들기
-price_forecast=result.loc[:,['smp_price','rec_price']]
-price_forecast.index=index_month
-price_forecast['date']=index_month
+#지출예상
+OM_cost=cost.OM_calc(params["startdate"],params["size"],params["year"])
+monitoring_cost=cost.monitoring_cost_calc(params["startdate"],params["size"],params["year"])
+elec_safety_cost=cost.elec_safety_calc(params["startdate"],params["size"],params["year"])
+office_cost=cost.office_cost_calc(params["startdate"],params["size"],params["year"])
+other_cost=cost.other_cost_calc(params["startdate"],params["size"],params["year"])
+total_cost=pd.concat([OM_cost,monitoring_cost,elec_safety_cost,office_cost,other_cost],axis=1)
+cost=pd.concat([total_cost,price_index],axis=1)
 
-payback_schedule=fr.date_calc(params["startdate"],params["debt"],params["year"],params["repayment_term"])
-finance_schedule=fr.CAM_calc(payback_schedule,params['debt'],params['interest'],params["repayment_term"],params["year"],params["duration"])
-finance_schedule=finance_schedule.drop("days",axis=1)
-result=pd.concat([result,finance_schedule],axis=1)
+cost["OM_cost"]=cost["OM_cost"]*cost["price_index"]
+cost["monitoring_cost"]=cost["monitoring_cost"]*cost["price_index"]
+cost["elec_safety_cost"]=cost["elec_safety_cost"]*cost["price_index"]
+cost["office_cost"]=cost["office_cost"]*cost["price_index"]
+cost["other_cost"]=cost["other_cost"]*cost["price_index"]
+cost["depreciation"]=params["construction"]/(params["duration"]*12)
 
-#월,분기,년별로 만들기
-result_sample=result.drop(['rec_price','smp_price','remained_debt'],axis=1)
+#금융구조 예상
+if(params["repayment_method"]=="cam"):
+    amortization=fr.CAM_calc(params["finance_startdate"],params["duration"],params["principal"],params["interest"],params["repayment_term"],params["interest_repayment_term"])
+elif(params["repayment_method"]=="cpm"):
+    amortization=fr.CPM_calc(params["finance_startdate"],params["duration"],params["principal"],params["interest"],params["repayment_term"])
+amortization.index=amortization.index.shift(n=1,freq="m")
+result=pd.concat([revenue,cost,amortization],axis=1)
 
-#월간 표
-result_month=result_sample
-result_month.index=index_month
-result_month['date']=index_month
+#전체적인 구조 도출
+result=result.loc[:,['smp_revenue','rec_revenue','OM_cost','monitoring_cost','elec_safety_cost','office_cost','other_cost','depreciation','interest','principal']]
+result=result.fillna(0)
+def money_trim(array):
+    result=round(array,-1)
+    result=result.astype(int)
+    return result
+result=result.apply(money_trim)
+result
 
-#분기 표
-def toQuarter(data):
-    quarter= []
-    for i in range(0,data.index.size):
-        quarter.append(str(data.index.year[i])+'-'+str(data.index.quarter[i]))
-    return quarter
-result_quarter=result_sample
-result_quarter.index=index_month
-result_quarter.index=toQuarter(result_quarter)
+#쿼터로 만들기
+result_quarter=result.copy()
+result_quarter.index=result_quarter.index.to_period("q")
 result_quarter=result_quarter.groupby(result_quarter.index).sum()
-result_quarter.index=index_quarter
-result_quarter['date']=index_quarter
+result_quarter.index=pd.date_range(start=result_quarter.index.to_timestamp()[0],periods=result_quarter.shape[0],freq="q")
 
-#연간 가격
-result_year=result_sample
-result_year.index=index_month
-result_year.index=result_year.index.year
+#연단위 로 만들기
+result_year=result.copy()
+result_year.index=result_year.index.to_period("y")
 result_year=result_year.groupby(result_year.index).sum()
-result_year.index=index_year
-result_year['date']=index_year
+result_year.index=pd.date_range(start=result_year.index.to_timestamp()[0],periods=result_year.shape[0],freq="y")
+
+#손익계산서 만들기
+def makeIncomeState(income_state):
+    income_state["gross_income"]=income_state["smp_revenue"]+income_state["rec_revenue"]
+    income_state["operating_expense"]=income_state["monitoring_cost"]+income_state["elec_safety_cost"]+income_state["office_cost"]+income_state["other_cost"]+income_state["depreciation"]
+    income_state["operating_income"]=income_state["gross_income"]-income_state["operating_expense"]
+    income_state["pretax_net_income"]=income_state["operating_income"]-income_state["interest"]
+    def tax(x):
+        if x>0:
+            return x*0.1
+        else:
+            return 0
+    income_state["tax"]=income_state.pretax_net_income.apply(tax)
+    income_state["net_income"]=income_state["pretax_net_income"]-income_state["tax"]
+    income_state=income_state.loc[:,["smp_revenue","rec_revenue","gross_income","monitoring_cost","elec_safety_cost","office_cost","other_cost","depreciation","operating_expense","operating_income","interest","pretax_net_income","tax","net_income"]]
+    return income_state
+
+income_month=makeIncomeState(result.copy())
+income_quarter=makeIncomeState(result_quarter.copy())
+income_year=makeIncomeState(result_year.copy())
 
 #현금흐름표 만들기
-cash_start=params["investment"]-params["construction"]-params["othercost"]
-def makeCashFlow(data,start):
-    data["start_cash"]=0;data["end_cash"]=0;
-    length=data.days.count()-1;
-    data.start_cash.iloc[0]=start
-    for i in range(0,length-1):
-        data.end_cash.iloc[i]=data.start_cash.iloc[i]+data.smp_revenue.iloc[i]+data.rec_revenue.iloc[i]-data.total_cost.iloc[i];
-        data.start_cash.iloc[i+1]=data.end_cash.iloc[i];
-        data.end_cash.iloc[length]=data.start_cash.iloc[length]+data.smp_revenue.iloc[length]+data.rec_revenue.iloc[length]-data.total_cost.iloc[length];
-    return data
+def makeCashFlow(cash_flow,tax,construction,principal,equity):
+    cash_flow=pd.concat([cash_flow,tax],axis=1,join='inner')
+    cash_flow=cash_flow.fillna(0)
+    cash_flow["operation_cash_in"]=cash_flow["smp_revenue"]+cash_flow["rec_revenue"];
+    cash_flow["operation_cash_out"]=cash_flow["monitoring_cost"]+cash_flow["elec_safety_cost"]+cash_flow["office_cost"]+cash_flow["other_cost"]+cash_flow["interest"]+cash_flow["tax"]
+    cash_flow["operation_cash"]=cash_flow["operation_cash_in"]-cash_flow["operation_cash_out"]
+    cash_flow["finance_cash_in"]=0
+    cash_flow["acqusition_asset"]=0;cash_flow["acqusition_asset"][0]=construction
+    cash_flow["finance_cash_out"]=cash_flow["acqusition_asset"]
+    cash_flow["finance_cash"]=cash_flow["finance_cash_in"]-cash_flow["finance_cash_out"]
+    cash_flow["debt"]=0; cash_flow["debt"][0]=principal
+    cash_flow["equity"]=0; cash_flow["equity"][0]=equity
+    cash_flow["investment_cash_in"]=cash_flow["debt"]+cash_flow["equity"]
+    cash_flow["investment_cash_out"]=cash_flow["principal"]
+    cash_flow["investment_cash"]=cash_flow["investment_cash_in"]-cash_flow["investment_cash_out"]
+    cash_flow["start_cash"]=0;cash_flow["end_cash"]=0;
+    cash_flow["cash_change"]=cash_flow["operation_cash"]+cash_flow["finance_cash"]+cash_flow["investment_cash"]
+    for i in range(0,cash_flow.shape[0]-1):
+        cash_flow["end_cash"][i]=cash_flow["start_cash"][i]+cash_flow["cash_change"][i];
+        cash_flow["start_cash"][i+1]=cash_flow["end_cash"][i];
+    cash_flow["end_cash"][cash_flow.shape[0]-1]=cash_flow["start_cash"][cash_flow.shape[0]-1]+cash_flow["cash_change"][cash_flow.shape[0]-1]
+    cash_flow=cash_flow.loc[:,['operation_cash','smp_revenue','rec_revenue','operation_cash_in','OM_cost','monitoring_cost','elec_safety_cost', 'office_cost', 'other_cost', 'depreciation',
+       'interest', 'principal', 'tax', 'operation_cash_out','finance_cash','finance_cash_in',
+       'acqusition_asset','finance_cash_out','debt','equity','investment_cash','investment_cash_in','principal','investment_cash_out','cash_change','start_cash','end_cash']]
+    return cash_flow
 
-result_month_cash=makeCashFlow(result_month,cash_start)
-result_quarter_cash=makeCashFlow(result_quarter,cash_start)
-result_year_cash=makeCashFlow(result_year,cash_start)
+cashflow_month=makeCashFlow(result.copy(),income_year['tax'],params['construction'],params['principal'],params['equity'])
+cashflow_quarter=makeCashFlow(result_quarter.copy(),income_year['tax'],params['construction'],params['principal'],params['equity'])
+cashflow_year=makeCashFlow(result_year.copy(),income_year['tax'],params['construction'],params['principal'],params['equity'])
 
 final_result={
-    "price_forecast":json.loads(price_forecast.to_json(orient='records',date_format="iso")),
-    "result_month_cash":json.loads(result_month_cash.to_json(orient='records',date_format="iso")),
-    "result_quarter_cash":json.loads(result_quarter_cash.to_json(orient='records',date_format="iso")),
-    "result_year_cash":json.loads(result_year_cash.to_json(orient='records',date_format="iso"))
+    "income_month":json.loads(income_month.to_json(orient='records',date_format="iso")),
+    "income_quarter":json.loads(income_quarter.to_json(orient='records',date_format="iso")),
+    "income_year":json.loads(income_year.to_json(orient='records',date_format="iso")),
+    "cashflow_month":json.loads(cashflow_month.to_json(orient='records',date_format="iso")),
+    "cashflow_quarter":json.loads(cashflow_quarter.to_json(orient='records',date_format="iso")),
+    "cashflow_year":json.loads(cashflow_year.to_json(orient='records',date_format="iso")),
 }
 
 if __name__ == '__main__':
