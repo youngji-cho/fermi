@@ -54,21 +54,27 @@ def CAM_calc(startdate,duration,principal,interest,term,interest_term):
 
 #원리금 균등상환(Constant Payment Mortgage)
 def CPM_calc(startdate,duration,principal,interest,term):
-    start=datetime.strptime(params['startdate'],'%Y-%m-%d')
+    start=datetime.strptime(startdate,'%Y-%m-%d')
     if(term=="y"):
         amortization=pd.DataFrame(index=pd.date_range(start,periods=duration+1,freq="Y").shift(n=start.day,freq="D"))
-        amortization["payback"]=0
-        amortization.payback.iloc[1:amortization.shape[0]]=-np.pmt(interest, duration, principal)
+        amortization["payback"]=0;amortization["interest"]=0;amortization["principal"]=0
+        amortization.principal.iloc[1:amortization.shape[0]]=-np.ppmt(params["interest"], amortization.principal.iloc[1:amortization.shape[0]],params["duration"],params["principal"])
+        amortization.interest.iloc[1:amortization.shape[0]]=-np.ipmt(params["interest"], amortization.interest.iloc[1:amortization.shape[0]],params["duration"],params["principal"])
+        amortization.payback.iloc[1:amortization.shape[0]]=-np.pmt(interest, duration,principal)
         amortization.payback=amortization.apply(money_trim, axis=1)
     if(term=="q"):
         amortization=pd.DataFrame(index=pd.date_range(start,periods=duration*4+1,freq="q").shift(n=start.day,freq="D"))
-        amortization["payback"]=0
-        amortization.payback.iloc[1:amortization.shape[0]]=-np.pmt(interest/4, duration*4, principal)
+        amortization["payback"]=0;amortization["interest"]=0;amortization["principal"]=0
+        amortization.principal.iloc[1:amortization.shape[0]]=-np.ppmt(params["interest"]/4, amortization.principal.iloc[1:amortization.shape[0]],params["duration"]*4,params["principal"])
+        amortization.interest.iloc[1:amortization.shape[0]]=-np.ipmt(params["interest"]/4, amortization.interest.iloc[1:amortization.shape[0]],params["duration"]*4,params["principal"])
+        amortization.payback.iloc[1:amortization.shape[0]]=-np.pmt(interest/4, duration*4,principal)
         amortization.payback=amortization.apply(money_trim, axis=1)
     if(term=="m"):
         amortization=pd.DataFrame(index=pd.date_range(start,periods=duration*12+1,freq="M").shift(n=start.day,freq="D"))
-        amortization["payback"]=0
-        amortization.payback.iloc[1:amortization.shape[0]]=-np.pmt(interest/12, duration*12, principal)
+        amortization["payback"]=0;amortization["interest"]=0;amortization["principal"]=0
+        amortization.principal.iloc[1:amortization.shape[0]]=-np.ppmt(params["interest"]/12, amortization.principal.iloc[1:amortization.shape[0]],params["duration"]*12,params["principal"])
+        amortization.interest.iloc[1:amortization.shape[0]]=-np.ipmt(params["interest"]/12, amortization.interest.iloc[1:amortization.shape[0]],params["duration"]*12,params["principal"])
+        amortization.payback.iloc[1:amortization.shape[0]]=-np.pmt(interest/12, duration*12,principal)
         amortization.payback=amortization.apply(money_trim, axis=1)
     amortization=amortization.apply(money_trim,axis=0)
     return amortization
