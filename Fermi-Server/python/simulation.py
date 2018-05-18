@@ -142,7 +142,7 @@ def makeCashFlow(cash_flow,tax,construction,principal,equity):
         cash_flow["start_cash"][i+1]=cash_flow["end_cash"][i];
     cash_flow["end_cash"][cash_flow.shape[0]-1]=cash_flow["start_cash"][cash_flow.shape[0]-1]+cash_flow["cash_change"][cash_flow.shape[0]-1]
     cash_flow=cash_flow.loc[:,['operation_cash','smp_revenue','rec_revenue','operation_cash_in','OM_cost','monitoring_cost','elec_safety_cost', 'office_cost', 'other_cost', 'depreciation',
-       'interest', 'principal', 'tax', 'operation_cash_out','finance_cash','finance_cash_in',
+       'interest','tax', 'operation_cash_out','finance_cash','finance_cash_in',
        'acqusition_asset','finance_cash_out','debt','equity','investment_cash','investment_cash_in','principal','investment_cash_out','cash_change','start_cash','end_cash']]
     return cash_flow
 
