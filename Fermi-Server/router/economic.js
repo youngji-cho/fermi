@@ -21,28 +21,32 @@ if(process.env.NODE_ENV=='production'){
 
 router.post('/result',(req,res)=>{
   let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
-  console.log(`Post Data is ${req.body.repayment_term}`);
+  console.log(`Post Data is ${req.body.equity}`);
   let request={
-    'type':req.body.type,
     //첫번째
-    'startdate':req.body.startdate,
     'year':req.body.year,
     'size':req.body.size,
     'weight':req.body.weight,
-    'averagetime':req.body.averagetime,
+    'average_time':req.body.average_time,
+    'startdate':req.body.startdate,
     'plant':req.body.plant,
     //두번째
     'construction':req.body.construction,
     'othercost':req.body.othercost,
     'investment':req.body.investment,
+    'equity':req.body.equity,
     'debt':req.body.debt,
     'interest':req.body.interest,
     'unredeemed':req.body.unredeemed,
     'duration':req.body.duration,
     'repayment_method':req.body.repayment_method,
     'repayment_term':req.body.repayment_term,
+    'interest_repayment_term':req.body.interest_repayment_term,
+    'finance_startdate':req.body.finance_startdate,
     //세번째
-    'scene':req.body.scene
+    'scene':req.body.scene,
+    'price_index':req.body.price_index,
+    'solar_index':req.body.solar_index
   }
   let params = {
     TableName:db_name,

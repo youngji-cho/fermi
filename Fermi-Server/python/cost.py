@@ -17,9 +17,9 @@ def OM_calc(startdate,size,year):
     start=datetime.strptime(startdate,'%Y-%m-%d')
     index=pd.date_range(start=start,periods=year*12+1,freq="m")
     if(size<=100):
-        cost=12500*size
+        cost=12500*size/12
     elif(size>100):
-        cost=10000*size
+        cost=10000*size/12
     else:
         table="error"
     table=pd.Series(index=index,data=cost,name="OM_cost")
@@ -62,9 +62,11 @@ def office_cost_calc(startdate,size,year):
     start=datetime.strptime(startdate,'%Y-%m-%d')
     index=pd.date_range(start=start,periods=year*12+1,freq="m")
     if size<100:
-        cost=12500000/12
+        cost=600000/12
+    elif 100<=size<10000:
+        cost=1200000/12
     elif 10000<=size<15000:
-        cost=42000000/12
+        cost=2400000/12
     table=pd.Series(index=index,data=cost,name="office_cost")
     return table
 
