@@ -10,13 +10,19 @@ export class SimulationOutput extends React.Component{
     this.state={
       data:[],
       loading:true,
-      income_year:true,
-      income_quarter:true,
-      income_month:true,
-      cashflow_year:true,
-      cashflow_quarter:true,
-      cashflow_month:true
+      income_year:false,
+      income_quarter:false,
+      income_month:false,
+      cashflow_year:false,
+      cashflow_quarter:false,
+      cashflow_month:false
     };
+    this.handleIncomeYearChange=this.handleIncomeYearChange.bind(this)
+    this.handleIncomeQuarterChange=this.handleIncomeQuarterChange.bind(this)
+    this.handleIncomeMonthChange=this.handleIncomeMonthChange.bind(this)
+    this.handleCashFlowYearChange=this.handleCashFlowYearChange.bind(this)
+    this.handleCashFlowQuarterChange=this.handleCashFlowQuarterChange.bind(this)
+    this.handleCashFlowMonthChange=this.handleCashFlowMonthChange.bind(this)
   }
   componentDidMount(){
     fetch(`/economic/result/1526797932377`).then(
@@ -33,9 +39,37 @@ export class SimulationOutput extends React.Component{
         console.log(this.state)
       })
   }
+  handleIncomeYearChange(){
+    const change = this.state.income_year == true ? false : true;
+    this.setState({ income_year: change });
+  }
+  handleIncomeQuarterChange(){
+    const change = this.state.income_quarter == true ? false : true;
+    this.setState({ income_quarter: change });
+  }
+  handleIncomeMonthChange(){
+    const change = this.state.income_month == true ? false : true;
+    this.setState({ income_month: change });
+  }
+  handleCashFlowYearChange(){
+    const change = this.state.cashflow_year == true ? false : true;
+    this.setState({cashflow_year: change});
+  }
+  handleCashFlowQuarterChange(){
+    const change = this.state.cashflow_quarter == true ? false : true;
+    this.setState({cashflow_quarter: change});
+  }
+  handleCashFlowMonthChange(){
+    const change = this.state.cashflow_month == true ? false : true;
+    this.setState({cashflow_month: change});
+  }
   render(){
     console.log(this.state);
     if(this.state.loading) {
+      var result_table= (
+      <Board name="시뮬레이션 결과">
+        <h1>loading...</h1>
+      </Board>)
     } else {
       var income_year=this.state.data.Item.response.income_year
       var income_year_column=income_year.map((d,i)=>
@@ -966,17 +1000,46 @@ export class SimulationOutput extends React.Component{
           </tbody>
           </table>
         )
+
+      var result_table= (
+      <Board name="시뮬레이션 결과">
+        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.income_year} onChange={this.handleIncomeYearChange}/>
+          <span className="mdl-checkbox__label">연간 손익계산서</span>
+        </label>
+        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.income_quarter} onChange={this.handleIncomeQuarterChange}/>
+          <span className="mdl-checkbox__label">분기별 손익계산서</span>
+        </label>
+        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.income_month} onChange={this.handleIncomeMonthChange}/>
+          <span className="mdl-checkbox__label">월별 손익계산서</span>
+        </label>
+        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.cashflow_year} onChange={this.handleCashFlowYearChange} />
+          <span className="mdl-checkbox__label">연간예상현금흐름표</span>
+        </label>
+        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.cashflow_quarter} onChange={this.handleCashFlowQuarterChange}/>
+          <span className="mdl-checkbox__label">분기별예상현금흐름표</span>
+        </label>
+        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.cashflow_month}
+            onChange={this.handleCashFlowMonthChange}/>
+          <span className="mdl-checkbox__label">월별예상현금흐름표</span>
+        </label>
+      </Board>
+      )
     }
     return(
       <div className="overflow">
-        <Board name="시뮬레이션 결과">
-        </Board>
+        {result_table}
         {(this.state.income_year)?<Board name="연 단위 손익계산서">{income_year_table}</Board>:<div></div>}
         {(this.state.income_quarter)?<Board name="분기 단위 손익계산서">{income_quarter_table}</Board>:<div></div>}
-        {(this.state.income_month)?<Board name="월 단위 손익계산서">{income_year_table}</Board>:<div></div>}
-        {(this.state.cashf_year)?<Board name="연 단위 손익계산서">{income_year_table}</Board>:<div></div>}
-        {(this.state.income_quarter)?<Board name="분기 단위 손익계산서">{income_year_table}</Board>:<div></div>}
-        {(this.state.income_month)?<Board name="월 단위 손익계산서">{income_year_table}</Board>:<div></div>}
+        {(this.state.income_month)?<Board name="월 단위 손익계산서">{income_month_table}</Board>:<div></div>}
+        {(this.state.cashflow_year)?<Board name="연 단위 현금흐름표">{cashflow_year_table}</Board>:<div></div>}
+        {(this.state.cashflow_quarter)?<Board name="분기 단위 현금흐름표">{cashflow_quarter_table}</Board>:<div></div>}
+        {(this.state.cashflow_month)?<Board name="월 단위 현금흐름표">{cashflow_month_table}</Board>:<div></div>}
       </div>
     )
   }
