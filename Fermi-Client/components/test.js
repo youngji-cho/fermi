@@ -10,15 +10,13 @@ export class SimulationOutput extends React.Component{
     this.state={
       data:[],
       loading:true,
-      price_forecast:true,
-      yearly_cash:false,
-      quarterly_cash:false,
-      monthly_cash:false
+      income_year:true,
+      income_quarter:true,
+      income_month:true,
+      cashflow_year:true,
+      cashflow_quarter:true,
+      cashflow_month:true
     };
-    this.handlePriceForecastChange=this.handlePriceForecastChange.bind(this);
-    this.handleYearlyCashChange=this.handleYearlyCashChange.bind(this);
-    this.handleQuarterlyCashChange=this.handleQuarterlyCashChange.bind(this);
-    this.handleMonthlyCashChange=this.handleMonthlyCashChange.bind(this);
   }
   componentDidMount(){
     fetch(`/economic/result/1526797932377`).then(
@@ -35,286 +33,951 @@ export class SimulationOutput extends React.Component{
         console.log(this.state)
       })
   }
-  handlePriceForecastChange(){
-    const change = this.state.price_forecast == true ? false : true;
-    this.setState({ price_forecast: change });
-  }
-  handleYearlyCashChange(){
-    const change = this.state.yearly_cash == true ? false : true;
-    this.setState({ yearly_cash: change });
-  }
-  handleQuarterlyCashChange(){
-    const change = this.state.quarterly_cash == true ? false : true;
-    this.setState({quarterly_cash: change });
-  }
-  handleMonthlyCashChange(){
-    const change = this.state.monthly_cash == true ? false : true;
-    this.setState({monthly_cash: change });
-  }
   render(){
-    console.log(this.state)
-    let price_table="";let column=""; let smp_price="";let rec_price="";let smp_revenue="";let rec_revenue="";let days="";let total_cost="";
-
-    let yearly_cash_table="";let yearly_column="";let yearly_smp_revenue="";let yearly_rec_revenue="";let yearly_total_cost="";let yearly_start_cash="";let yearly_end_cash="";
-
-    let quarterly_cash_table="";let quarterly_column="";let quarterly_smp_revenue="";let quarterly_rec_revenue="";let quarterly_total_cost="";let quarterly_start_cash="";let quarterly_end_cash="";
-
-    let monthly_cash_table=""; let monthly_column="";let monthly_smp_revenue="";let monthly_rec_revenue="";let monthly_total_cost="";let monthly_start_cash="";let monthly_end_cash="";
-
+    console.log(this.state);
     if(this.state.loading) {
-      price_table=(<h1>Loading...</h1>)
     } else {
-      let price_forecast= this.state.data.Item.response.price_forecast;
-      price_forecast.map((d,i)=>{
-        price_forecast[i].time=datechangeMonth(d.date.start_time)
-       }
+      var income_year=this.state.data.Item.response.income_year
+      var income_year_column=income_year.map((d,i)=>
+        <th key={`yearly_date(${i})`}>{datechangeYear(d.date)}</th>
       )
-      column=price_forecast.map((d,i)=>
-        <th key={`date(${i})`}>{d.time}</th>
+      var income_year_smp_revenue=income_year.map((d,i)=>
+        <th key={`smp_revenue(${i})`}>{d.smp_revenue}</th>
       )
-      smp_price= price_forecast.map((d,i)=>
-        <td key={`smp_price(${i})`}>{d.smp_price}</td>
+      var income_year_rec_revenue=income_year.map((d,i)=>
+        <th key={`rec_revenue(${i})`}>{d.rec_revenue}</th>
       )
-      rec_price= price_forecast.map((d,i)=>
-        <td key={`rec_price(${i})`}>{d.smp_price}</td>
+      var income_year_gross_income=income_year.map((d,i)=>
+        <th key={`gross_income(${i})`}>{d.gross_income}</th>
       )
-      price_table=(
+      var income_year_OM_cost=income_year.map((d,i)=>
+        <th key={`OM_cost(${i})`}>{d.OM_cost}</th>
+      )
+      var income_year_monitoring_cost=income_year.map((d,i)=>
+        <th key={`monitoring_cost(${i})`}>{d.monitoring_cost}</th>
+      )
+      var income_year_elec_safety_cost=income_year.map((d,i)=>
+        <th key={`elec_safety_cost(${i})`}>{d.elec_safety_cost}</th>
+      )
+      var income_year_office_cost=income_year.map((d,i)=>
+        <th key={`office_cost(${i})`}>{d.office_cost}</th>
+      )
+      var income_year_other_cost=income_year.map((d,i)=>
+        <th key={`other_cost(${i})`}>{d.other_cost}</th>
+      )
+      var income_year_depreciation=income_year.map((d,i)=>
+        <th key={`depreciation(${i})`}>{d.depreciation}</th>
+      )
+      var income_year_operating_expense=income_year.map((d,i)=>
+        <th key={`operating_expense(${i})`}>{d.operating_expense}</th>
+      )
+      var income_year_operating_income=income_year.map((d,i)=>
+        <th key={`operating_income(${i})`}>{d.operating_income}</th>
+      )
+      var income_year_interest=income_year.map((d,i)=>
+        <th key={`interest(${i})`}>{d.interest}</th>
+      )
+      var income_year_pretax_net_income=income_year.map((d,i)=>
+        <th key={`pretax_net_income(${i})`}>{d.pretax_net_income}</th>
+      )
+      var income_year_tax=income_year.map((d,i)=>
+        <th key={`tax(${i})`}>{d.tax}</th>
+      )
+      var income_year_net_income=income_year.map((d,i)=>
+        <th key={`net_income(${i})`}>{d.net_income}</th>
+      )
+      var income_year_table=(
         <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
         <thead>
           <tr>
             <th>기간</th>
-            {column}
-          </tr>
+             {income_year_column}
+            </tr>
         </thead>
         <tbody>
           <tr>
-            <td>예상 SMP 가격</td>
-            {smp_price}
+            <td>smp 수입</td>
+             {income_year_smp_revenue}
           </tr>
           <tr>
-            <td>예상 REC 가격</td>
-            {rec_price}
+            <td>rec 수입</td>
+             {income_year_rec_revenue}
+          </tr>
+          <tr>
+            <td><strong>매출액</strong></td>
+             {income_year_gross_income}
+          </tr>
+          <tr>
+            <td>O&M 비용</td>
+             {income_year_OM_cost}
+          </tr>
+          <tr>
+            <td>모니터링 비용</td>
+             {income_year_monitoring_cost}
+          </tr>
+          <tr>
+            <td>전기안전관리자 선임비용</td>
+             {income_year_monitoring_cost}
+          </tr>
+          <tr>
+            <td>사무관리비용</td>
+             {income_year_office_cost}
+          </tr>
+          <tr>
+            <td>기타비용</td>
+             {income_year_other_cost}
+          </tr>
+          <tr>
+            <td>감가상각비용</td>
+             {income_year_depreciation}
+          </tr>
+          <tr>
+            <td><strong>영업비용</strong></td>
+             {income_year_operating_expense}
+          </tr>
+          <tr>
+            <td><strong>영업이익</strong></td>
+             {income_year_operating_income}
+          </tr>
+          <tr>
+            <td>이자비용</td>
+             {income_year_interest}
+          </tr>
+          <tr>
+            <td><strong>법인세 차감 전 순이익</strong></td>
+             {income_year_pretax_net_income}
+          </tr>
+          <tr>
+            <td>법인세</td>
+             {income_year_tax}
+          </tr>
+          <tr>
+            <td><strong>당기순이익</strong></td>
+             {income_year_net_income}
           </tr>
         </tbody>
         </table>
       )
-      let cashflow_year=this.state.data.Item.response.cashflow_year
-      cashflow_year_column=cashflow_year.map((d,i)=>
-        <th key={`yearly_date(${i})`}>{d.date}</th>
+
+      var income_quarter=this.state.data.Item.response.income_quarter
+      var income_quarter_column=income_quarter.map((d,i)=>
+        <th key={`quarterly_date(${i})`}>{datechangeQuarter(d.date)}</th>
       )
-      cashflow_year_operation_cash=cashflow_year.map((d,i)=>
+      var income_quarter_smp_revenue=income_quarter.map((d,i)=>
+        <th key={`income_quarter_smp_revenue(${i})`}>{d.smp_revenue}</th>
+      )
+      var income_quarter_rec_revenue=income_quarter.map((d,i)=>
+        <th key={`income_quarter_rec_revenue(${i})`}>{d.rec_revenue}</th>
+      )
+      var income_quarter_gross_income=income_quarter.map((d,i)=>
+        <th key={`income_quarter_gross_income(${i})`}>{d.gross_income}</th>
+      )
+      var income_quarter_OM_cost=income_quarter.map((d,i)=>
+        <th key={`income_quarterOM_cost(${i})`}>{d.OM_cost}</th>
+      )
+      var income_quarter_monitoring_cost=income_quarter.map((d,i)=>
+        <th key={`income_quarter_monitoring_cost(${i})`}>{d.monitoring_cost}</th>
+      )
+      var income_quarter_elec_safety_cost=income_quarter.map((d,i)=>
+        <th key={`income_quarter_elec_safety_cost(${i})`}>{d.elec_safety_cost}</th>
+      )
+      var income_quarter_office_cost=income_quarter.map((d,i)=>
+        <th key={`income_quarter_office_cost(${i})`}>{d.office_cost}</th>
+      )
+      var income_quarter_other_cost=income_quarter.map((d,i)=>
+        <th key={`income_quarter_other_cost(${i})`}>{d.other_cost}</th>
+      )
+      var income_quarter_depreciation=income_quarter.map((d,i)=>
+        <th key={`income_quarter_depreciation(${i})`}>{d.depreciation}</th>
+      )
+      var income_quarter_operating_expense=income_quarter.map((d,i)=>
+        <th key={`income_quarter_operating_expense(${i})`}>{d.operating_expense}</th>
+      )
+      var income_quarter_operating_income=income_quarter.map((d,i)=>
+        <th key={`income_quarter_operating_income(${i})`}>{d.operating_income}</th>
+      )
+      var income_quarter_interest=income_quarter.map((d,i)=>
+        <th key={`income_quarter_interest(${i})`}>{d.interest}</th>
+      )
+      var income_quarter_pretax_net_income=income_quarter.map((d,i)=>
+        <th key={`income_quarter_pretax_net_income(${i})`}>{d.pretax_net_income}</th>
+      )
+      var income_quarter_tax=income_quarter.map((d,i)=>
+        <th key={`income_quarter_tax(${i})`}>{d.tax}</th>
+      )
+      var income_quarter_net_income=income_quarter.map((d,i)=>
+        <th key={`income_quarter_net_income(${i})`}>{d.net_income}</th>
+      )
+      var income_quarter_table=(
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+        <thead>
+          <tr>
+            <th>기간</th>
+             {income_quarter_column}
+            </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>smp 수입</td>
+             {income_quarter_smp_revenue}
+          </tr>
+          <tr>
+            <td>rec 수입</td>
+             {income_quarter_rec_revenue}
+          </tr>
+          <tr>
+            <td><strong>매출액</strong></td>
+             {income_quarter_gross_income}
+          </tr>
+          <tr>
+            <td>O&M 비용</td>
+             {income_quarter_OM_cost}
+          </tr>
+          <tr>
+            <td>모니터링 비용</td>
+             {income_quarter_monitoring_cost}
+          </tr>
+          <tr>
+            <td>전기안전관리자 선임비용</td>
+             {income_quarter_monitoring_cost}
+          </tr>
+          <tr>
+            <td>사무관리비용</td>
+             {income_quarter_office_cost}
+          </tr>
+          <tr>
+            <td>기타비용</td>
+             {income_quarter_other_cost}
+          </tr>
+          <tr>
+            <td>감가상각비용</td>
+             {income_quarter_depreciation}
+          </tr>
+          <tr>
+            <td><strong>영업비용</strong></td>
+             {income_quarter_operating_expense}
+          </tr>
+          <tr>
+            <td><strong>영업이익</strong></td>
+             {income_quarter_operating_income}
+          </tr>
+          <tr>
+            <td>이자비용</td>
+             {income_quarter_interest}
+          </tr>
+          <tr>
+            <td><strong>법인세 차감 전 순이익</strong></td>
+             {income_quarter_pretax_net_income}
+          </tr>
+          <tr>
+            <td>법인세</td>
+             {income_quarter_tax}
+          </tr>
+          <tr>
+            <td><strong>당기순이익</strong></td>
+             {income_quarter_net_income}
+          </tr>
+        </tbody>
+        </table>
+      )
+
+      var income_month=this.state.data.Item.response.income_month
+      var income_month_column=income_month.map((d,i)=>
+        <th key={`monthly_date(${i})`}>{datechangeMonth(d.date)}</th>
+      )
+      var income_month_smp_revenue=income_month.map((d,i)=>
+        <th key={`income_month_smp_revenue(${i})`}>{d.smp_revenue}</th>
+      )
+      var income_month_rec_revenue=income_month.map((d,i)=>
+        <th key={`income_month_rec_revenue(${i})`}>{d.rec_revenue}</th>
+      )
+      var income_month_gross_income=income_month.map((d,i)=>
+        <th key={`income_month_gross_income(${i})`}>{d.gross_income}</th>
+      )
+      var income_month_OM_cost=income_month.map((d,i)=>
+        <th key={`income_month_OM_cost(${i})`}>{d.OM_cost}</th>
+      )
+      var income_month_monitoring_cost=income_month.map((d,i)=>
+        <th key={`income_month_monitoring_cost(${i})`}>{d.monitoring_cost}</th>
+      )
+      var income_month_elec_safety_cost=income_month.map((d,i)=>
+        <th key={`income_month_elec_safety_cost(${i})`}>{d.elec_safety_cost}</th>
+      )
+      var income_month_office_cost=income_month.map((d,i)=>
+        <th key={`income_month_office_cost(${i})`}>{d.office_cost}</th>
+      )
+      var income_month_other_cost=income_month.map((d,i)=>
+        <th key={`income_month_other_cost(${i})`}>{d.other_cost}</th>
+      )
+      var income_month_depreciation=income_month.map((d,i)=>
+        <th key={`income_month_depreciation(${i})`}>{d.depreciation}</th>
+      )
+      var income_month_operating_expense=income_month.map((d,i)=>
+        <th key={`income_month_operating_expense(${i})`}>{d.operating_expense}</th>
+      )
+      var income_month_operating_income=income_month.map((d,i)=>
+        <th key={`income_month_operating_income(${i})`}>{d.operating_income}</th>
+      )
+      var income_month_interest=income_month.map((d,i)=>
+        <th key={`income_month_interest(${i})`}>{d.interest}</th>
+      )
+      var income_month_pretax_net_income=income_month.map((d,i)=>
+        <th key={`income_month_pretax_net_income(${i})`}>{d.pretax_net_income}</th>
+      )
+      var income_month_tax=income_month.map((d,i)=>
+        <th key={`income_month_tax(${i})`}>{d.tax}</th>
+      )
+      var income_month_net_income=income_month.map((d,i)=>
+        <th key={`income_month_net_income(${i})`}>{d.net_income}</th>
+      )
+      var income_month_table=(
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+        <thead>
+          <tr>
+            <th>기간</th>
+             {income_month_column}
+            </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>smp 수입</td>
+             {income_month_smp_revenue}
+          </tr>
+          <tr>
+            <td>rec 수입</td>
+             {income_month_rec_revenue}
+          </tr>
+          <tr>
+            <td><strong>매출액</strong></td>
+             {income_month_gross_income}
+          </tr>
+          <tr>
+            <td>O&M 비용</td>
+             {income_month_OM_cost}
+          </tr>
+          <tr>
+            <td>모니터링 비용</td>
+             {income_month_monitoring_cost}
+          </tr>
+          <tr>
+            <td>전기안전관리자 선임비용</td>
+             {income_month_monitoring_cost}
+          </tr>
+          <tr>
+            <td>사무관리비용</td>
+             {income_month_office_cost}
+          </tr>
+          <tr>
+            <td>기타비용</td>
+             {income_month_other_cost}
+          </tr>
+          <tr>
+            <td>감가상각비용</td>
+             {income_month_depreciation}
+          </tr>
+          <tr>
+            <td><strong>영업비용</strong></td>
+             {income_month_operating_expense}
+          </tr>
+          <tr>
+            <td><strong>영업이익</strong></td>
+             {income_month_operating_income}
+          </tr>
+          <tr>
+            <td>이자비용</td>
+             {income_month_interest}
+          </tr>
+          <tr>
+            <td><strong>법인세 차감 전 순이익</strong></td>
+             {income_month_pretax_net_income}
+          </tr>
+          <tr>
+            <td>법인세</td>
+             {income_month_tax}
+          </tr>
+          <tr>
+            <td><strong>당기순이익</strong></td>
+             {income_month_net_income}
+          </tr>
+        </tbody>
+        </table>
+      )
+
+      var cashflow_year=this.state.data.Item.response.cashflow_year
+      var cashflow_year_column=cashflow_year.map((d,i)=>
+        <th key={`yearly_date(${i})`}>{datechangeYear(d.date)}</th>
+      )
+      var cashflow_year_operation_cash=cashflow_year.map((d,i)=>
         <th key={`operation_cash(${i})`}>{d.operation_cash}</th>
       )
-      cashflow_year_smp_revenue= cashflow_year.map((d,i)=>
+      var cashflow_year_smp_revenue= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_smp_revenue(${i})`}>{d.smp_revenue}</td>
       )
-      cashflow_year_rec_revenue= cashflow_year.map((d,i)=>
+      var cashflow_year_rec_revenue= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_rec_revenue(${i})`}>{d.rec_revenue}</td>
       )
-      cashflow_year_operation_cash_in= cashflow_year.map((d,i)=>
+      var cashflow_year_operation_cash_in= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
       )
-      cashflow_year_OM_cost= cashflow_year.map((d,i)=>
+      var cashflow_year_OM_cost= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_OM_cost(${i})`}>{d.OM_cost}</td>
       )
-      cashflow_year_monitoring_cost= cashflow_year.map((d,i)=>
+      var cashflow_year_monitoring_cost= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_monitoring_cost(${i})`}>{d.monitoring_cost}</td>
       )
-      cashflow_year_elec_safety_cost= cashflow_year.map((d,i)=>
+      var cashflow_year_elec_safety_cost= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_elec_safety_cost(${i})`}>{d.elec_safety_cost}</td>
       )
-      cashflow_year_office_cost= cashflow_year.map((d,i)=>
+      var cashflow_year_office_cost= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_office_cost(${i})`}>{d.office_cost}</td>
       )
-      cashflow_year_other_cost= cashflow_year.map((d,i)=>
+      var cashflow_year_other_cost= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_other_cost(${i})`}>{d.other_cost}</td>
       )
-      cashflow_year_interest= cashflow_year.map((d,i)=>
+      var cashflow_year_interest= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_interest(${i})`}>{d.interest}</td>
       )
-      cashflow_year_tax= cashflow_year.map((d,i)=>
+      var cashflow_year_tax= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_tax(${i})`}>{d.tax}</td>
       )
+      var cashflow_year_operation_cash_out= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
+      )
+      var cashflow_year_finance_cash= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_finance_cash(${i})`}>{d.finance_cash}</td>
+      )
+      var cashflow_year_finance_cash_in= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_finance_cash_in(${i})`}>{d.finance_cash_in}</td>
+      )
+      var cashflow_year_acqusition_asset= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_acqusition_asset(${i})`}>{d.acqusition_asset}</td>
+      )
+      var cashflow_year_finance_cash_out= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_finance_cash_out(${i})`}>{d.finance_cash_out}</td>
+      )
+      var cashflow_year_investment_cash= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_investment_cash(${i})`}>{d.investment_cash}</td>
+      )
+      var cashflow_year_debt= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_debt(${i})`}>{d.debt}</td>
+      )
+      var cashflow_year_equity= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_equity(${i})`}>{d.equity}</td>
+      )
+      var cashflow_year_investment_cash_in= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
+      )
+      var cashflow_year_principal= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_principal(${i})`}>{d.principal}</td>
+      )
+      var cashflow_year_investment_cash_out= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
+      )
+      var cashflow_year_cash_change= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_cash_change(${i})`}>{d.cash_change}</td>
+      )
+      var cashflow_year_start_cash= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_start_cash(${i})`}>{d.start_cash}</td>
+      )
+      var cashflow_year_end_cash= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_end_cash(${i})`}>{d.end_cash}</td>
+      )
+      var cashflow_year_table=(
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+        <thead>
+          <tr>
+            <th>기간</th>
+             {cashflow_year_column}
+            </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>영업활동으로 인한 현금흐름</strong></td>
+             {cashflow_year_operation_cash}
+          </tr>
+          <tr>
+            <td>예상 SMP 수입</td>
+             {cashflow_year_smp_revenue}
+          </tr>
+          <tr>
+            <td>예상 REC 수입</td>
+             {cashflow_year_rec_revenue}
+          </tr>
+          <tr>
+            <td><strong>영업활동으로 인한 현금유입</strong></td>
+             {cashflow_year_operation_cash_in}
+          </tr>
+          <tr>
+            <td>O&M비용</td>
+             {cashflow_year_OM_cost}
+          </tr>
+          <tr>
+            <td>모니터링비용</td>
+             {cashflow_year_monitoring_cost}
+          </tr>
+          <tr>
+            <td>전기안전관리자 선임비용</td>
+             {cashflow_year_elec_safety_cost}
+          </tr>
+          <tr>
+            <td>사무관리비용</td>
+             {cashflow_year_office_cost}
+          </tr>
+          <tr>
+            <td>기타비용</td>
+             {cashflow_year_other_cost}
+          </tr>
+          <tr>
+            <td>추정세금</td>
+             {cashflow_year_tax}
+          </tr>
+          <tr>
+            <td><strong>영업활동으로 인한 현금유출</strong></td>
+             {cashflow_year_operation_cash_out}
+          </tr>
+          <tr>
+            <td><strong>재무활동으로 인한 현금흐름</strong></td>
+             {cashflow_year_finance_cash}
+          </tr>
+          <tr>
+            <td><strong>재무활동으로 인한 현금유입</strong></td>
+             {cashflow_year_finance_cash_in}
+          </tr>
+          <tr>
+            <td><strong>유형자산구입</strong></td>
+             {cashflow_year_acqusition_asset}
+          </tr>
+          <tr>
+            <td><strong>재무활동으로 인한 현금유출</strong></td>
+             {cashflow_year_finance_cash_out}
+          </tr>
+          <tr>
+            <td><strong>투자활동으로 인한 현금흐름</strong></td>
+             {cashflow_year_finance_cash}
+          </tr>
+          <tr>
+            <td>자본금납입</td>
+             {cashflow_year_equity}
+          </tr>
+          <tr>
+            <td>차입금</td>
+             {cashflow_year_debt}
+          </tr>
+          <tr>
+            <td><strong>투자활동으로 인한 현금유입</strong></td>
+             {cashflow_year_finance_cash_in}
+          </tr>
+          <tr>
+            <td>차입금 원금 상환</td>
+             {cashflow_year_principal}
+          </tr>
+          <tr>
+            <td><strong>투자활동으로 인한 현금유출</strong></td>
+             {cashflow_year_finance_cash_out}
+          </tr>
+          <tr>
+            <td><strong>총 현금변화</strong></td>
+             {cashflow_year_cash_change}
+          </tr>
+          <tr>
+            <td>기초현금</td>
+             {cashflow_year_start_cash}
+          </tr>
+          <tr>
+            <td>기말현금</td>
+            {cashflow_year_end_cash}
+          </tr>
+        </tbody>
+        </table>
+      )
 
+      var cashflow_quarter=this.state.data.Item.response.cashflow_quarter
+      var cashflow_quarter_column=cashflow_quarter.map((d,i)=>
+        <th key={`cashflow_quarter_yearly_date(${i})`}>{datechangeQuarter(d.date)}</th>
+      )
+      var cashflow_quarter_operation_cash=cashflow_quarter.map((d,i)=>
+        <th key={`cashflow_quarter_operation_cash(${i})`}>{d.operation_cash}</th>
+      )
+      var cashflow_quarter_smp_revenue= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_smp_revenue(${i})`}>{d.smp_revenue}</td>
+      )
+      var cashflow_quarter_rec_revenue= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_rec_revenue(${i})`}>{d.rec_revenue}</td>
+      )
+      var cashflow_quarter_operation_cash_in= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
+      )
+      var cashflow_quarter_OM_cost= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_OM_cost(${i})`}>{d.OM_cost}</td>
+      )
+      var cashflow_quarter_monitoring_cost= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_monitoring_cost(${i})`}>{d.monitoring_cost}</td>
+      )
+      var cashflow_quarter_elec_safety_cost= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_elec_safety_cost(${i})`}>{d.elec_safety_cost}</td>
+      )
+      var cashflow_quarter_office_cost= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_office_cost(${i})`}>{d.office_cost}</td>
+      )
+      var cashflow_quarter_other_cost= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_other_cost(${i})`}>{d.other_cost}</td>
+      )
+      var cashflow_quarter_interest= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_interest(${i})`}>{d.interest}</td>
+      )
+      var cashflow_quarter_tax= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_tax(${i})`}>{d.tax}</td>
+      )
+      var cashflow_quarter_operation_cash_out= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
+      )
+      var cashflow_quarter_finance_cash= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_finance_cash(${i})`}>{d.finance_cash}</td>
+      )
+      var cashflow_quarter_finance_cash_in= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_finance_cash_in(${i})`}>{d.finance_cash_in}</td>
+      )
+      var cashflow_quarter_acqusition_asset= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_acqusition_asset(${i})`}>{d.acqusition_asset}</td>
+      )
+      var cashflow_quarter_finance_cash_out= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_finance_cash_out(${i})`}>{d.finance_cash_out}</td>
+      )
+      var cashflow_quarter_investment_cash= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_investment_cash(${i})`}>{d.investment_cash}</td>
+      )
+      var cashflow_quarter_debt= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_debt(${i})`}>{d.debt}</td>
+      )
+      var cashflow_quarter_equity= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_equity(${i})`}>{d.equity}</td>
+      )
+      var cashflow_quarter_investment_cash_in= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
+      )
+      var cashflow_quarter_principal= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_principal(${i})`}>{d.principal}</td>
+      )
+      var cashflow_quarter_investment_cash_out= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
+      )
+      var cashflow_quarter_cash_change= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_cash_change(${i})`}>{d.cash_change}</td>
+      )
+      var cashflow_quarter_start_cash= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_start_cash(${i})`}>{d.start_cash}</td>
+      )
+      var cashflow_quarter_end_cash= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_end_cash(${i})`}>{d.end_cash}</td>
+      )
+      var cashflow_quarter_table=(
+        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+        <thead>
+          <tr>
+            <th>기간</th>
+             {cashflow_quarter_column}
+            </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>영업활동으로 인한 현금흐름</strong></td>
+             {cashflow_quarter_operation_cash}
+          </tr>
+          <tr>
+            <td>예상 SMP 수입</td>
+             {cashflow_quarter_smp_revenue}
+          </tr>
+          <tr>
+            <td>예상 REC 수입</td>
+             {cashflow_quarter_rec_revenue}
+          </tr>
+          <tr>
+            <td><strong>영업활동으로 인한 현금유입</strong></td>
+             {cashflow_quarter_operation_cash_in}
+          </tr>
+          <tr>
+            <td>O&M비용</td>
+             {cashflow_quarter_OM_cost}
+          </tr>
+          <tr>
+            <td>모니터링비용</td>
+             {cashflow_quarter_monitoring_cost}
+          </tr>
+          <tr>
+            <td>전기안전관리자 선임비용</td>
+             {cashflow_quarter_elec_safety_cost}
+          </tr>
+          <tr>
+            <td>사무관리비용</td>
+             {cashflow_quarter_office_cost}
+          </tr>
+          <tr>
+            <td>기타비용</td>
+             {cashflow_quarter_other_cost}
+          </tr>
+          <tr>
+            <td>추정세금</td>
+             {cashflow_quarter_tax}
+          </tr>
+          <tr>
+            <td><strong>영업활동으로 인한 현금유출</strong></td>
+             {cashflow_quarter_operation_cash_out}
+          </tr>
+          <tr>
+            <td><strong>재무활동으로 인한 현금흐름</strong></td>
+             {cashflow_quarter_finance_cash}
+          </tr>
+          <tr>
+            <td><strong>재무활동으로 인한 현금유입</strong></td>
+             {cashflow_quarter_finance_cash_in}
+          </tr>
+          <tr>
+            <td><strong>유형자산구입</strong></td>
+             {cashflow_quarter_acqusition_asset}
+          </tr>
+          <tr>
+            <td><strong>재무활동으로 인한 현금유출</strong></td>
+             {cashflow_quarter_finance_cash_out}
+          </tr>
+          <tr>
+            <td><strong>투자활동으로 인한 현금흐름</strong></td>
+             {cashflow_quarter_finance_cash}
+          </tr>
+          <tr>
+            <td>자본금납입</td>
+             {cashflow_quarter_equity}
+          </tr>
+          <tr>
+            <td>차입금</td>
+             {cashflow_quarter_debt}
+          </tr>
+          <tr>
+            <td><strong>투자활동으로 인한 현금유입</strong></td>
+             {cashflow_quarter_finance_cash_in}
+          </tr>
+          <tr>
+            <td>차입금 원금 상환</td>
+             {cashflow_quarter_principal}
+          </tr>
+          <tr>
+            <td><strong>투자활동으로 인한 현금유출</strong></td>
+             {cashflow_quarter_finance_cash_out}
+          </tr>
+          <tr>
+            <td><strong>총 현금변화</strong></td>
+             {cashflow_quarter_cash_change}
+          </tr>
+          <tr>
+            <td>기초현금</td>
+             {cashflow_quarter_start_cash}
+          </tr>
+          <tr>
+            <td>기말현금</td>
+            {cashflow_quarter_end_cash}
+          </tr>
+        </tbody>
+        </table>
+      )
 
-      yearly_total_cost=yearly_cash.map((d,i)=>
-        <td key={`yearly_total_cost(${i})`}>{d.total_cost}</td>
-      )
-      yearly_start_cash=yearly_cash.map((d,i)=>
-        <td key={`yearly_start_cash(${i})`}>{d.start_cash}</td>
-      )
-      yearly_end_cash=yearly_cash.map((d,i)=>
-        <td key={`yearly_end_cash(${i})`}>{d.end_cash}</td>
-      )
-      yearly_cash_table=(
-        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
-        <thead>
-          <tr>
-            <th>기간</th>
-            {yearly_column}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>기초현금</td>
-            {yearly_start_cash}
-          </tr>
-          <tr>
-            <td>예상 SMP 수입</td>
-            {yearly_smp_revenue}
-          </tr>
-          <tr>
-            <td>예상 REC 수입</td>
-            {yearly_rec_revenue}
-          </tr>
-          <tr>
-            <td>운영비</td>
-            {yearly_total_cost}
-          </tr>
-          <tr>
-            <td>기말현금</td>
-            {yearly_end_cash}
-          </tr>
-        </tbody>
-        </table>
-      )
-      let quarterly_cash=this.state.data.Item.response.result_quarter_cash
-      quarterly_cash.map((d,i)=>{
-        quarterly_cash[i].time=datechangeQuarter(d.date.start_time)
-       }
-      )
-      quarterly_column=quarterly_cash.map((d,i)=>
-        <th key={`quarterly_date(${i})`}>{d.time}</th>
-      )
-      quarterly_smp_revenue= quarterly_cash.map((d,i)=>
-        <td key={`quarterly_smp_revenue(${i})`}>{d.smp_revenue}</td>
-      )
-      quarterly_rec_revenue= quarterly_cash.map((d,i)=>
-        <td key={`quarterly_rec_revenue(${i})`}>{d.rec_revenue}</td>
-      )
-      quarterly_total_cost=quarterly_cash.map((d,i)=>
-        <td key={`quarterly_total_cost(${i})`}>{d.total_cost}</td>
-      )
-      quarterly_start_cash=quarterly_cash.map((d,i)=>
-        <td key={`quarterly_start_cash(${i})`}>{d.start_cash}</td>
-      )
-      quarterly_end_cash=quarterly_cash.map((d,i)=>
-        <td key={`quarterly_end_cash(${i})`}>{d.end_cash}</td>
-      )
-      quarterly_cash_table=(
-        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
-        <thead>
-          <tr>
-            <th>기간</th>
-            {quarterly_column}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>기초현금</td>
-            {quarterly_start_cash}
-          </tr>
-          <tr>
-            <td>예상 SMP 수입</td>
-            {quarterly_smp_revenue}
-          </tr>
-          <tr>
-            <td>예상 REC 수입</td>
-            {quarterly_rec_revenue}
-          </tr>
-          <tr>
-            <td>운영비</td>
-            {quarterly_total_cost}
-          </tr>
-          <tr>
-            <td>기말현금</td>
-            {quarterly_end_cash}
-          </tr>
-        </tbody>
-        </table>
-      )
-      let monthly_cash=this.state.data.Item.response.result_month_cash
-      monthly_cash.map((d,i)=>{
-        monthly_cash[i].time=datechangeMonth(d.date.start_time)
-       }
-      )
-      monthly_column=monthly_cash.map((d,i)=>
-        <th key={`monthly_date(${i})`}>{d.time}</th>
-      )
-      monthly_smp_revenue= monthly_cash.map((d,i)=>
-        <td key={`monthly_smp_revenue(${i})`}>{d.smp_revenue}</td>
-      )
-      monthly_rec_revenue= monthly_cash.map((d,i)=>
-        <td key={`monthly_rec_revenue(${i})`}>{d.rec_revenue}</td>
-      )
-      monthly_total_cost=monthly_cash.map((d,i)=>
-        <td key={`monthly_total_cost(${i})`}>{d.total_cost}</td>
-      )
-      monthly_start_cash=monthly_cash.map((d,i)=>
-        <td key={`monthly_start_cash(${i})`}>{d.start_cash}</td>
-      )
-      monthly_end_cash=monthly_cash.map((d,i)=>
-        <td key={`monthly_end_cash(${i})`}>{d.end_cash}</td>
-      )
-      monthly_cash_table=(
-        <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
-        <thead>
-          <tr>
-            <th>기간</th>
-            {monthly_column}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>기초현금</td>
-            {monthly_start_cash}
-          </tr>
-          <tr>
-            <td>예상 SMP 수입</td>
-            {monthly_smp_revenue}
-          </tr>
-          <tr>
-            <td>예상 REC 수입</td>
-            {monthly_rec_revenue}
-          </tr>
-          <tr>
-            <td>운영비</td>
-            {monthly_total_cost}
-          </tr>
-          <tr>
-            <td>기말현금</td>
-            {monthly_end_cash}
-          </tr>
-        </tbody>
-        </table>
-      )
+      var cashflow_month=this.state.data.Item.response.cashflow_quarter
+      var cashflow_month_column=cashflow_month.map((d,i)=>
+          <th key={`cashflow_quarter_yearly_date(${i})`}>{datechangeMonth(d.date)}</th>
+        )
+      var cashflow_month_operation_cash=cashflow_month.map((d,i)=>
+          <th key={`cashflow_month_operation_cash(${i})`}>{d.operation_cash}</th>
+        )
+      var cashflow_month_smp_revenue= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_smp_revenue(${i})`}>{d.smp_revenue}</td>
+        )
+      var cashflow_month_rec_revenue= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_rec_revenue(${i})`}>{d.rec_revenue}</td>
+        )
+      var cashflow_month_operation_cash_in= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
+        )
+      var cashflow_month_OM_cost= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_OM_cost(${i})`}>{d.OM_cost}</td>
+        )
+      var cashflow_month_monitoring_cost= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_monitoring_cost(${i})`}>{d.monitoring_cost}</td>
+        )
+      var cashflow_month_elec_safety_cost= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_elec_safety_cost(${i})`}>{d.elec_safety_cost}</td>
+        )
+      var cashflow_month_office_cost= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_office_cost(${i})`}>{d.office_cost}</td>
+        )
+      var cashflow_month_other_cost= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_other_cost(${i})`}>{d.other_cost}</td>
+        )
+      var cashflow_month_interest= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_interest(${i})`}>{d.interest}</td>
+        )
+      var cashflow_month_tax= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_tax(${i})`}>{d.tax}</td>
+        )
+      var cashflow_month_operation_cash_out= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
+        )
+      var cashflow_month_finance_cash= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_finance_cash(${i})`}>{d.finance_cash}</td>
+        )
+      var cashflow_month_finance_cash_in= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_finance_cash_in(${i})`}>{d.finance_cash_in}</td>
+        )
+      var cashflow_month_acqusition_asset= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_acqusition_asset(${i})`}>{d.acqusition_asset}</td>
+        )
+      var cashflow_month_finance_cash_out= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_finance_cash_out(${i})`}>{d.finance_cash_out}</td>
+        )
+      var cashflow_month_investment_cash= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_investment_cash(${i})`}>{d.investment_cash}</td>
+        )
+      var cashflow_month_debt= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_debt(${i})`}>{d.debt}</td>
+        )
+      var cashflow_month_equity= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_equity(${i})`}>{d.equity}</td>
+        )
+      var cashflow_month_investment_cash_in= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
+        )
+      var cashflow_month_principal= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_principal(${i})`}>{d.principal}</td>
+        )
+      var cashflow_month_investment_cash_out= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
+        )
+      var cashflow_month_cash_change= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_cash_change(${i})`}>{d.cash_change}</td>
+        )
+      var cashflow_month_start_cash= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_start_cash(${i})`}>{d.start_cash}</td>
+        )
+      var cashflow_month_end_cash= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_end_cash(${i})`}>{d.end_cash}</td>
+        )
+      var cashflow_month_table=(
+          <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+          <thead>
+            <tr>
+              <th>기간</th>
+               {cashflow_month_column}
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>영업활동으로 인한 현금흐름</strong></td>
+               {cashflow_month_operation_cash}
+            </tr>
+            <tr>
+              <td>예상 SMP 수입</td>
+               {cashflow_month_smp_revenue}
+            </tr>
+            <tr>
+              <td>예상 REC 수입</td>
+               {cashflow_month_rec_revenue}
+            </tr>
+            <tr>
+              <td><strong>영업활동으로 인한 현금유입</strong></td>
+               {cashflow_month_operation_cash_in}
+            </tr>
+            <tr>
+              <td>O&M비용</td>
+               {cashflow_month_OM_cost}
+            </tr>
+            <tr>
+              <td>모니터링비용</td>
+               {cashflow_month_monitoring_cost}
+            </tr>
+            <tr>
+              <td>전기안전관리자 선임비용</td>
+               {cashflow_month_elec_safety_cost}
+            </tr>
+            <tr>
+              <td>사무관리비용</td>
+               {cashflow_month_office_cost}
+            </tr>
+            <tr>
+              <td>기타비용</td>
+               {cashflow_month_other_cost}
+            </tr>
+            <tr>
+              <td>추정세금</td>
+               {cashflow_month_tax}
+            </tr>
+            <tr>
+              <td><strong>영업활동으로 인한 현금유출</strong></td>
+               {cashflow_month_operation_cash_out}
+            </tr>
+            <tr>
+              <td><strong>재무활동으로 인한 현금흐름</strong></td>
+               {cashflow_month_finance_cash}
+            </tr>
+            <tr>
+              <td><strong>재무활동으로 인한 현금유입</strong></td>
+               {cashflow_month_finance_cash_in}
+            </tr>
+            <tr>
+              <td><strong>유형자산구입</strong></td>
+               {cashflow_month_acqusition_asset}
+            </tr>
+            <tr>
+              <td><strong>재무활동으로 인한 현금유출</strong></td>
+               {cashflow_month_finance_cash_out}
+            </tr>
+            <tr>
+              <td><strong>투자활동으로 인한 현금흐름</strong></td>
+               {cashflow_month_finance_cash}
+            </tr>
+            <tr>
+              <td>자본금납입</td>
+               {cashflow_month_equity}
+            </tr>
+            <tr>
+              <td>차입금</td>
+               {cashflow_month_debt}
+            </tr>
+            <tr>
+              <td><strong>투자활동으로 인한 현금유입</strong></td>
+               {cashflow_month_finance_cash_in}
+            </tr>
+            <tr>
+              <td>차입금 원금 상환</td>
+               {cashflow_month_principal}
+            </tr>
+            <tr>
+              <td><strong>투자활동으로 인한 현금유출</strong></td>
+               {cashflow_month_finance_cash_out}
+            </tr>
+            <tr>
+              <td><strong>총 현금변화</strong></td>
+               {cashflow_month_cash_change}
+            </tr>
+            <tr>
+              <td>기초현금</td>
+               {cashflow_month_start_cash}
+            </tr>
+            <tr>
+              <td>기말현금</td>
+              {cashflow_month_end_cash}
+            </tr>
+          </tbody>
+          </table>
+        )
     }
     return(
-    <div className="overflow">
-      <Board name="시뮬레이션 결과">
-        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.price_forecast} onChange={this.handlePriceForecastChange}/>
-          <span className="mdl-checkbox__label">가격예측</span>
-        </label>
-        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.yearly_cash} onChange={this.handleYearlyCashChange} />
-          <span className="mdl-checkbox__label">연간예상현금흐름표</span>
-        </label>
-        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.quarterly_cash} onChange={this.handleQuarterlyCashChange}/>
-          <span className="mdl-checkbox__label">분기별예상현금흐름표</span>
-        </label>
-        <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-          <input type="checkbox" className="mdl-checkbox__input" checked={this.state.monthly_cash}
-          onChange={this.handleMonthlyCashChange}/>
-          <span className="mdl-checkbox__label">월별예상현금흐름표</span>
-        </label>
-        {(this.state.price_forecast)?<div>{price_table}</div>:<div></div>}
-      </Board>
-      {(this.state.yearly_cash)?<Board name="연간현금흐름표">{yearly_cash_table}</Board>:<div></div>}
-      {(this.state.quarterly_cash)?<Board name="분기별현금흐름표">{quarterly_cash_table}</Board>:<div></div>}
-      {(this.state.monthly_cash)?<Board name="월별현금흐름표">{monthly_cash_table}</Board>:<div></div>}
-    </div>
+      <div className="overflow">
+        <Board name="시뮬레이션 결과">
+        </Board>
+        {(this.state.income_year)?<Board name="연 단위 손익계산서">{income_year_table}</Board>:<div></div>}
+        {(this.state.income_quarter)?<Board name="분기 단위 손익계산서">{income_quarter_table}</Board>:<div></div>}
+        {(this.state.income_month)?<Board name="월 단위 손익계산서">{income_year_table}</Board>:<div></div>}
+        {(this.state.cashf_year)?<Board name="연 단위 손익계산서">{income_year_table}</Board>:<div></div>}
+        {(this.state.income_quarter)?<Board name="분기 단위 손익계산서">{income_year_table}</Board>:<div></div>}
+        {(this.state.income_month)?<Board name="월 단위 손익계산서">{income_year_table}</Board>:<div></div>}
+      </div>
     )
   }
 }
