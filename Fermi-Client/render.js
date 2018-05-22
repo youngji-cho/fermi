@@ -17,7 +17,7 @@ ReactDOM.render(
         <Route exact path='/smp_price' component={SmpPage} />
         <Route exact path='/rec_price' component={RecPage} />
         <Route exact path='/economic' component={EconomicPage} />
-        //<Route exact path='/test' component={TestPage} />
+        <Route exact path='/test' component={TestPage} />
       </Switch>
     </Router>
   </Layout>

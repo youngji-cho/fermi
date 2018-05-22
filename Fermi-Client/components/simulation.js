@@ -323,7 +323,6 @@ export class SimulationOutput extends React.Component{
       }).then(jsonResponse =>{
         this.setState({data:jsonResponse})
         this.setState({loading:false})
-        console.log(this.state)
       })
   }
   handleIncomeYearChange(){
@@ -730,14 +729,17 @@ export class SimulationOutput extends React.Component{
       var cashflow_year_operation_cash=cashflow_year.map((d,i)=>
         <th key={`operation_cash(${i})`}>{d.operation_cash}</th>
       )
+      var cashflow_year_operation_cash_in= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
+      )
       var cashflow_year_smp_revenue= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_smp_revenue(${i})`}>{d.smp_revenue}</td>
       )
       var cashflow_year_rec_revenue= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_rec_revenue(${i})`}>{d.rec_revenue}</td>
       )
-      var cashflow_year_operation_cash_in= cashflow_year.map((d,i)=>
-        <td key={`cashflow_year_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
+      var cashflow_year_operation_cash_out= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
       )
       var cashflow_year_OM_cost= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_OM_cost(${i})`}>{d.OM_cost}</td>
@@ -760,23 +762,23 @@ export class SimulationOutput extends React.Component{
       var cashflow_year_tax= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_tax(${i})`}>{d.tax}</td>
       )
-      var cashflow_year_operation_cash_out= cashflow_year.map((d,i)=>
-        <td key={`cashflow_year_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
-      )
       var cashflow_year_finance_cash= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_finance_cash(${i})`}>{d.finance_cash}</td>
       )
       var cashflow_year_finance_cash_in= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_finance_cash_in(${i})`}>{d.finance_cash_in}</td>
       )
-      var cashflow_year_acqusition_asset= cashflow_year.map((d,i)=>
-        <td key={`cashflow_year_acqusition_asset(${i})`}>{d.acqusition_asset}</td>
-      )
       var cashflow_year_finance_cash_out= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_finance_cash_out(${i})`}>{d.finance_cash_out}</td>
       )
+      var cashflow_year_acqusition_asset= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_acqusition_asset(${i})`}>{d.acqusition_asset}</td>
+      )
       var cashflow_year_investment_cash= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_investment_cash(${i})`}>{d.investment_cash}</td>
+      )
+      var cashflow_year_investment_cash_in= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
       )
       var cashflow_year_debt= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_debt(${i})`}>{d.debt}</td>
@@ -784,14 +786,11 @@ export class SimulationOutput extends React.Component{
       var cashflow_year_equity= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_equity(${i})`}>{d.equity}</td>
       )
-      var cashflow_year_investment_cash_in= cashflow_year.map((d,i)=>
-        <td key={`cashflow_year_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
+      var cashflow_year_investment_cash_out= cashflow_year.map((d,i)=>
+        <td key={`cashflow_year_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
       )
       var cashflow_year_principal= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_principal(${i})`}>{d.principal}</td>
-      )
-      var cashflow_year_investment_cash_out= cashflow_year.map((d,i)=>
-        <td key={`cashflow_year_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
       )
       var cashflow_year_cash_change= cashflow_year.map((d,i)=>
         <td key={`cashflow_year_cash_change(${i})`}>{d.cash_change}</td>
@@ -816,6 +815,10 @@ export class SimulationOutput extends React.Component{
              {cashflow_year_operation_cash}
           </tr>
           <tr>
+            <td><strong>영업활동으로 인한 현금유입</strong></td>
+             {cashflow_year_operation_cash_in}
+          </tr>
+          <tr>
             <td>예상 SMP 수입</td>
              {cashflow_year_smp_revenue}
           </tr>
@@ -824,8 +827,8 @@ export class SimulationOutput extends React.Component{
              {cashflow_year_rec_revenue}
           </tr>
           <tr>
-            <td><strong>영업활동으로 인한 현금유입</strong></td>
-             {cashflow_year_operation_cash_in}
+            <td><strong>영업활동으로 인한 현금유출</strong></td>
+             {cashflow_year_operation_cash_out}
           </tr>
           <tr>
             <td>O&M비용</td>
@@ -852,10 +855,6 @@ export class SimulationOutput extends React.Component{
              {cashflow_year_tax}
           </tr>
           <tr>
-            <td><strong>영업활동으로 인한 현금유출</strong></td>
-             {cashflow_year_operation_cash_out}
-          </tr>
-          <tr>
             <td><strong>재무활동으로 인한 현금흐름</strong></td>
              {cashflow_year_finance_cash}
           </tr>
@@ -864,16 +863,20 @@ export class SimulationOutput extends React.Component{
              {cashflow_year_finance_cash_in}
           </tr>
           <tr>
-            <td><strong>유형자산구입</strong></td>
-             {cashflow_year_acqusition_asset}
-          </tr>
-          <tr>
             <td><strong>재무활동으로 인한 현금유출</strong></td>
              {cashflow_year_finance_cash_out}
           </tr>
           <tr>
+            <td>유형자산구입</td>
+             {cashflow_year_acqusition_asset}
+          </tr>
+          <tr>
             <td><strong>투자활동으로 인한 현금흐름</strong></td>
-             {cashflow_year_finance_cash}
+             {cashflow_year_investment_cash}
+          </tr>
+          <tr>
+            <td><strong>투자활동으로 인한 현금유입</strong></td>
+             {cashflow_year_investment_cash_in}
           </tr>
           <tr>
             <td>자본금납입</td>
@@ -884,16 +887,12 @@ export class SimulationOutput extends React.Component{
              {cashflow_year_debt}
           </tr>
           <tr>
-            <td><strong>투자활동으로 인한 현금유입</strong></td>
-             {cashflow_year_finance_cash_in}
+            <td><strong>투자활동으로 인한 현금유출</strong></td>
+             {cashflow_year_investment_cash_out}
           </tr>
           <tr>
             <td>차입금 원금 상환</td>
              {cashflow_year_principal}
-          </tr>
-          <tr>
-            <td><strong>투자활동으로 인한 현금유출</strong></td>
-             {cashflow_year_finance_cash_out}
           </tr>
           <tr>
             <td><strong>총 현금변화</strong></td>
@@ -918,14 +917,17 @@ export class SimulationOutput extends React.Component{
       var cashflow_quarter_operation_cash=cashflow_quarter.map((d,i)=>
         <th key={`cashflow_quarter_operation_cash(${i})`}>{d.operation_cash}</th>
       )
+      var cashflow_quarter_operation_cash_in= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
+      )
       var cashflow_quarter_smp_revenue= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_smp_revenue(${i})`}>{d.smp_revenue}</td>
       )
       var cashflow_quarter_rec_revenue= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_rec_revenue(${i})`}>{d.rec_revenue}</td>
       )
-      var cashflow_quarter_operation_cash_in= cashflow_quarter.map((d,i)=>
-        <td key={`cashflow_quarter_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
+      var cashflow_quarter_operation_cash_out= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
       )
       var cashflow_quarter_OM_cost= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_OM_cost(${i})`}>{d.OM_cost}</td>
@@ -948,23 +950,23 @@ export class SimulationOutput extends React.Component{
       var cashflow_quarter_tax= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_tax(${i})`}>{d.tax}</td>
       )
-      var cashflow_quarter_operation_cash_out= cashflow_quarter.map((d,i)=>
-        <td key={`cashflow_quarter_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
-      )
       var cashflow_quarter_finance_cash= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_finance_cash(${i})`}>{d.finance_cash}</td>
       )
       var cashflow_quarter_finance_cash_in= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_finance_cash_in(${i})`}>{d.finance_cash_in}</td>
       )
-      var cashflow_quarter_acqusition_asset= cashflow_quarter.map((d,i)=>
-        <td key={`cashflow_quarter_acqusition_asset(${i})`}>{d.acqusition_asset}</td>
-      )
       var cashflow_quarter_finance_cash_out= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_finance_cash_out(${i})`}>{d.finance_cash_out}</td>
       )
+      var cashflow_quarter_acqusition_asset= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_acqusition_asset(${i})`}>{d.acqusition_asset}</td>
+      )
       var cashflow_quarter_investment_cash= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_investment_cash(${i})`}>{d.investment_cash}</td>
+      )
+      var cashflow_quarter_investment_cash_in= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
       )
       var cashflow_quarter_debt= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_debt(${i})`}>{d.debt}</td>
@@ -972,14 +974,11 @@ export class SimulationOutput extends React.Component{
       var cashflow_quarter_equity= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_equity(${i})`}>{d.equity}</td>
       )
-      var cashflow_quarter_investment_cash_in= cashflow_quarter.map((d,i)=>
-        <td key={`cashflow_quarter_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
+      var cashflow_quarter_investment_cash_out= cashflow_quarter.map((d,i)=>
+        <td key={`cashflow_quarter_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
       )
       var cashflow_quarter_principal= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_principal(${i})`}>{d.principal}</td>
-      )
-      var cashflow_quarter_investment_cash_out= cashflow_quarter.map((d,i)=>
-        <td key={`cashflow_quarter_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
       )
       var cashflow_quarter_cash_change= cashflow_quarter.map((d,i)=>
         <td key={`cashflow_quarter_cash_change(${i})`}>{d.cash_change}</td>
@@ -1004,6 +1003,10 @@ export class SimulationOutput extends React.Component{
              {cashflow_quarter_operation_cash}
           </tr>
           <tr>
+            <td><strong>영업활동으로 인한 현금유입</strong></td>
+             {cashflow_quarter_operation_cash_in}
+          </tr>
+          <tr>
             <td>예상 SMP 수입</td>
              {cashflow_quarter_smp_revenue}
           </tr>
@@ -1012,8 +1015,8 @@ export class SimulationOutput extends React.Component{
              {cashflow_quarter_rec_revenue}
           </tr>
           <tr>
-            <td><strong>영업활동으로 인한 현금유입</strong></td>
-             {cashflow_quarter_operation_cash_in}
+            <td><strong>영업활동으로 인한 현금유출</strong></td>
+             {cashflow_quarter_operation_cash_out}
           </tr>
           <tr>
             <td>O&M비용</td>
@@ -1040,10 +1043,6 @@ export class SimulationOutput extends React.Component{
              {cashflow_quarter_tax}
           </tr>
           <tr>
-            <td><strong>영업활동으로 인한 현금유출</strong></td>
-             {cashflow_quarter_operation_cash_out}
-          </tr>
-          <tr>
             <td><strong>재무활동으로 인한 현금흐름</strong></td>
              {cashflow_quarter_finance_cash}
           </tr>
@@ -1052,16 +1051,20 @@ export class SimulationOutput extends React.Component{
              {cashflow_quarter_finance_cash_in}
           </tr>
           <tr>
-            <td><strong>유형자산구입</strong></td>
-             {cashflow_quarter_acqusition_asset}
-          </tr>
-          <tr>
             <td><strong>재무활동으로 인한 현금유출</strong></td>
              {cashflow_quarter_finance_cash_out}
           </tr>
           <tr>
+            <td>유형자산구입</td>
+             {cashflow_quarter_acqusition_asset}
+          </tr>
+          <tr>
             <td><strong>투자활동으로 인한 현금흐름</strong></td>
-             {cashflow_quarter_finance_cash}
+             {cashflow_quarter_investment_cash}
+          </tr>
+          <tr>
+            <td><strong>투자활동으로 인한 현금유입</strong></td>
+             {cashflow_quarter_investment_cash_in}
           </tr>
           <tr>
             <td>자본금납입</td>
@@ -1072,16 +1075,12 @@ export class SimulationOutput extends React.Component{
              {cashflow_quarter_debt}
           </tr>
           <tr>
-            <td><strong>투자활동으로 인한 현금유입</strong></td>
-             {cashflow_quarter_finance_cash_in}
+            <td><strong>투자활동으로 인한 현금유출</strong></td>
+             {cashflow_quarter_investment_cash_out}
           </tr>
           <tr>
             <td>차입금 원금 상환</td>
              {cashflow_quarter_principal}
-          </tr>
-          <tr>
-            <td><strong>투자활동으로 인한 현금유출</strong></td>
-             {cashflow_quarter_finance_cash_out}
           </tr>
           <tr>
             <td><strong>총 현금변화</strong></td>
@@ -1106,14 +1105,17 @@ export class SimulationOutput extends React.Component{
       var cashflow_month_operation_cash=cashflow_month.map((d,i)=>
           <th key={`cashflow_month_operation_cash(${i})`}>{d.operation_cash}</th>
         )
+      var cashflow_month_operation_cash_in= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
+        )
       var cashflow_month_smp_revenue= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_smp_revenue(${i})`}>{d.smp_revenue}</td>
         )
       var cashflow_month_rec_revenue= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_rec_revenue(${i})`}>{d.rec_revenue}</td>
         )
-      var cashflow_month_operation_cash_in= cashflow_month.map((d,i)=>
-          <td key={`cashflow_month_operation_cash_in(${i})`}>{d.operation_cash_in}</td>
+      var cashflow_month_operation_cash_out= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
         )
       var cashflow_month_OM_cost= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_OM_cost(${i})`}>{d.OM_cost}</td>
@@ -1136,23 +1138,23 @@ export class SimulationOutput extends React.Component{
       var cashflow_month_tax= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_tax(${i})`}>{d.tax}</td>
         )
-      var cashflow_month_operation_cash_out= cashflow_month.map((d,i)=>
-          <td key={`cashflow_month_operation_cash_out(${i})`}>{d.operation_cash_out}</td>
-        )
       var cashflow_month_finance_cash= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_finance_cash(${i})`}>{d.finance_cash}</td>
         )
       var cashflow_month_finance_cash_in= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_finance_cash_in(${i})`}>{d.finance_cash_in}</td>
         )
+      var cashflow_month_finance_cash_out= cashflow_month.map((d,i)=>
+            <td key={`cashflow_month_finance_cash_out(${i})`}>{d.finance_cash_out}</td>
+        )
       var cashflow_month_acqusition_asset= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_acqusition_asset(${i})`}>{d.acqusition_asset}</td>
         )
-      var cashflow_month_finance_cash_out= cashflow_month.map((d,i)=>
-          <td key={`cashflow_month_finance_cash_out(${i})`}>{d.finance_cash_out}</td>
-        )
       var cashflow_month_investment_cash= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_investment_cash(${i})`}>{d.investment_cash}</td>
+        )
+      var cashflow_month_investment_cash_in= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
         )
       var cashflow_month_debt= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_debt(${i})`}>{d.debt}</td>
@@ -1160,14 +1162,11 @@ export class SimulationOutput extends React.Component{
       var cashflow_month_equity= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_equity(${i})`}>{d.equity}</td>
         )
-      var cashflow_month_investment_cash_in= cashflow_month.map((d,i)=>
-          <td key={`cashflow_month_investment_cash_in(${i})`}>{d.investment_cash_in}</td>
+      var cashflow_month_investment_cash_out= cashflow_month.map((d,i)=>
+          <td key={`cashflow_month_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
         )
       var cashflow_month_principal= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_principal(${i})`}>{d.principal}</td>
-        )
-      var cashflow_month_investment_cash_out= cashflow_month.map((d,i)=>
-          <td key={`cashflow_month_investment_cash_out(${i})`}>{d.investment_cash_out}</td>
         )
       var cashflow_month_cash_change= cashflow_month.map((d,i)=>
           <td key={`cashflow_month_cash_change(${i})`}>{d.cash_change}</td>
@@ -1192,6 +1191,10 @@ export class SimulationOutput extends React.Component{
                {cashflow_month_operation_cash}
             </tr>
             <tr>
+              <td><strong>영업활동으로 인한 현금유입</strong></td>
+               {cashflow_month_operation_cash_in}
+            </tr>
+            <tr>
               <td>예상 SMP 수입</td>
                {cashflow_month_smp_revenue}
             </tr>
@@ -1200,8 +1203,8 @@ export class SimulationOutput extends React.Component{
                {cashflow_month_rec_revenue}
             </tr>
             <tr>
-              <td><strong>영업활동으로 인한 현금유입</strong></td>
-               {cashflow_month_operation_cash_in}
+              <td><strong>영업활동으로 인한 현금유출</strong></td>
+               {cashflow_month_operation_cash_out}
             </tr>
             <tr>
               <td>O&M비용</td>
@@ -1228,10 +1231,6 @@ export class SimulationOutput extends React.Component{
                {cashflow_month_tax}
             </tr>
             <tr>
-              <td><strong>영업활동으로 인한 현금유출</strong></td>
-               {cashflow_month_operation_cash_out}
-            </tr>
-            <tr>
               <td><strong>재무활동으로 인한 현금흐름</strong></td>
                {cashflow_month_finance_cash}
             </tr>
@@ -1240,16 +1239,20 @@ export class SimulationOutput extends React.Component{
                {cashflow_month_finance_cash_in}
             </tr>
             <tr>
-              <td><strong>유형자산구입</strong></td>
-               {cashflow_month_acqusition_asset}
-            </tr>
-            <tr>
               <td><strong>재무활동으로 인한 현금유출</strong></td>
                {cashflow_month_finance_cash_out}
             </tr>
             <tr>
+              <td>유형자산구입</td>
+               {cashflow_month_acqusition_asset}
+            </tr>
+            <tr>
               <td><strong>투자활동으로 인한 현금흐름</strong></td>
-               {cashflow_month_finance_cash}
+               {cashflow_month_investment_cash}
+            </tr>
+            <tr>
+              <td><strong>투자활동으로 인한 현금유입</strong></td>
+               {cashflow_month_investment_cash_in}
             </tr>
             <tr>
               <td>자본금납입</td>
@@ -1260,16 +1263,12 @@ export class SimulationOutput extends React.Component{
                {cashflow_month_debt}
             </tr>
             <tr>
-              <td><strong>투자활동으로 인한 현금유입</strong></td>
-               {cashflow_month_finance_cash_in}
+              <td><strong>투자활동으로 인한 현금유출</strong></td>
+               {cashflow_month_investment_cash_out}
             </tr>
             <tr>
               <td>차입금 원금 상환</td>
                {cashflow_month_principal}
-            </tr>
-            <tr>
-              <td><strong>투자활동으로 인한 현금유출</strong></td>
-               {cashflow_month_finance_cash_out}
             </tr>
             <tr>
               <td><strong>총 현금변화</strong></td>
