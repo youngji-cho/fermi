@@ -3,7 +3,7 @@ import React from "react";
 import classNames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
-import { Manager, Target, Popper } from "react-popper";
+import {Manager, Target, Popper, Arrow } from "react-popper";
 
 // material-ui components
 import withStyles from "material-ui/styles/withStyles";
@@ -121,7 +121,7 @@ class CustomDropdown extends React.Component {
                     return (
                       <MenuItem
                         key={key}
-                        onClick={this.handleClose}
+                        onClick={this.props.onClick}
                         className={dropdownItem}
                       >
                         {prop}

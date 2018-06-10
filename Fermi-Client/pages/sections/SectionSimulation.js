@@ -38,9 +38,12 @@ class SectionSimulation extends React.Component {
     this.handleRemoveComponents=this.handleRemoveComponents.bind(this);
   }
   //
-  handleAddComponents(){
+  handleAddComponents(e){
+    let el = document.createElement( 'html' );
+    el.innerHTML = e.target.outerHTML
+    let x=el.getElementsByTagName( 'li' );
     this.setState({
-      components: this.state.components.concat([{ name: '' }])
+      components: this.state.components.concat([{ name: x[0].innerText }])
     });
   }
   handleRemoveComponents(idx){
@@ -112,7 +115,7 @@ class SectionSimulation extends React.Component {
                 />
               </GridItem>
               <GridItem xs={6} sm={4} md={3} lg={2}>
-                <CustomDropdown dropdownList={["pv","solar-thermal","lithium-ion-storage","power-converstion"]} buttonProps={{color:"rose"}} buttonText={"Add"} />
+                <CustomDropdown dropdownList={["pv","solar-thermal","lithium-ion-storage","power-converstion"]} buttonProps={{color:"rose"}} buttonText={"Add"} onClick={this.handleAddComponents.bind(this)} />
               </GridItem>
               <GridItem xs={6} sm={4} md={5} lg={2}>
               <Button color="rose" onClick={this.handleRemoveComponents(idx)}>Remove</Button>

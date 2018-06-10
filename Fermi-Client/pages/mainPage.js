@@ -14,6 +14,7 @@ import HeaderLinks from "components/Header/HeaderLinks.jsx";
 //sections
 import SectionHeader from "./sections/SectionHeader"
 import SectionSimulation from "./sections/SectionSimulation"
+import SectionStandalone from "./sections/SectionStandalone"
 
 //sections
 import SectionBasics from "./section/SectionBasics.jsx";
