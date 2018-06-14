@@ -8,6 +8,7 @@ import FormControlLabel from "material-ui/Form/FormControlLabel";
 import Checkbox from "material-ui/Checkbox";
 import Radio from "material-ui/Radio";
 import Switch from "material-ui/Switch";
+import InputLabel from "material-ui/Input/InputLabel";
 //react datetime
 import Datetime from "react-datetime";
 // @material-ui/icons
@@ -28,13 +29,20 @@ import Badge from "components/Badge/Badge.jsx";
 
 import basicsStyle from "assets/jss/material-kit-react/views/componentsSections/basicsStyle.jsx";
 
+import {datechange,datechangeDate,datechangeYear,datechangeQuarter,datechangeMonth} from "util";
+
+const moment = require('moment');
+
 class SectionSimulation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       components: [{name:'PV',unitcost:230,units:99},{name: 'Energy Storage System',unitcost:100,units:10},{name: 'Energy Storage System',unitcost:100,units:10}],
-      finance:[{name:'Debt',amount:10000,starttime:new Date(),duartion:10,interest:0.05},
-      {name:'Equity',amount:10000,starttime:new Date()},{name:'Government Subsidary',amount:10000,starttime:new Date()}]
+      finance:[
+        {name:'Debt',amount:10000,startdate:new Date(new Date().setMonth(new Date().getMonth()+2)),duration:10,interest:0.05,payment_type:"constant payment mortgage"},
+        {name:'Equity',amount:10000,startdate:new Date(new Date().setMonth(new Date().getMonth()+2))},
+        {name:'Government Subsidary',amount:10000,startdate:new Date()}
+      ]
     };
     //투자비 조건 변경
     this.handleComponentsChange=this.handleComponentsChange.bind(this);
@@ -44,10 +52,12 @@ class SectionSimulation extends React.Component {
     this.handleFinanceChange=this.handleFinanceChange.bind(this);
     this.handleAddFinance=this.handleAddFinance.bind(this);
     this.handleRemoveFinance=this.handleRemoveFinance.bind(this);
+    //테스트 조건
+    this.handleChange=this.handleChange.bind(this);
   }
   handleComponentsChange(idx){
     return (evt) => {
-      console.log("evt",evt.target.name);
+      console.log("evt",evt.target.outerHTML);
       const newComponents = this.state.components.map((components, sidx) => {
         if (idx !== sidx)
           return components;
@@ -86,19 +96,35 @@ class SectionSimulation extends React.Component {
   //투자비 조건
   handleFinanceChange(idx){
     return (evt) => {
-      console.log("evt",evt.target.name);
-      const newComponents = this.state.components.map((components, sidx) => {
-        if (idx !== sidx)
-          return components;
-        else
-          if(evt.target.name==="finance-name")
-            return { ...components, name: evt.target.value };
-          else if(evt.target.name==="finance-date")
-            return { ...components, unitcost: parseFloat(evt.target.value)};
-          else if(evt.target.name==="components-units")
-            return { ...components, units: parseFloat(evt.target.value) };
+      console.log(moment.isMoment(evt))
+      const newComponents = this.state.finance.map((finance, sidx) => {
+        if (idx !== sidx){
+          return finance;
+        }
+        else if(moment.isMoment(evt)===true){
+          console.log("moment!")
+          return { ...finance, startdate:new Date(`${evt.year()}-${evt.month()}-${evt.date()}`)}
+        }
+        else if(evt.target.tagName==="LI"){
+          var el = document.createElement( 'html' );
+          el.innerHTML = evt.target.outerHTML
+          var x=el.getElementsByTagName( 'li' );
+          return { ...finance, payment_type:x[0].innerText};
+        }
+        else if(evt.target.name==="finance-name"){
+          return { ...finance, name: evt.target.value };
+        }
+        else if(evt.target.name==="finance-amount"){
+          return { ...finance, amount: parseFloat(evt.target.value) };
+        }
+        else if(evt.target.name==="finance-duration"){
+          return { ...finance, duration: parseFloat(evt.target.value) };
+        }
+        else if(evt.target.name==="finance-interest"){
+          return { ...finance, interest: parseFloat(evt.target.value) };
+        }
       });
-      this.setState({components: newComponents });
+      this.setState({finance: newComponents});
     }
   }
   handleAddFinance(e){
@@ -112,7 +138,7 @@ class SectionSimulation extends React.Component {
           amount:0,
           duration:0,
           interest:0,
-          startdate:new Date()
+          startdate:new Date(new Date().setMonth(new Date().getMonth()+2))
         }])
       })
     else
@@ -120,7 +146,9 @@ class SectionSimulation extends React.Component {
         finance: this.state.finance.concat([{
           name: x[0].innerText,
           amount:0,
-          startdate:new Date()
+          duration:12,
+          interest:0.05,
+          startdate:new Date(new Date().setMonth(new Date().getMonth()+2))
         }])
       })
   }
@@ -131,6 +159,29 @@ class SectionSimulation extends React.Component {
         finance: this.state.finance.filter((s, sidx) => idx !== sidx)
       });
     }
+  }
+  handleChange(e){
+    console.log(e)
+    console.log("altkey",e.altKey)
+    console.log("button",e.button)
+    console.log("buttons",e.buttons)
+    console.log("bubbles",e.bubbles)
+    console.log("type",e.type)
+    console.log("view",e.view)
+    console.log("detail",e.detail)
+    console.log("target",e.target)
+    console.log("target name",e.target.name)
+    console.log("target role",e.target.role)
+    console.log("target children",e.target.children)
+    console.log("target className",e.target.className)
+    console.log("target accessKey",e.target.accessKey)
+    console.log("target attributes",e.target.attributes)
+    console.log("target tagName",e.target.tagName)
+
+    let el = document.createElement( 'html' );
+    el.innerHTML = e.target.outerHTML
+    let x=el.getElementsByTagName( 'li' );
+    console.log(x[0].innerText)
   }
   render() {
     console.log(this.state)
@@ -145,10 +196,10 @@ class SectionSimulation extends React.Component {
             </div>
             <GridContainer>
               <GridItem xs={6} sm={4} md={3} lg={2}>
-                <CustomDropdown dropdownList={["a","b","c"]}  buttonProps={{color:"rose"}} buttonText={"country"} />
+                <CustomDropdown dropdownList={["a","b","c"]}  buttonProps={{color:"transparent"}} buttonText={"country"} />
               </GridItem>
               <GridItem xs={6} sm={4} md={3} lg={2}>
-                <CustomDropdown dropdownList={["a","b","c"]}  buttonProps={{color:"rose"}} buttonText={"currency"} />
+                <CustomDropdown dropdownList={["a","b","c"]}  buttonProps={{color:"transparent"}} buttonText={"currency"} />
               </GridItem>
             </GridContainer>
             <div className={classes.space50} />
@@ -209,11 +260,11 @@ class SectionSimulation extends React.Component {
                   }}
                 />
               </GridItem>
-              <GridItem xs={6} sm={4} md={3} lg={2}>
-                <CustomDropdown dropdownList={["pv","solar-thermal","lithium-ion-storage","power-converstion"]} buttonProps={{color:"rose"}} buttonText={"Add"} onClick={this.handleAddComponents.bind(this)} />
+              <GridItem xs={6} sm={4} md={3} lg={1}>
+                <CustomDropdown dropdownList={["pv","solar-thermal","lithium-ion-storage","power-converstion"]} buttonProps={{color:"rose",size:"sm"}} buttonText={"Add"} menuProps={{onClick:this.handleAddComponents}} />
               </GridItem>
-              <GridItem xs={6} sm={4} md={5} lg={2}>
-              <Button color="rose" onClick={this.handleRemoveComponents(idx)}>Remove</Button>
+              <GridItem xs={6} sm={4} md={5} lg={1}>
+              <Button color="rose" onClick={this.handleRemoveComponents(idx)} size="sm">Remove</Button>
               </GridItem>
             </GridContainer>)
             )}
@@ -222,7 +273,7 @@ class SectionSimulation extends React.Component {
             {this.state.finance.map((finance, idx) =>
             (finance.name==="Debt"?
               (<GridContainer key={`finance-container${idx}`}>
-                <GridItem xs={6} sm={3} md={2} lg={2} key={`finance-name${idx}`}>
+                <GridItem xs={6} sm={4} md={4} lg={2} key={`finance-name${idx}`}>
                   <CustomInput
                     labelText={finance.name}
                     id="float"
@@ -236,7 +287,7 @@ class SectionSimulation extends React.Component {
                     }}
                   />
                 </GridItem>
-                <GridItem xs={6} sm={3} md={2} lg={2} key={`finance-amount${idx}`}>
+                <GridItem xs={6} sm={4} md={2} lg={1} key={`finance-amount${idx}`}>
                   <CustomInput
                     labelText={"amount"}
                     id="float"
@@ -251,7 +302,7 @@ class SectionSimulation extends React.Component {
                     }}
                   />
                 </GridItem>
-                <GridItem xs={6} sm={3} md={2} lg={2} key={`finance-duration${idx}`}>
+                <GridItem xs={6} sm={4} md={2} lg={1} key={`finance-duration${idx}`}>
                   <CustomInput
                     labelText={"duartion"}
                     id="float"
@@ -266,7 +317,7 @@ class SectionSimulation extends React.Component {
                     }}
                   />
                 </GridItem>
-                <GridItem xs={6} sm={3} md={2} lg={2} key={`finance-interest${idx}`}>
+                <GridItem xs={6} sm={4} md={2} lg={1} key={`finance-interest${idx}`}>
                   <CustomInput
                     labelText={"interest"}
                     id="float"
@@ -281,14 +332,20 @@ class SectionSimulation extends React.Component {
                     }}
                   />
                 </GridItem>
-                <GridItem xs={6} sm={3} md={2} lg={2} key={`finance-startdate${idx}`}>
-                  <Datetime viewMode='days' inputProps={{ placeholder: 'Starttime'}} dateFormat='YYYY-MM-DD' timeFormat={false}/>
+                <GridItem xs={6} sm={4} md={4} lg={2} key={`finance-startdate${idx}`}>
+                  <InputLabel className={classes.label}>
+                  start-date
+                  </InputLabel>
+                  <Datetime viewMode='days' inputProps={{placeholder:finance.startdate}} dateFormat='YYYY-MM-DD' timeFormat={false} onChange={this.handleFinanceChange(idx)} defaultValue={finance.startdate}/>
                 </GridItem>
-                <GridItem xs={6} sm={3} md={1} lg={1}>
-                  <CustomDropdown dropdownList={["Equity","Debt","Government subsidy"]} buttonProps={{color:"rose",size:"sm"}} buttonText={"Add"} onClick={this.handleAddFinance.bind(this)} />
+                <GridItem xs={12} sm={6} md={6} lg={3}>
+                  <CustomDropdown dropdownList={["constant payment mortgage","irregular payment mortgage","constant amortized mortgage"]} buttonProps={{color:"transparent"}} buttonText={finance.payment_type} menuProps={{onClick:this.handleFinanceChange(idx), name:"finance-payment_type"}} />
                 </GridItem>
-                <GridItem xs={6} sm={3} md={1} lg={1}>
-                  <Button color="rose" onClick={this.handleRemoveFinance(idx)} size="sm">Remove</Button>
+                <GridItem xs={4} sm={3} md={2} lg={1}>
+                  <CustomDropdown dropdownList={["Equity","Debt","Government subsidy"]} buttonProps={{color:"rose", size:"sm"}} buttonText={"Add"} menuProps={{onClick:this.handleAddFinance}} />
+                </GridItem>
+                <GridItem xs={4} sm={3} md={2} lg={1}>
+                  <Button color="rose" size="sm" onClick={this.handleRemoveFinance(idx)}>Remove</Button>
                 </GridItem>
               </GridContainer>)
             :(<GridContainer key={`finance-container${idx}`}>
@@ -321,18 +378,17 @@ class SectionSimulation extends React.Component {
                   }}
                 />
                 </GridItem>
-                <GridItem xs={6} sm={4} md={3} lg={2} key={`finance-duration${idx}`}>
-                </GridItem>
-                <GridItem xs={6} sm={4} md={3} lg={2} key={`finance-interest${idx}`}>
-                </GridItem>
                 <GridItem xs={6} sm={4} md={3} lg={2} key={`finance-startdate${idx}`}>
-                <Datetime viewMode='days' inputProps={{ placeholder: 'Starttime'}} dateFormat='YYYY-MM-DD' timeFormat={false}/>
+                <InputLabel className={classes.label}>
+                  start-date
+                </InputLabel>
+                <Datetime viewMode='days' inputProps={{placeholder:finance.startdate}} dateFormat='YYYY-MM-DD' timeFormat={false} onChange={this.handleFinanceChange(idx)} defaultValue={finance.startdate} />
                 </GridItem>
-                <GridItem xs={6} sm={2} md={2} lg={1}>
-                <CustomDropdown dropdownList={["Equity","Debt","Government subsidy"]} buttonProps={{color:"rose",size:"sm"}} buttonText={"Add"} onClick={this.handleAddFinance.bind(this)} />
+                <GridItem xs={6} sm={4} md={3} lg={1}>
+                <CustomDropdown dropdownList={["Equity","Debt","Government subsidy"]} buttonProps={{color:"rose",size:"sm"}} buttonText={"Add"} menuProps={{onClick:this.handleAddFinance}} />
                 </GridItem>
-                <GridItem xs={6} sm={2} md={2} lg={1}>
-                <Button color="rose" onClick={this.handleRemoveFinance(idx)} size="sm">Remove</Button>
+                <GridItem xs={6} sm={4} md={3} lg={1}>
+                <Button color="rose" size="sm" onClick={this.handleRemoveFinance(idx)}>Remove</Button>
                 </GridItem>
                 </GridContainer>
               )

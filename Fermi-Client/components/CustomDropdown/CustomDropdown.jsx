@@ -47,7 +47,8 @@ class CustomDropdown extends React.Component {
       caret,
       hoverColor,
       left,
-      rtlActive
+      rtlActive,
+      menuProps //신규추가
     } = this.props;
     const caretClasses = classNames({
       [classes.caret]: true,
@@ -70,7 +71,7 @@ class CustomDropdown extends React.Component {
             onClick={this.handleClick}
           >
             {buttonIcon !== undefined ? (
-              <this.props.buttonIcon className={classes.buttonIcon} />
+              <this.props.buttonIcon className={classes.buttonIcon} /> //추가
             ) : null}
             {buttonText !== undefined ? buttonText : null}
             {caret ? <b className={caretClasses} /> : null}
@@ -121,8 +122,8 @@ class CustomDropdown extends React.Component {
                     return (
                       <MenuItem
                         key={key}
-                        onClick={this.props.onClick}
                         className={dropdownItem}
+                        {...menuProps}
                       >
                         {prop}
                       </MenuItem>
