@@ -9,6 +9,7 @@ import Checkbox from "material-ui/Checkbox";
 import Radio from "material-ui/Radio";
 import Switch from "material-ui/Switch";
 import InputLabel from "material-ui/Input/InputLabel";
+
 //react datetime
 import Datetime from "react-datetime";
 // @material-ui/icons
@@ -37,7 +38,11 @@ class SectionSimulation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      components: [{name:'PV',unitcost:230,units:99},{name: 'Energy Storage System',unitcost:100,units:10},{name: 'Energy Storage System',unitcost:100,units:10}],
+      components: [
+        {name:'PV',unitcost:230,units:99},
+        {name: 'Energy Storage System',unitcost:100,units:10},
+        {name: 'Energy Storage System',unitcost:100,units:10}
+      ],
       finance:[
         {name:'Debt',amount:10000,startdate:new Date(new Date().setMonth(new Date().getMonth()+2)),duration:10,interest:0.05,payment_type:"constant payment mortgage"},
         {name:'Equity',amount:10000,startdate:new Date(new Date().setMonth(new Date().getMonth()+2))},
@@ -96,32 +101,31 @@ class SectionSimulation extends React.Component {
   //투자비 조건
   handleFinanceChange(idx){
     return (evt) => {
-      console.log(moment.isMoment(evt))
-      const newComponents = this.state.finance.map((finance, sidx) => {
+      const newComponents = this.state.finance.map((component, sidx) => {
         if (idx !== sidx){
-          return finance;
+          return component;
         }
         else if(moment.isMoment(evt)===true){
           console.log("moment!")
-          return { ...finance, startdate:new Date(`${evt.year()}-${evt.month()}-${evt.date()}`)}
+          return { ...component, startdate:new Date(`${evt.year()}-${evt.month()}-${evt.date()}`)}
         }
         else if(evt.target.tagName==="LI"){
           var el = document.createElement( 'html' );
           el.innerHTML = evt.target.outerHTML
           var x=el.getElementsByTagName( 'li' );
-          return { ...finance, payment_type:x[0].innerText};
+          return { ...component, payment_type:x[0].innerText};
         }
         else if(evt.target.name==="finance-name"){
-          return { ...finance, name: evt.target.value };
+          return { ...component, name: evt.target.value };
         }
         else if(evt.target.name==="finance-amount"){
-          return { ...finance, amount: parseFloat(evt.target.value) };
+          return { ...component, amount: parseFloat(evt.target.value) };
         }
         else if(evt.target.name==="finance-duration"){
-          return { ...finance, duration: parseFloat(evt.target.value) };
+          return { ...component, duration: parseFloat(evt.target.value) };
         }
         else if(evt.target.name==="finance-interest"){
-          return { ...finance, interest: parseFloat(evt.target.value) };
+          return { ...component, interest: parseFloat(evt.target.value) };
         }
       });
       this.setState({finance: newComponents});
@@ -192,7 +196,7 @@ class SectionSimulation extends React.Component {
           <div id="inputs">
             <div className={classes.title}>
               <div className={classes.space30} />
-              <h3>Simulation</h3>
+              <h3>Basic Assumption</h3>
             </div>
             <GridContainer>
               <GridItem xs={6} sm={4} md={3} lg={2}>
@@ -201,9 +205,23 @@ class SectionSimulation extends React.Component {
               <GridItem xs={6} sm={4} md={3} lg={2}>
                 <CustomDropdown dropdownList={["a","b","c"]}  buttonProps={{color:"transparent"}} buttonText={"currency"} />
               </GridItem>
+              <GridItem xs={6} sm={4} md={3} lg={2}>
+              <CustomInput
+                labelText="inflation rate"
+                id="float"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                inputProps={{
+                  name:"components-name",
+                  type:"number",
+                  defaultValue:0.05
+                }}
+              />
+              </GridItem>
             </GridContainer>
             <div className={classes.space50} />
-            <h3>Components</h3>
+            <h3>Investment Assumption</h3>
             {this.state.components.map((components, idx) =>
             (<GridContainer key={`consturction-container${idx}`}>
               <GridItem xs={6} sm={2} md={3} lg={2} key={`construction-name${idx}`}>
@@ -269,7 +287,7 @@ class SectionSimulation extends React.Component {
             </GridContainer>)
             )}
             <div className={classes.space50} />
-            <h3>Finance</h3>
+            <h3>Finance Assumption</h3>
             {this.state.finance.map((finance, idx) =>
             (finance.name==="Debt"?
               (<GridContainer key={`finance-container${idx}`}>
@@ -394,6 +412,31 @@ class SectionSimulation extends React.Component {
               )
              )
             )}
+            <div className={classes.space50} />
+            <h3>Revenue Assumption</h3>
+            <GridContainer>
+              <GridItem xs={12} sm={6} md={6} lg={2}>
+                <p>Electricity Price</p>
+              </GridItem>
+              <GridItem xs={12} sm={6} md={6} lg={3}>
+                <CustomDropdown dropdownList={["Renewable Energy Policy","irregular payment mortgage","constant amortized mortgage"]} buttonProps={{color:"transparent"}} buttonText={"EAFSD"} menuProps={{ name:"finance-payment_type"}} />
+              </GridItem>
+              <GridItem xs={12} sm={6} md={6} lg={3}>
+              <Checkbox checked={true} label="test"/>
+              </GridItem>
+            </GridContainer>
+            <GridContainer>
+              <GridItem xs={12} sm={6} md={6} lg={2}>
+                <p>Renewable Energy Policy</p>
+              </GridItem>
+              <GridItem xs={12} sm={6} md={6} lg={3}>
+                <CustomDropdown dropdownList={["Renewable Energy Policy","irregular payment mortgage","constant amortized mortgage"]} buttonProps={{color:"transparent"}} buttonText={"EAFSD"} menuProps={{ name:"finance-payment_type"}} />
+              </GridItem>
+            </GridContainer>
+            <div className={classes.space50} />
+            <h3>Operation Assumption</h3>
+            <div className={classes.space50} />
+            <h3>Other Scenarios</h3>
           </div>
         </div>
       </div>

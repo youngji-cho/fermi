@@ -44,7 +44,6 @@ class Mainpage extends React.Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <SectionSimulation />
-          <SectionBasics />
         </div>
         <Footer />
       </div>
