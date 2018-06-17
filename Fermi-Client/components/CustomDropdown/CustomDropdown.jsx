@@ -68,6 +68,7 @@ class CustomDropdown extends React.Component {
             aria-owns={open ? "menu-list" : null}
             aria-haspopup="true"
             {...buttonProps}
+            style={{"border-bottom":"2px solid "}}
             onClick={this.handleClick}
           >
             {buttonIcon !== undefined ? (

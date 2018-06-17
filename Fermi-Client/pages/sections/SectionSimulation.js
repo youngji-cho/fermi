@@ -3,12 +3,17 @@ import React from "react";
 import Nouislider from "react-nouislider";
 // material-ui components
 import withStyles from "material-ui/styles/withStyles";
+
+import customInputStyle from "assets/jss/material-kit-react/components/customInputStyle.jsx";
+
 import InputAdornment from "material-ui/Input/InputAdornment";
 import FormControlLabel from "material-ui/Form/FormControlLabel";
 import Checkbox from "material-ui/Checkbox";
 import Radio from "material-ui/Radio";
 import Switch from "material-ui/Switch";
 import InputLabel from "material-ui/Input/InputLabel";
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 //react datetime
 import Datetime from "react-datetime";
@@ -23,6 +28,8 @@ import GridItem from "components/Grid/GridItem.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import IconButton from "components/CustomButtons/IconButton.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
+import CustomInputDropdown from "components/CustomInput/CustomInputDropdown.jsx";
+import CustomInputDatetime from "components/CustomInput/CustomInputDatetime.jsx";
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.jsx";
 import CustomLinearProgress from "components/CustomLinearProgress/CustomLinearProgress.jsx";
 import Paginations from "components/Pagination/Pagination.jsx";
@@ -38,63 +45,64 @@ class SectionSimulation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      components: [
-        {name:'PV',unitcost:230,units:99},
-        {name: 'Energy Storage System',unitcost:100,units:10},
-        {name: 'Energy Storage System',unitcost:100,units:10}
+      investment: [
+        {name:'Fermi PV Power Plant',type:"PV",unitcost:230,units:99},
+        {name:'Fermi Energy Storage System',type:"energy storage system",unitcost:100,units:10}
       ],
       finance:[
         {name:'Debt',amount:10000,startdate:new Date(new Date().setMonth(new Date().getMonth()+2)),duration:10,interest:0.05,payment_type:"constant payment mortgage"},
         {name:'Equity',amount:10000,startdate:new Date(new Date().setMonth(new Date().getMonth()+2))},
         {name:'Government Subsidary',amount:10000,startdate:new Date()}
-      ]
+      ],revenue:[]
     };
     //투자비 조건 변경
-    this.handleComponentsChange=this.handleComponentsChange.bind(this);
-    this.handleAddComponents=this.handleAddComponents.bind(this);
-    this.handleRemoveComponents=this.handleRemoveComponents.bind(this);
+    this.handleInvestmentChange=this.handleInvestmentChange.bind(this);
+    this.handleAddInvestment=this.handleAddInvestment.bind(this);
+    this.handleRemoveInvestment=this.handleRemoveInvestment.bind(this);
     //금융조건 변경
     this.handleFinanceChange=this.handleFinanceChange.bind(this);
     this.handleAddFinance=this.handleAddFinance.bind(this);
     this.handleRemoveFinance=this.handleRemoveFinance.bind(this);
+    //revenue
+    this.startRevenue=this.startRevenue.bind(this)
+    this.handleCheckClick=this.handleCheckClick.bind(this)
     //테스트 조건
     this.handleChange=this.handleChange.bind(this);
   }
-  handleComponentsChange(idx){
+  handleInvestmentChange(idx){
     return (evt) => {
       console.log("evt",evt.target.outerHTML);
-      const newComponents = this.state.components.map((components, sidx) => {
+      const newComponents = this.state.investment.map((components, sidx) => {
         if (idx !== sidx)
           return components;
         else
-          if(evt.target.name==="components-name")
+          if(evt.target.name==="investment-name")
             return { ...components, name: evt.target.value };
-          else if(evt.target.name==="components-unitcost")
+          else if(evt.target.name==="investment-unitcost")
             return { ...components, unitcost: parseFloat(evt.target.value)};
-          else if(evt.target.name==="components-units")
+          else if(evt.target.name==="investment-units")
             return { ...components, units: parseFloat(evt.target.value) };
       });
-      this.setState({components: newComponents });
+      this.setState({investment: newComponents });
     }
   }
-  handleAddComponents(e){
+  handleAddInvestment(e){
     let el = document.createElement( 'html' );
     el.innerHTML = e.target.outerHTML
     let x=el.getElementsByTagName( 'li' );
-    console.log(x[0].innerText)
     this.setState({
-      components: this.state.components.concat([{
-        name: x[0].innerText,
+      investment: this.state.investment.concat([{
+        name:x[0].innerText,
+        type: x[0].innerText,
         unitcost:0,
         units:0
       }])
     });
   }
-  handleRemoveComponents(idx){
-    console.log("idx",idx)
-    return (a) => {
+  handleRemoveInvestment(idx){
+    return () => {
       this.setState({
-        components: this.state.components.filter((s, sidx) => idx !== sidx)
+        investment: this.state.investment.filter((s, sidx) => idx !== sidx)
       });
     }
   }
@@ -158,37 +166,36 @@ class SectionSimulation extends React.Component {
   }
   handleRemoveFinance(idx){
     console.log("idx",idx)
-    return (a) => {
+    return () => {
       this.setState({
         finance: this.state.finance.filter((s, sidx) => idx !== sidx)
       });
     }
   }
+  //수입예상
+  startRevenue(){
+    let names=[];
+    this.state.investment.map((component,idx)=>names[idx]={name:component.name,checked:true,operation_period:20})
+    this.setState({revenue:names});
+  }
+  handleCheckClick(idx){
+    let component=this.state.revenue;
+    component[idx].checked=component[idx].checked?false:true;
+    this.setState({
+      revenue: component
+    });
+  }
   handleChange(e){
-    console.log(e)
-    console.log("altkey",e.altKey)
-    console.log("button",e.button)
-    console.log("buttons",e.buttons)
-    console.log("bubbles",e.bubbles)
-    console.log("type",e.type)
-    console.log("view",e.view)
-    console.log("detail",e.detail)
-    console.log("target",e.target)
-    console.log("target name",e.target.name)
-    console.log("target role",e.target.role)
-    console.log("target children",e.target.children)
-    console.log("target className",e.target.className)
-    console.log("target accessKey",e.target.accessKey)
-    console.log("target attributes",e.target.attributes)
-    console.log("target tagName",e.target.tagName)
-
     let el = document.createElement( 'html' );
-    el.innerHTML = e.target.outerHTML
-    let x=el.getElementsByTagName( 'li' );
-    console.log(x[0].innerText)
+    el.innerHTML = e.outerHTML
+    console.log(el)
+    console.log("target is",e.target)
+    console.log("target value is",e.target.value)
+    console.log("target children is",e.target.children)
   }
   render() {
     console.log(this.state)
+    console.log("classes",classes)
     const { classes } = this.props;
     return (
       <div className={classes.sections}>
@@ -200,17 +207,19 @@ class SectionSimulation extends React.Component {
             </div>
             <GridContainer>
               <GridItem xs={6} sm={4} md={3} lg={2}>
-                <CustomDropdown dropdownList={["a","b","c"]}  buttonProps={{color:"transparent"}} buttonText={"country"} />
-              </GridItem>
-              <GridItem xs={6} sm={4} md={3} lg={2}>
-                <CustomDropdown dropdownList={["a","b","c"]}  buttonProps={{color:"transparent"}} buttonText={"currency"} />
+                <CustomInputDropdown id="float"
+                  labelText="fd"
+                 formControlProps={{
+                  fullWidth: true
+                }} />
               </GridItem>
               <GridItem xs={6} sm={4} md={3} lg={2}>
               <CustomInput
                 labelText="inflation rate"
-                id="float"
+                id="regular"
                 formControlProps={{
-                  fullWidth: true
+                  fullWidth: true,
+                  children:"<select>a</select>"
                 }}
                 inputProps={{
                   name:"components-name",
@@ -219,26 +228,46 @@ class SectionSimulation extends React.Component {
                 }}
               />
               </GridItem>
+              <GridItem xs={6} sm={4} md={3} lg={2}>
+              <CustomInputDatetime id="float"
+                labelText="start time"
+               formControlProps={{
+                fullWidth: true
+              }} />
+              </GridItem>
+              <GridItem xs={6} sm={4} md={3} lg={2}>
+                <TextField select label="currency" helperText="select currency for financial simulation">
+                <MenuItem>
+                "test"
+                </MenuItem>
+                </TextField>
+              </GridItem>
+              <GridItem xs={6} sm={4} md={3} lg={2}>
+              <TextField label="currency" helperText="select currency for financial simulation" type="number" onChange={this.handleChange}>
+              </TextField>
+              </GridItem>
+
+
             </GridContainer>
             <div className={classes.space50} />
             <h3>Investment Assumption</h3>
-            {this.state.components.map((components, idx) =>
-            (<GridContainer key={`consturction-container${idx}`}>
-              <GridItem xs={6} sm={2} md={3} lg={2} key={`construction-name${idx}`}>
+            {this.state.investment.map((component, idx) =>
+            (<GridContainer key={`investment-container${idx}`}>
+              <GridItem xs={6} sm={2} md={3} lg={2} key={`investment-name${idx}`}>
                 <CustomInput
-                  labelText={components.name}
+                  labelText={component.name}
                   id="float"
                   formControlProps={{
                     fullWidth: true
                   }}
                   inputProps={{
-                    name:"components-name",
-                    defaultValue:components.name,
-                    onChange:this.handleComponentsChange(idx)
+                    name:"investment-name",
+                    defaultValue:component.name,
+                    onChange:this.handleInvestmentChange(idx)
                   }}
                 />
               </GridItem>
-              <GridItem xs={6} sm={4} md={3} lg={2} key={`construction-unit-cost${idx}`}>
+              <GridItem xs={6} sm={4} md={3} lg={2} key={`investment-unit-cost${idx}`}>
                 <CustomInput
                   labelText={"unit-cost"}
                   id="float"
@@ -246,14 +275,14 @@ class SectionSimulation extends React.Component {
                     fullWidth: true
                   }}
                   inputProps={{
-                    name:"components-unitcost",
+                    name:"investment-unitcost",
                     type:"number",
-                    defaultValue:components.unitcost,
-                    onChange:this.handleComponentsChange(idx)
+                    defaultValue:component.unitcost,
+                    onChange:this.handleInvestmentChange(idx)
                   }}
                 />
               </GridItem>
-              <GridItem xs={6} sm={4} md={3} lg={2} key={`construction-units${idx}`}>
+              <GridItem xs={6} sm={4} md={3} lg={2} key={`investment-units${idx}`}>
                 <CustomInput
                   labelText={"units"}
                   id="float"
@@ -261,17 +290,17 @@ class SectionSimulation extends React.Component {
                     fullWidth: true
                   }}
                   inputProps={{
-                    name:"components-units",
+                    name:"investment-units",
                     type:"number",
-                    defaultValue:components.units,
-                    onChange:this.handleComponentsChange(idx)
+                    defaultValue:component.units,
+                    onChange:this.handleInvestmentChange(idx)
                   }}
                 />
               </GridItem>
-              <GridItem xs={6} sm={4} md={3} lg={2} key={`total-cost${idx}`}>
+              <GridItem xs={6} sm={4} md={3} lg={2} key={`investment-total-cost${idx}`}>
                 <CustomInput
                   labelText={"Total Cost"}
-                  inputProps={{value:components.unitcost*components.units}}
+                  inputProps={{value:component.unitcost*component.units}}
                   id="float"
                   formControlProps={{
                     fullWidth: true
@@ -279,28 +308,28 @@ class SectionSimulation extends React.Component {
                 />
               </GridItem>
               <GridItem xs={6} sm={4} md={3} lg={1}>
-                <CustomDropdown dropdownList={["pv","solar-thermal","lithium-ion-storage","power-converstion"]} buttonProps={{color:"rose",size:"sm"}} buttonText={"Add"} menuProps={{onClick:this.handleAddComponents}} />
+                <CustomDropdown dropdownList={["pv","solar-thermal","lithium-ion-storage","power-converstion"]} buttonProps={{color:"rose",size:"sm"}} buttonText={"Add"} menuProps={{onClick:this.handleAddInvestment}} />
               </GridItem>
               <GridItem xs={6} sm={4} md={5} lg={1}>
-              <Button color="rose" onClick={this.handleRemoveComponents(idx)} size="sm">Remove</Button>
+              <Button color="rose" onClick={this.handleRemoveInvestment(idx)} size="sm">Remove</Button>
               </GridItem>
             </GridContainer>)
             )}
             <div className={classes.space50} />
             <h3>Finance Assumption</h3>
-            {this.state.finance.map((finance, idx) =>
-            (finance.name==="Debt"?
+            {this.state.finance.map((component, idx) =>
+            (component.name==="Debt"?
               (<GridContainer key={`finance-container${idx}`}>
                 <GridItem xs={6} sm={4} md={4} lg={2} key={`finance-name${idx}`}>
                   <CustomInput
-                    labelText={finance.name}
+                    labelText={component.name}
                     id="float"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
                       name:"finance-name",
-                      defaultValue:finance.name,
+                      defaultValue:component.name,
                       onChange:this.handleFinanceChange(idx)
                     }}
                   />
@@ -315,8 +344,8 @@ class SectionSimulation extends React.Component {
                     inputProps={{
                       name:"finance-amount",
                       type:"number",
-                      defaultValue:finance.amount,
-                      onChange:this.handleComponentsChange(idx)
+                      defaultValue:component.amount,
+                      onChange:this.handleFinanceChange(idx)
                     }}
                   />
                 </GridItem>
@@ -330,7 +359,7 @@ class SectionSimulation extends React.Component {
                     inputProps={{
                       name:"finance-duration",
                       type:"number",
-                      defaultValue:finance.duration,
+                      defaultValue:component.duration,
                       onChange:this.handleFinanceChange(idx)
                     }}
                   />
@@ -345,7 +374,7 @@ class SectionSimulation extends React.Component {
                     inputProps={{
                       name:"finance-duration",
                       type:"number",
-                      defaultValue:finance.duration,
+                      defaultValue:component.duration,
                       onChange:this.handleFinanceChange(idx)
                     }}
                   />
@@ -354,10 +383,10 @@ class SectionSimulation extends React.Component {
                   <InputLabel className={classes.label}>
                   start-date
                   </InputLabel>
-                  <Datetime viewMode='days' inputProps={{placeholder:finance.startdate}} dateFormat='YYYY-MM-DD' timeFormat={false} onChange={this.handleFinanceChange(idx)} defaultValue={finance.startdate}/>
+                  <Datetime viewMode='days' inputProps={{placeholder:component.startdate}} dateFormat='YYYY-MM-DD' timeFormat={false} onChange={this.handleFinanceChange(idx)} defaultValue={component.startdate}/>
                 </GridItem>
                 <GridItem xs={12} sm={6} md={6} lg={3}>
-                  <CustomDropdown dropdownList={["constant payment mortgage","irregular payment mortgage","constant amortized mortgage"]} buttonProps={{color:"transparent"}} buttonText={finance.payment_type} menuProps={{onClick:this.handleFinanceChange(idx), name:"finance-payment_type"}} />
+                  <CustomDropdown dropdownList={["constant payment mortgage","irregular payment mortgage","constant amortized mortgage"]} buttonProps={{color:"transparent"}} buttonText={component.payment_type} menuProps={{onClick:this.handleFinanceChange(idx), name:"finance-payment_type"}} />
                 </GridItem>
                 <GridItem xs={4} sm={3} md={2} lg={1}>
                   <CustomDropdown dropdownList={["Equity","Debt","Government subsidy"]} buttonProps={{color:"rose", size:"sm"}} buttonText={"Add"} menuProps={{onClick:this.handleAddFinance}} />
@@ -369,14 +398,14 @@ class SectionSimulation extends React.Component {
             :(<GridContainer key={`finance-container${idx}`}>
                 <GridItem xs={6} sm={4} md={3} lg={2} key={`finance-name${idx}`}>
                 <CustomInput
-                  labelText={finance.name}
+                  labelText={component.name}
                   id="float"
                   formControlProps={{
                     fullWidth: true
                   }}
                   inputProps={{
                     name:"finance-name",
-                    defaultValue:finance.name,
+                    defaultValue:component.name,
                     onChange:this.handleFinanceChange(idx)
                   }}
                 />
@@ -391,8 +420,8 @@ class SectionSimulation extends React.Component {
                   inputProps={{
                     name:"finance-amount",
                     type:"number",
-                    defaultValue:finance.amount,
-                    onChange:this.handleComponentsChange(idx)
+                    defaultValue:component.amount,
+                    onChange:this.handleFinanceChange(idx)
                   }}
                 />
                 </GridItem>
@@ -400,7 +429,7 @@ class SectionSimulation extends React.Component {
                 <InputLabel className={classes.label}>
                   start-date
                 </InputLabel>
-                <Datetime viewMode='days' inputProps={{placeholder:finance.startdate}} dateFormat='YYYY-MM-DD' timeFormat={false} onChange={this.handleFinanceChange(idx)} defaultValue={finance.startdate} />
+                <Datetime viewMode='days' inputProps={{placeholder:component.startdate}} dateFormat='YYYY-MM-DD' timeFormat={false} onChange={this.handleFinanceChange(idx)} defaultValue={component.startdate} />
                 </GridItem>
                 <GridItem xs={6} sm={4} md={3} lg={1}>
                 <CustomDropdown dropdownList={["Equity","Debt","Government subsidy"]} buttonProps={{color:"rose",size:"sm"}} buttonText={"Add"} menuProps={{onClick:this.handleAddFinance}} />
@@ -414,25 +443,48 @@ class SectionSimulation extends React.Component {
             )}
             <div className={classes.space50} />
             <h3>Revenue Assumption</h3>
-            <GridContainer>
-              <GridItem xs={12} sm={6} md={6} lg={2}>
-                <p>Electricity Price</p>
+            <Button color="rose" size="sm" onClick={this.startRevenue}>START</Button>
+            {this.state.revenue.map((component, idx) =>(
+            <GridContainer key={`revenue-container(${idx})`}>
+              <GridItem xs={12} sm={6} md={6} lg={2} >
+              <FormControlLabel
+                control={
+                <Checkbox onClick={()=>this.handleCheckClick(idx)} />
+              }
+              label={component.name}
+              checked={component.checked}/>
               </GridItem>
-              <GridItem xs={12} sm={6} md={6} lg={3}>
-                <CustomDropdown dropdownList={["Renewable Energy Policy","irregular payment mortgage","constant amortized mortgage"]} buttonProps={{color:"transparent"}} buttonText={"EAFSD"} menuProps={{ name:"finance-payment_type"}} />
-              </GridItem>
-              <GridItem xs={12} sm={6} md={6} lg={3}>
-              <Checkbox checked={true} label="test"/>
-              </GridItem>
+              {component.checked?(
+                <GridItem xs={12} sm={6} md={6} lg={2} >
+                <TextField
+                  select label="With Select"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">Kg</InputAdornment>
+                  }}>
+                    <MenuItem>
+                    "test"
+                    </MenuItem>
+                  </TextField>
+                </GridItem>
+              ):(<span></span>)}
+              {component.checked?(
+                <GridItem xs={12} sm={6} md={6} lg={2} >
+                <CustomInput
+                  labelText={"revenue-operating-period"}
+                  id="float"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    name:"operating-period",
+                    type:"number",
+                    defaultValue:component.operation_period
+                  }}
+                />
+                </GridItem>
+              ):(<span></span>)}
             </GridContainer>
-            <GridContainer>
-              <GridItem xs={12} sm={6} md={6} lg={2}>
-                <p>Renewable Energy Policy</p>
-              </GridItem>
-              <GridItem xs={12} sm={6} md={6} lg={3}>
-                <CustomDropdown dropdownList={["Renewable Energy Policy","irregular payment mortgage","constant amortized mortgage"]} buttonProps={{color:"transparent"}} buttonText={"EAFSD"} menuProps={{ name:"finance-payment_type"}} />
-              </GridItem>
-            </GridContainer>
+            ))}
             <div className={classes.space50} />
             <h3>Operation Assumption</h3>
             <div className={classes.space50} />
