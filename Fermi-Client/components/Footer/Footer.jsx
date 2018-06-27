@@ -31,23 +31,8 @@ function Footer({ ...props }) {
         <div className={classes.left}>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <a href="#home" className={block}>
-                {rtlActive ? "الصفحة الرئيسية" : "Home"}
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#company" className={block}>
-                {rtlActive ? "شركة" : "Company"}
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#portfolio" className={block}>
-                {rtlActive ? "بعدسة" : "Portfolio"}
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#blog" className={block}>
-                {rtlActive ? "مدونة" : "Blog"}
+              <a href="admin@fermi.me" className={block}>
+                ASk:admin@fermi.me
               </a>
             </ListItem>
           </List>
@@ -57,9 +42,6 @@ function Footer({ ...props }) {
           <a href="https://www.creative-tim.com" className={anchor}>
             {rtlActive ? "توقيت الإبداعية" : "Creative Tim"}
           </a>
-          {rtlActive
-            ? ", مصنوعة مع الحب لشبكة الإنترنت أفضل"
-            : ", made with love for a better web"}
         </p>
       </div>
     </footer>

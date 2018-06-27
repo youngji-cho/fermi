@@ -47,7 +47,8 @@ class CustomDropdown extends React.Component {
       caret,
       hoverColor,
       left,
-      rtlActive
+      rtlActive,
+      menuProps
     } = this.props;
     const caretClasses = classNames({
       [classes.caret]: true,
@@ -124,6 +125,8 @@ class CustomDropdown extends React.Component {
                         key={key}
                         onClick={this.handleClose}
                         className={dropdownItem}
+                        {...menuProps}
+                        value={prop}
                       >
                         {prop}
                       </MenuItem>

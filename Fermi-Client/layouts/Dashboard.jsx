@@ -48,6 +48,7 @@ class Dashboard extends React.Component {
     };
   }
   handleDrawerToggle = () => {
+    alert("re")
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
   getRoute() {
@@ -92,7 +93,7 @@ class Dashboard extends React.Component {
       <div className={classes.wrapper}>
         <Sidebar
           routes={dashboardRoutes}
-          logoText={"Creative Tim"}
+          logoText={"Fermi Project"}
           logo={logo}
           image={image}
           handleDrawerToggle={this.handleDrawerToggle}

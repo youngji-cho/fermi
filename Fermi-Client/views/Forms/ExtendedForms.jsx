@@ -58,6 +58,7 @@ class ExtendedForms extends React.Component {
     this.setState({ tags: regularTags });
   }
   render() {
+    console.log(this.state)
     const { classes } = this.props;
     return (
       <div>
