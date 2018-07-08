@@ -16,11 +16,11 @@ let db_name=""
 if(process.env.NODE_ENV=='production'){
   db_name='economics'
 } else if(process.env.NODE_ENV=='development'){
-  db_name='economics_test'
+  db_name='economic_test'
 }
 
 router.post('/result',(req,res)=>{
-  let child=cp.spawn("python3",[path.resolve(__dirname,"../python/simulation.py")]);
+  let child=cp.spawn("python",[path.resolve(__dirname,"../python/simulation.py")]);
   console.log(`Post Data is ${req.body.equity}`);
   let request={
     //첫번째
