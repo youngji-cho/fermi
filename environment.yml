@@ -1,5 +1,6 @@
 name: fermi-env
 dependencies:
+  - python=3.7.0
   - numpy=1.14.5
   - pip=10.0.1
   - python=3.6.2
