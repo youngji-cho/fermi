@@ -1,0 +1,58 @@
+name: fermienv
+channels:
+- anaconda-fusion
+- defaults
+dependencies:
+- blas=1.0=mkl
+- ca-certificates=2018.03.07=0
+- certifi=2018.4.16=py36_0
+- intel-openmp=2018.0.3=0
+- libcxx=4.0.1=h579ed51_0
+- libcxxabi=4.0.1=hebd6815_0
+- libedit=3.1.20170329=hb402a30_2
+- libffi=3.2.1=h475c297_4
+- libgfortran=3.0.1=h93005f0_2
+- mkl=2018.0.3=1
+- mkl_fft=1.0.1=py36h917ab60_0
+- mkl_random=1.0.1=py36h78cc56f_0
+- ncurses=6.1=h0a44026_0
+- numpy=1.14.5=py36h9bb19eb_3
+- numpy-base=1.14.5=py36ha9ae307_3
+- openssl=1.0.2o=h26aff7b_0
+- pandas=0.23.1=py36h1702cab_0
+- patsy=0.5.0=py36_0
+- pip=10.0.1=py36_0
+- python=3.6.2=hd04bb42_19
+- python-dateutil=2.7.3=py36_0
+- pytz=2018.5=py36_0
+- readline=7.0=hc1231fa_4
+- scipy=1.1.0=py36hcaad992_0
+- setuptools=39.2.0=py36_0
+- six=1.11.0=py36h0e22d5e_1
+- sqlite=3.24.0=ha441bb4_0
+- statsmodels=0.9.0=py36h917ab60_0
+- tk=8.6.7=h35a86e2_3
+- wheel=0.31.1=py36_0
+- xz=5.2.4=h1de35cc_4
+- zlib=1.2.11=hf3cbc9b_2
+- pip:
+  - awscli==1.14.56
+  - blessed==1.14.2
+  - botocore==1.9.9
+  - cement==2.8.2
+  - docker-py==1.7.2
+  - dockerpty==0.4.1
+  - docopt==0.6.2
+  - docutils==0.14
+  - jmespath==0.9.3
+  - mkl-fft==1.0.0
+  - mkl-random==1.0.1
+  - pyasn1==0.4.2
+  - pymysql==0.8.0
+  - requests==2.9.1
+  - s3transfer==0.1.13
+  - semantic-version==2.5.0
+  - tabulate==0.7.5
+  - termcolor==1.1.0
+prefix: /Users/youngji/anaconda/envs/fermienv
+
